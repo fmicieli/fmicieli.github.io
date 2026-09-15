@@ -15,6 +15,14 @@ import { BrandIdentitySection } from "@/components/case-study/BrandIdentitySecti
 import { UiKitSection } from "@/components/case-study/UiKitSection";
 import { PrototypeSection } from "@/components/case-study/PrototypeSection";
 import { ClosingSection } from "@/components/case-study/ClosingSection";
+import { StrideProblemSection } from "@/components/case-study/StrideProblemSection";
+import { ResearchSection } from "@/components/case-study/ResearchSection";
+import { BenchmarkingDimensionsSection } from "@/components/case-study/BenchmarkingDimensionsSection";
+import { ArchitectureSitemapSection } from "@/components/case-study/ArchitectureSitemapSection";
+import { WireframeFilmstripSection } from "@/components/case-study/WireframeFilmstripSection";
+import { DesignSystemSection } from "@/components/case-study/DesignSystemSection";
+import { DevelopmentSection } from "@/components/case-study/DevelopmentSection";
+import { AiAgentsSection } from "@/components/case-study/AiAgentsSection";
 
 export function CaseStudyBlocks({ blocks }: { blocks: CaseStudyBlock[] }) {
   // "Accessibility" no longer renders as its own top-level section — Brand
@@ -249,6 +257,85 @@ export function CaseStudyBlocks({ blocks }: { blocks: CaseStudyBlock[] }) {
                 linkLabel={block.linkLabel}
                 linkHref={block.linkHref}
                 screens={block.screens}
+              />
+            )}
+            {block.type === "stride-problem" && (
+              <StrideProblemSection
+                heading={block.heading}
+                subheading={block.subheading}
+                bullets={block.bullets}
+                callout={block.callout}
+              />
+            )}
+            {block.type === "research" && (
+              <ResearchSection
+                heading={block.heading}
+                subheading={block.subheading}
+                competitors={block.competitors}
+                chartTitle={block.chartTitle}
+                chartBars={block.chartBars}
+                legend={block.legend}
+                insights={block.insights}
+                quote={block.quote}
+              />
+            )}
+            {block.type === "benchmarking-dimensions" && (
+              <BenchmarkingDimensionsSection
+                heading={block.heading}
+                subheading={block.subheading}
+                dimensions={block.dimensions}
+                table={block.table}
+                callout={block.callout}
+              />
+            )}
+            {block.type === "architecture-sitemap" && (
+              <ArchitectureSitemapSection
+                heading={block.heading}
+                subheading={block.subheading}
+                onboardingLabel={block.onboardingLabel}
+                onboardingSub={block.onboardingSub}
+                navNote={block.navNote}
+                navItems={block.navItems}
+                subflowLabel={block.subflowLabel}
+                subflowSub={block.subflowSub}
+                discrepancyNote={block.discrepancyNote}
+              />
+            )}
+            {block.type === "wireframe-filmstrip" && (
+              <WireframeFilmstripSection heading={block.heading} subheading={block.subheading} screens={block.screens} />
+            )}
+            {block.type === "design-system" && (
+              <DesignSystemSection
+                heading={block.heading}
+                subheading={block.subheading}
+                stats={block.stats}
+                typeSpecimen={block.typeSpecimen}
+                sectionLabels={block.sectionLabels}
+                componentLabels={block.componentLabels}
+                fontNote={block.fontNote}
+              />
+            )}
+            {block.type === "development" && (
+              <DevelopmentSection
+                heading={block.heading}
+                subheading={block.subheading}
+                body={block.body}
+                stack={block.stack}
+                terminalLines={block.terminalLines}
+                prototypeLabel={block.prototypeLabel}
+                prototypeHref={block.prototypeHref}
+                videoPendingLabel={block.videoPendingLabel}
+              />
+            )}
+            {block.type === "ai-agents" && (
+              <AiAgentsSection
+                heading={block.heading}
+                subheading={block.subheading}
+                aiLabel={block.aiLabel}
+                aiItems={block.aiItems}
+                humanLabel={block.humanLabel}
+                humanItems={block.humanItems}
+                note={block.note}
               />
             )}
           </Reveal>

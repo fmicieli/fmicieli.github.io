@@ -140,6 +140,13 @@
 
   --font-display: var(--font-space-grotesk);
   --font-body: var(--font-inter);
+
+  /* Stride's own brand typefaces — scoped utilities (`font-stride-sans`,
+     `font-stride-mono`) used only inside the case study's "Design system"
+     panel, never mixed into `--font-display`/`--font-body` (which apply
+     site-wide via the h1-h4/body rules below). */
+  --font-stride-sans: var(--font-plus-jakarta-sans);
+  --font-stride-mono: var(--font-jetbrains-mono);
 }
 
 body {

@@ -58,6 +58,22 @@ export type PieChartData = { question: string; slices: { label: string; value: n
 export type UiKitGroup = { title: string; images: LabeledImage[] };
 export type ColorSwatch = { name: string; hex: string };
 
+/** Stride case study — new block-type support types. */
+export type ResearchChartBar = {
+  label: string;
+  caption: string;
+  percent: number;
+  category: "workout" | "paywall" | "noplan";
+};
+export type DimensionCard = { title: string; text: string };
+export type SitemapNavItem = { label: string; sub: string; highlight?: boolean };
+/** Same shape as `GuideStepImage`: a placeholder today, swappable for a real
+ * screenshot later without touching the component that renders it. */
+export type WireframeScreen = { caption: string; image: CaseStudyImage | { placeholder: string } };
+export type DesignSystemStat = { value: string; label: string };
+export type DesignSystemTypeRow = { sample: string; meta: string; size: number; weight: number; mono?: boolean };
+export type TerminalLine = { kind: "comment" | "prompt"; text: string };
+
 export type CaseStudyBlock =
   | {
       type: "hero";
@@ -231,7 +247,90 @@ export type CaseStudyBlock =
       resultsHeading: string;
       complianceTable: SimpleTable;
     }
-  | { type: "closing"; heading: string; subheading: string; images: CaseStudyImage[] };
+  | { type: "closing"; heading: string; subheading: string; images: CaseStudyImage[] }
+  | {
+      type: "stride-problem";
+      heading: string;
+      subheading: string;
+      bullets: string[];
+      callout: string;
+    }
+  | {
+      type: "research";
+      heading: string;
+      subheading: string;
+      competitors: string[];
+      chartTitle: string;
+      chartBars: ResearchChartBar[];
+      legend: { workout: string; paywall: string; noplan: string };
+      insights: string[];
+      quote: string;
+    }
+  | {
+      type: "benchmarking-dimensions";
+      heading: string;
+      subheading: string;
+      dimensions: DimensionCard[];
+      table: SimpleTable;
+      callout: string;
+    }
+  | {
+      type: "architecture-sitemap";
+      heading: string;
+      subheading: string;
+      onboardingLabel: string;
+      onboardingSub: string;
+      navNote: string;
+      navItems: SitemapNavItem[];
+      subflowLabel: string;
+      subflowSub: string;
+      discrepancyNote?: string;
+    }
+  | { type: "wireframe-filmstrip"; heading: string; subheading: string; screens: WireframeScreen[] }
+  | {
+      type: "design-system";
+      heading: string;
+      subheading: string;
+      stats: DesignSystemStat[];
+      typeSpecimen: DesignSystemTypeRow[];
+      sectionLabels: { colorAccent: string; colorSurfaces: string; tintOpacity: string };
+      /** Text baked into the Figma-component recreation itself (button
+       * copy, list-item label...) — kept as data, not hardcoded in the
+       * component, so it switches with the language toggle like everything
+       * else on the page instead of staying frozen in one language. */
+      componentLabels: {
+        primaryButton: string;
+        pillBadge: string;
+        listItem: string;
+        statValue: string;
+        statLabel: string;
+        achievementTitle: string;
+        dangerAction: string;
+        navItems: [string, string, string, string];
+      };
+      fontNote?: string;
+    }
+  | {
+      type: "development";
+      heading: string;
+      subheading: string;
+      body: string;
+      stack: string[];
+      terminalLines: TerminalLine[];
+      prototypeLabel: string;
+      prototypeHref: string;
+      videoPendingLabel: string;
+    }
+  | {
+      type: "ai-agents";
+      heading: string;
+      subheading: string;
+      aiLabel: string;
+      aiItems: string[];
+      humanLabel: string;
+      humanItems: string[];
+      note: string;
+    };
 
 export type Project = {
   slug: string;
@@ -253,6 +352,249 @@ export type Project = {
 };
 
 export const projects: Project[] = [
+  {
+    slug: "stride",
+    title: "Stride",
+    tagline: "A training app that guides absolute-beginner runners from their first jog onward.",
+    tags: ["UX/UI", "Research + AI", "React Native"],
+    coverImage: null,
+    coverAlt: "Screens from the Stride running app",
+    behanceUrl: "https://fmicieli.github.io/stride/",
+    contentReady: true,
+    sections: {
+      context: {
+        heading: "Context & problem",
+        body: "Running looks simple, but starting isn't. Existing running apps assume a baseline fitness level a real beginner doesn't have. Stride is a mobile training app for people who've never run before or are at a very early stage — it generates a personalized, progressive training plan from the user's goal, current level, and day availability.",
+      },
+      process: {
+        heading: "Process",
+        body: "Research and benchmarking across six leading running apps via recorded self-testing, information architecture, low- and high-fidelity wireframes, a full design system, and a functional React Native prototype — with AI agents handling most of the repetitive execution.",
+      },
+      decisions: {
+        heading: "Key decisions",
+        body: "A single 'Today' screen instead of separate plan/workout tabs, progressive navigation reveal instead of showing everything at once, and 30 days of full free use instead of an immediate paywall.",
+      },
+      result: {
+        heading: "Result",
+        body: "A real functional prototype — not just navigable screens — deployed as a web demo on GitHub Pages, generating and persisting a personalized training plan from the onboarding answers.",
+      },
+    },
+    caseStudyBlocks: [
+      {
+        type: "hero",
+        title: "Guides you by the hand from your first jog to crossing the finish line.",
+        subtitle:
+          "A training app for absolute-beginner runners who've never run before — no plans to choose between, no technical jargon, no overwhelm.",
+        meta: [],
+        tags: ["UX/UI · product", "Research + AI", "React Native / Expo"],
+      },
+      {
+        type: "stride-problem",
+        heading: "01 · The problem",
+        subheading:
+          "Running looks simple. Starting isn't. Existing running apps assume a baseline fitness level a real beginner doesn't have: they ask you to pick between plans, use technical jargon, and separate the training plan from the act of going out for a run.",
+        bullets: [
+          "Assume a physical baseline a real beginner doesn't have",
+          "Use technical jargon without explaining it (pace, splits, cadence)",
+          "Separate the training plan from the act of going out for a run",
+        ],
+        callout:
+          "People who've never run before, with no technical vocabulary, who need small, achievable goals so they don't give up.",
+      },
+      {
+        type: "research",
+        heading: "02 · Research",
+        subheading:
+          "To validate the problem, absolute beginners were studied against six leading running apps, combining desk research with recorded self-testing: each app's onboarding was simulated first-person, in the role of someone who had never run before.",
+        competitors: ["5K Runner", "Nike Run Club", "Strava", "Runna", "Adidas Running", "Zombies Run"],
+        chartTitle: "TIME TO SOMETHING ACTIONABLE (recorded self-testing)",
+        chartBars: [
+          { label: "Adidas Running", caption: "56s · no plan", percent: 43, category: "noplan" },
+          { label: "Zombies Run", caption: "94s · real workout", percent: 72, category: "workout" },
+          { label: "Runna", caption: "99s · paywall", percent: 76, category: "paywall" },
+          { label: "Nike Run Club", caption: "115s · no plan", percent: 88, category: "noplan" },
+          { label: "Strava", caption: "116s · no plan", percent: 89, category: "noplan" },
+          { label: "5K Runner", caption: "131s · paywall", percent: 100, category: "paywall" },
+        ],
+        legend: {
+          workout: "real, actionable workout",
+          paywall: "ends in a paywall",
+          noplan: "ends with no plan at all",
+        },
+        insights: [
+          "Only one app (5K Runner) asks the user about their real ability in their own terms (\"how much do you think you can run today?\", with a floor of \"just a little\") — but hides all the value behind an immediate paywall.",
+          "Runna assesses level and goal, but 9 of its 10 goal options assume the user already runs; \"starting from zero\" isn't a first-class option.",
+          "Nike Run Club, Strava, and Adidas Running don't ask a single question about physical ability before letting the user choose or start on their own.",
+          "Zombies Run is the only one that delivers a real workout inside its own onboarding, but without checking whether it's appropriate, and with a sharp intensity jump in week 3 with no intermediate check.",
+        ],
+        quote:
+          "The right pattern already exists and works in at least one competitor — but it always comes tied to a friction that cancels it out. That's the open space for Stride.",
+      },
+      {
+        type: "benchmarking-dimensions",
+        heading: "03 · Benchmarking",
+        subheading:
+          "Across the same set of apps, three more dimensions were analyzed beyond onboarding: navigation, plan structure, and checkout.",
+        dimensions: [
+          {
+            title: "Navigation",
+            text: "Nike and Strava split \"your plan\" from \"run now\" into separate tabs. Runna gets it right with its \"Today\" tab — the only idea in the set worth borrowing.",
+          },
+          {
+            title: "Plans",
+            text: "No app adjusts progression based on how the user actually performed. All of them scale by calendar, not real evidence.",
+          },
+          {
+            title: "Checkout",
+            text: "Payment friction is just as decisive as onboarding friction: the 2 apps that understand their user best are also the ones that ask for a card fastest.",
+          },
+        ],
+        table: {
+          columns: ["App", "Price", "Real free tier"],
+          rows: [
+            ["5K Runner", "US$49.99 lifetime", "No — 7-day trial"],
+            ["Runna", "US$19.99/mo", "No"],
+            ["Strava", "US$11.99/mo", "Yes, no structured plans"],
+            ["Adidas Running", "US$9.99/mo", "Yes, basic tracking"],
+            ["Zombies Run", "US$6.99/mo", "3 free weeks of real content"],
+            ["Nike Run Club", "Free", "Yes, no plan suggestion"],
+          ],
+        },
+        callout:
+          "Based on that, Stride defines its access model: 30 days of full use with no \"free trial\" notice at all, then a low, one-time payment to continue.",
+      },
+      {
+        type: "architecture-sitemap",
+        heading: "04 · Information architecture",
+        subheading:
+          "A single central screen (\"Today\") answers \"what's on for me today?\" The numbered onboarding has 6 steps (goal → starting point → availability → projection → generated plan → account), and navigation reveals itself progressively so it doesn't overwhelm from day one.",
+        onboardingLabel: "Onboarding",
+        onboardingSub: "6 steps",
+        navNote: "bottom navigation — 4 sections",
+        navItems: [
+          { label: "Today", sub: "today's workout", highlight: true },
+          { label: "Progress", sub: "streak + history" },
+          { label: "Achievements", sub: "next milestone" },
+          { label: "Profile", sub: "account & settings" },
+        ],
+        subflowLabel: "Active workout",
+        subflowSub: "sub-flow",
+        discrepancyNote:
+          "⚠️ Integration note: the diagram follows the validated 4 tabs — Today / Progress / Achievements / Profile (as in the validated mockup). The source report's own text, when describing the progressive navigation reveal, mentions \"Progress and Community\" instead of \"Achievements\" — a discrepancy between the two source documents left unresolved for Flor to confirm.",
+      },
+      {
+        type: "wireframe-filmstrip",
+        heading: "05 · Low-fidelity wireframes",
+        subheading:
+          "21 screens were transcribed in grayscale, with no rounded corners and no design components — a deliberately simple step, focused on validating content, layout, and flow before investing in visual polish.",
+        screens: [
+          { caption: "A1 · Welcome", image: { placeholder: "Welcome" } },
+          { caption: "A2 · Goal", image: { placeholder: "Goal" } },
+          { caption: "A4 · Availability", image: { placeholder: "Availability" } },
+          { caption: "A6 · Generated plan", image: { placeholder: "Generated plan" } },
+          { caption: "B1 · Today", image: { placeholder: "Today" } },
+          { caption: "B2 · Progress", image: { placeholder: "Progress" } },
+          { caption: "B3 · Achievements", image: { placeholder: "Achievements" } },
+          { caption: "B4 · Profile", image: { placeholder: "Profile" } },
+        ],
+      },
+      {
+        type: "design-system",
+        heading: "06 · Design system",
+        subheading:
+          "A complete design system built in Figma, verified against WCAG AA. Plus Jakarta Sans as the primary typeface and JetBrains Mono for numeric values — used only inside this panel, not across the rest of the site. Dark mode, with lime green as the brand accent.",
+        stats: [
+          { value: "25", label: "components" },
+          { value: "8", label: "sections" },
+          { value: "62", label: "variables" },
+          { value: "12", label: "text styles" },
+        ],
+        typeSpecimen: [
+          { sample: "Ready for today?", meta: "Display · 30 / 800", size: 30, weight: 800 },
+          { sample: "Interval jog", meta: "Heading · 20 / 700", size: 20, weight: 700 },
+          { sample: "20 min · C25K method", meta: "Body · 15 / 500", size: 15, weight: 500 },
+          { sample: "WEEK 1 OF 4", meta: "Caption mono · 12 / 600", size: 12, weight: 600, mono: true },
+        ],
+        sectionLabels: { colorAccent: "COLOR · ACCENT", colorSurfaces: "COLOR · SURFACES", tintOpacity: "14% opacity" },
+        componentLabels: {
+          primaryButton: "Resume workout",
+          pillBadge: "Today's workout",
+          listItem: "Change goal",
+          statValue: "0 days",
+          statLabel: "current streak",
+          achievementTitle: "7-day streak",
+          dangerAction: "Delete account",
+          navItems: ["Today", "Progress", "Achievements", "Profile"],
+        },
+        fontNote:
+          "⚠️ Integration note: the source report describes the brand accent as \"mint green,\" but the validated design brief (and this panel) use lime green (#9BE83C) with exact hex tokens — treated as correct here since it comes with validated tokens; the report likely uses \"mint\" imprecisely.",
+      },
+      {
+        type: "wireframe-filmstrip",
+        heading: "07 · High-fidelity wireframes",
+        subheading:
+          "The MVP's 21 screens were rebuilt using real instances of the design system's components (not loose elements that only imitate their look), replacing grayscale with the definitive color, typography, and spacing tokens. Flow: Onboarding → Today → Active workout → Progress → Profile.",
+        screens: [
+          { caption: "A1 · Welcome", image: { placeholder: "Welcome" } },
+          { caption: "A2 · Goal", image: { placeholder: "Goal" } },
+          { caption: "A4 · Availability", image: { placeholder: "Availability" } },
+          { caption: "A6 · Generated plan", image: { placeholder: "Generated plan" } },
+          { caption: "B1 · Today", image: { placeholder: "Today" } },
+          { caption: "B2 · Progress", image: { placeholder: "Progress" } },
+          { caption: "B3 · Achievements", image: { placeholder: "Achievements" } },
+          { caption: "B4 · Profile", image: { placeholder: "Profile" } },
+        ],
+      },
+      {
+        type: "development",
+        heading: "08 · Development",
+        subheading:
+          "The prototype was built in React Native + Expo, with TypeScript and NativeWind as the styling layer, pulling in the brand typeface via Google Fonts. The project was scaffolded from scratch, implementing the full design system (tokens, components, and logo) directly in code.",
+        body: "The result is a real functional prototype, not just navigable screens: it generates the training plan from the onboarding answers and persists the user's data.",
+        stack: ["React Native", "Expo", "TypeScript", "NativeWind"],
+        terminalLines: [
+          { kind: "comment", text: "// project scaffolded from scratch" },
+          { kind: "prompt", text: "implement full design system" },
+          { kind: "comment", text: "// tokens, components, brand typeface" },
+          { kind: "prompt", text: "deploy → GitHub Pages" },
+        ],
+        prototypeLabel: "Functional prototype",
+        prototypeHref: "https://fmicieli.github.io/stride/",
+        videoPendingLabel: "navigation video pending upload",
+      },
+      {
+        type: "ai-agents",
+        heading: "09 · Use of AI agents",
+        subheading:
+          "Much of this project's execution work was done with AI agents (mainly Claude Code, in some cases with write access to the Figma file).",
+        aiLabel: "the AI did",
+        aiItems: [
+          "Research and benchmarking synthesis",
+          "Full component and token catalog build",
+          "Low- and high-fidelity wireframe transcription",
+          "Functional prototype scaffolding",
+        ],
+        humanLabel: "stayed 100% human",
+        humanItems: [
+          "Product and brand direction",
+          "Judgment on which training combinations are safe for a beginner",
+          "Information architecture decisions",
+          "Validating the agent's work was correct (real instances, not lookalike copies)",
+        ],
+        note: "Delegating repetitive execution to agents, while keeping judgment calls for the decisions, considerably reduced the total process time compared to doing it entirely by hand.",
+      },
+      {
+        type: "next-steps",
+        heading: "10 · Next steps",
+        subheading: "This process hasn't included testing with real users yet. The next steps are:",
+        phases: [
+          { title: "Test", items: ["Test the full flow with real beginners."] },
+          { title: "Gather feedback", items: ["Gather feedback on the friction points found."] },
+          { title: "Iterate", items: ["Iterate on onboarding, the plan, and navigation based on those findings."] },
+        ],
+      },
+    ],
+  },
   {
     slug: "bbva-frances",
     title: "BBVA Francés App Redesign",
