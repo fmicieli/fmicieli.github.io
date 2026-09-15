@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import type { CaseStudyImage, CaseStudyMeta } from "@/data/projects";
+import { IPhoneMockup } from "@/components/case-study/IPhoneMockup";
 
 const fadeUp = (delay: number) => ({
   initial: { opacity: 0, y: 20 },
@@ -19,6 +20,7 @@ export function CaseStudyHero({
   video,
   watermark,
   mockupRadius = "3.25rem",
+  deviceFrame = false,
 }: {
   title: string;
   subtitle: string;
@@ -35,6 +37,13 @@ export function CaseStudyHero({
    * phone mockup (e.g. Tribu Music's flat app screenshot wants a much
    * smaller, ordinary card radius, not a phone-shaped one). */
   mockupRadius?: string;
+  /** Composites a single image behind a real iPhone frame PNG (see
+   * IPhoneMockup) instead of just a rounded-corner crop — for a raw
+   * screenshot that isn't already framed. Defaults to false so BBVA's video
+   * and Tribu's flat screenshot render exactly as before; opt in per
+   * project. Ignored for `video`, which already reads as device chrome on
+   * its own. */
+  deviceFrame?: boolean;
 }) {
   const text = (
     <div className="text-left">
@@ -94,6 +103,8 @@ export function CaseStudyHero({
   // there's more than one image.
   const singleImage = !video && images && images.length === 1 ? images[0] : undefined;
 
+  const useDeviceFrame = deviceFrame && singleImage && !video;
+
   const visual = video ? (
     <video
       src={video.src}
@@ -105,24 +116,43 @@ export function CaseStudyHero({
       preload="auto"
       className="h-auto w-full"
     />
-  ) : singleImage ? (
+  ) : singleImage && !useDeviceFrame ? (
     // eslint-disable-next-line @next/next/no-img-element
     <img src={singleImage.src} alt={singleImage.alt} className="h-auto w-full" />
+  ) : useDeviceFrame && singleImage ? (
+    <IPhoneMockup screenSrc={singleImage.src} screenAlt={singleImage.alt} />
   ) : null;
+
+  const mockup = useDeviceFrame ? (
+    visual
+  ) : (
+    <motion.div
+      initial={{ opacity: 0, y: 24, scale: 0.95 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      viewport={{ once: false, margin: "-40px" }}
+      transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+      style={{ borderRadius: mockupRadius }}
+      className="mx-auto w-full max-w-[300px] overflow-hidden border border-border shadow-xl shadow-black/30"
+    >
+      {visual}
+    </motion.div>
+  );
 
   const content = visual ? (
     <div className="grid items-center gap-10 sm:grid-cols-2">
       {text}
-      <motion.div
-        initial={{ opacity: 0, y: 24, scale: 0.95 }}
-        whileInView={{ opacity: 1, y: 0, scale: 1 }}
-        viewport={{ once: false, margin: "-40px" }}
-        transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-        style={{ borderRadius: mockupRadius }}
-        className="mx-auto w-full max-w-[300px] overflow-hidden border border-border shadow-xl shadow-black/30"
-      >
-        {visual}
-      </motion.div>
+      {useDeviceFrame ? (
+        <motion.div
+          initial={{ opacity: 0, y: 24, scale: 0.95 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          viewport={{ once: false, margin: "-40px" }}
+          transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+        >
+          {mockup}
+        </motion.div>
+      ) : (
+        mockup
+      )}
     </div>
   ) : (
     text

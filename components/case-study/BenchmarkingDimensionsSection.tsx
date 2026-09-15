@@ -1,19 +1,74 @@
 "use client";
 
 import { motion } from "framer-motion";
-import type { DimensionCard, SimpleTable } from "@/data/projects";
+import type { CompetitorLogo, DimensionCard, SimpleTable } from "@/data/projects";
 import { SectionHeading } from "@/components/case-study/SectionHeading";
-import { DataTable } from "@/components/case-study/DataTable";
+
+// Same visual recipe as the shared DataTable, but with the first column
+// rendering a competitor's logo next to its name instead of plain text —
+// DataTable itself stays generic (string cells only) since every other
+// table on the site reuses it as-is.
+function PricingTable({ table, competitors }: { table: SimpleTable; competitors: CompetitorLogo[] }) {
+  const logoByName = new Map(competitors.map((c) => [c.name, c.logo]));
+
+  return (
+    <div className="w-full overflow-x-auto rounded-card border border-border border-t-[var(--color-border-top-highlight)] bg-surface shadow-card backdrop-blur-card">
+      <table className="w-full min-w-[480px] border-collapse text-left">
+        <thead>
+          <tr className="bg-white/5">
+            {table.columns.map((col) => (
+              <th key={col} className="border-b border-border px-3 py-[9.2px] text-[13px] font-medium text-text-primary">
+                {col}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {table.rows.map((row, i) => (
+            <motion.tr
+              key={row[0]}
+              className="border-b border-border/60 last:border-b-0"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: false, margin: "-40px" }}
+              transition={{ duration: 0.4, delay: i * 0.04 }}
+            >
+              {row.map((cell, j) =>
+                j === 0 ? (
+                  <td key={j} className="px-3 py-[9.2px] text-[13px] text-text-primary">
+                    <div className="flex items-center gap-2.5">
+                      {logoByName.get(cell) && (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img src={logoByName.get(cell)} alt="" className="h-6 w-6 shrink-0 rounded-[2px] object-contain" />
+                      )}
+                      {cell}
+                    </div>
+                  </td>
+                ) : (
+                  <td key={j} className="px-3 py-[9.2px] text-[13px] text-text-secondary">
+                    {cell}
+                  </td>
+                )
+              )}
+            </motion.tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
 
 export function BenchmarkingDimensionsSection({
   heading,
   subheading,
+  competitors,
   dimensions,
   table,
   callout,
 }: {
   heading: string;
   subheading: string;
+  competitors: CompetitorLogo[];
   dimensions: DimensionCard[];
   table: SimpleTable;
   callout: string;
@@ -38,9 +93,9 @@ export function BenchmarkingDimensionsSection({
           ))}
         </div>
 
-        <DataTable table={table} dense />
+        <PricingTable table={table} competitors={competitors} />
 
-        <div className="max-w-[64ch] rounded-card border border-[var(--color-border-accent)] bg-accent-soft p-5 text-body leading-relaxed text-text-primary">
+        <div className="rounded-card border border-[var(--color-border-accent)] bg-accent-soft p-5 text-body leading-relaxed text-text-primary">
           {callout}
         </div>
       </div>

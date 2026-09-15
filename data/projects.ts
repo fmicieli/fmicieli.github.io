@@ -73,6 +73,7 @@ export type WireframeScreen = { caption: string; image: CaseStudyImage | { place
 export type DesignSystemStat = { value: string; label: string };
 export type DesignSystemTypeRow = { sample: string; meta: string; size: number; weight: number; mono?: boolean };
 export type TerminalLine = { kind: "comment" | "prompt"; text: string };
+export type CompetitorLogo = { name: string; logo: string };
 
 export type CaseStudyBlock =
   | {
@@ -85,6 +86,10 @@ export type CaseStudyBlock =
       video?: { src: string; alt: string };
       watermark?: { src: string; alt: string };
       mockupRadius?: string;
+      /** Wraps a single image in a CSS-drawn iPhone chassis instead of a
+       * plain rounded crop — for a raw screenshot with no device frame of
+       * its own baked in. */
+      deviceFrame?: boolean;
     }
   | {
       type: "problem";
@@ -259,7 +264,7 @@ export type CaseStudyBlock =
       type: "research";
       heading: string;
       subheading: string;
-      competitors: string[];
+      competitors: CompetitorLogo[];
       chartTitle: string;
       chartBars: ResearchChartBar[];
       legend: { workout: string; paywall: string; noplan: string };
@@ -270,6 +275,7 @@ export type CaseStudyBlock =
       type: "benchmarking-dimensions";
       heading: string;
       subheading: string;
+      competitors: CompetitorLogo[];
       dimensions: DimensionCard[];
       table: SimpleTable;
       callout: string;
@@ -382,9 +388,13 @@ export const projects: Project[] = [
     caseStudyBlocks: [
       {
         type: "hero",
-        title: "Guides you by the hand from your first jog to crossing the finish line.",
+        title: "Stride",
         subtitle:
           "A training app for absolute-beginner runners who've never run before — no plans to choose between, no technical jargon, no overwhelm.",
+        images: [
+          { src: "/projects/stride/hero-welcome.png", alt: "Stride app welcome screen" },
+        ],
+        deviceFrame: true,
         meta: [],
         tags: ["UX/UI · product", "Research + AI", "React Native / Expo"],
       },
@@ -406,15 +416,22 @@ export const projects: Project[] = [
         heading: "02 · Research",
         subheading:
           "To validate the problem, absolute beginners were studied against six leading running apps, combining desk research with recorded self-testing: each app's onboarding was simulated first-person, in the role of someone who had never run before.",
-        competitors: ["5K Runner", "Nike Run Club", "Strava", "Runna", "Adidas Running", "Zombies Run"],
+        competitors: [
+          { name: "5K Runner", logo: "/projects/stride/logos/5k-runner.jpeg" },
+          { name: "Nike Run Club", logo: "/projects/stride/logos/nike-run-club.png" },
+          { name: "Strava", logo: "/projects/stride/logos/strava.png" },
+          { name: "Runna", logo: "/projects/stride/logos/runna.webp" },
+          { name: "Adidas Running", logo: "/projects/stride/logos/adidas-running.webp" },
+          { name: "Zombies Run", logo: "/projects/stride/logos/zombies-run.png" },
+        ],
         chartTitle: "TIME TO SOMETHING ACTIONABLE (recorded self-testing)",
         chartBars: [
-          { label: "Adidas Running", caption: "56s · no plan", percent: 43, category: "noplan" },
-          { label: "Zombies Run", caption: "94s · real workout", percent: 72, category: "workout" },
-          { label: "Runna", caption: "99s · paywall", percent: 76, category: "paywall" },
-          { label: "Nike Run Club", caption: "115s · no plan", percent: 88, category: "noplan" },
-          { label: "Strava", caption: "116s · no plan", percent: 89, category: "noplan" },
-          { label: "5K Runner", caption: "131s · paywall", percent: 100, category: "paywall" },
+          { label: "Adidas Running", caption: "56s", percent: 43, category: "noplan" },
+          { label: "Zombies Run", caption: "94s", percent: 72, category: "workout" },
+          { label: "Runna", caption: "99s", percent: 76, category: "paywall" },
+          { label: "Nike Run Club", caption: "115s", percent: 88, category: "noplan" },
+          { label: "Strava", caption: "116s", percent: 89, category: "noplan" },
+          { label: "5K Runner", caption: "131s", percent: 100, category: "paywall" },
         ],
         legend: {
           workout: "real, actionable workout",
@@ -435,6 +452,14 @@ export const projects: Project[] = [
         heading: "03 · Benchmarking",
         subheading:
           "Across the same set of apps, three more dimensions were analyzed beyond onboarding: navigation, plan structure, and checkout.",
+        competitors: [
+          { name: "5K Runner", logo: "/projects/stride/logos/5k-runner.jpeg" },
+          { name: "Runna", logo: "/projects/stride/logos/runna.webp" },
+          { name: "Strava", logo: "/projects/stride/logos/strava.png" },
+          { name: "Adidas Running", logo: "/projects/stride/logos/adidas-running.webp" },
+          { name: "Zombies Run", logo: "/projects/stride/logos/zombies-run.png" },
+          { name: "Nike Run Club", logo: "/projects/stride/logos/nike-run-club.png" },
+        ],
         dimensions: [
           {
             title: "Navigation",

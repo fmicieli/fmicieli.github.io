@@ -35,9 +35,13 @@ export const projects: Project[] = [
     caseStudyBlocks: [
       {
         type: "hero",
-        title: "Te lleva de la mano desde el primer trote hasta cruzar la meta.",
+        title: "Stride",
         subtitle:
           "Una app de entrenamiento para corredores principiantes que nunca corrieron — sin planes para elegir, sin vocabulario técnico, sin abrumar.",
+        images: [
+          { src: "/projects/stride/hero-welcome.png", alt: "Pantalla de bienvenida de la app Stride" },
+        ],
+        deviceFrame: true,
         meta: [],
         tags: ["UX/UI · producto", "Research + IA", "React Native / Expo"],
       },
@@ -59,15 +63,22 @@ export const projects: Project[] = [
         heading: "02 · Research",
         subheading:
           "Para validar el problema se estudió a los principiantes absolutos frente a seis apps de running líderes, combinando desk research con auto-testing grabado: se simuló el onboarding de cada app en primera persona, en el rol de alguien que nunca corrió.",
-        competitors: ["5K Runner", "Nike Run Club", "Strava", "Runna", "Adidas Running", "Zombies Run"],
+        competitors: [
+          { name: "5K Runner", logo: "/projects/stride/logos/5k-runner.jpeg" },
+          { name: "Nike Run Club", logo: "/projects/stride/logos/nike-run-club.png" },
+          { name: "Strava", logo: "/projects/stride/logos/strava.png" },
+          { name: "Runna", logo: "/projects/stride/logos/runna.webp" },
+          { name: "Adidas Running", logo: "/projects/stride/logos/adidas-running.webp" },
+          { name: "Zombies Run", logo: "/projects/stride/logos/zombies-run.png" },
+        ],
         chartTitle: "TIEMPO HASTA ALGO ACCIONABLE (auto-testing grabado)",
         chartBars: [
-          { label: "Adidas Running", caption: "56s · sin plan", percent: 43, category: "noplan" },
-          { label: "Zombies Run", caption: "94s · entrenamiento real", percent: 72, category: "workout" },
-          { label: "Runna", caption: "99s · paywall", percent: 76, category: "paywall" },
-          { label: "Nike Run Club", caption: "115s · sin plan", percent: 88, category: "noplan" },
-          { label: "Strava", caption: "116s · sin plan", percent: 89, category: "noplan" },
-          { label: "5K Runner", caption: "131s · paywall", percent: 100, category: "paywall" },
+          { label: "Adidas Running", caption: "56s", percent: 43, category: "noplan" },
+          { label: "Zombies Run", caption: "94s", percent: 72, category: "workout" },
+          { label: "Runna", caption: "99s", percent: 76, category: "paywall" },
+          { label: "Nike Run Club", caption: "115s", percent: 88, category: "noplan" },
+          { label: "Strava", caption: "116s", percent: 89, category: "noplan" },
+          { label: "5K Runner", caption: "131s", percent: 100, category: "paywall" },
         ],
         legend: {
           workout: "entrenamiento real y accionable",
@@ -88,6 +99,14 @@ export const projects: Project[] = [
         heading: "03 · Benchmarking",
         subheading:
           "Sobre el mismo set de apps se analizó, además del onboarding, la navegación, la estructura de planes y el checkout.",
+        competitors: [
+          { name: "5K Runner", logo: "/projects/stride/logos/5k-runner.jpeg" },
+          { name: "Runna", logo: "/projects/stride/logos/runna.webp" },
+          { name: "Strava", logo: "/projects/stride/logos/strava.png" },
+          { name: "Adidas Running", logo: "/projects/stride/logos/adidas-running.webp" },
+          { name: "Zombies Run", logo: "/projects/stride/logos/zombies-run.png" },
+          { name: "Nike Run Club", logo: "/projects/stride/logos/nike-run-club.png" },
+        ],
         dimensions: [
           {
             title: "Navegación",

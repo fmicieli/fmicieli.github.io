@@ -51,6 +51,7 @@ export function CaseStudyBlocks({ blocks }: { blocks: CaseStudyBlock[] }) {
                 video={block.video}
                 watermark={block.watermark}
                 mockupRadius={block.mockupRadius}
+                deviceFrame={block.deviceFrame}
               />
             </div>
           );
@@ -283,6 +284,7 @@ export function CaseStudyBlocks({ blocks }: { blocks: CaseStudyBlock[] }) {
               <BenchmarkingDimensionsSection
                 heading={block.heading}
                 subheading={block.subheading}
+                competitors={block.competitors}
                 dimensions={block.dimensions}
                 table={block.table}
                 callout={block.callout}
