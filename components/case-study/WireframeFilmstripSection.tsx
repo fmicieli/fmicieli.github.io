@@ -17,19 +17,21 @@ import { ImagePlaceholder } from "@/components/case-study/ImagePlaceholder";
 function WireframeCard({ screen, i }: { screen: WireframeScreen; i: number }) {
   return (
     <motion.div
-      className="flex w-[168px] shrink-0 flex-col items-center"
+      // 168 * 1.25
+      className="flex w-[210px] shrink-0 flex-col items-center"
       initial={{ opacity: 0, y: 12 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: false, margin: "-40px" }}
       transition={{ duration: 0.4, delay: i * 0.05, ease: [0.22, 1, 0.36, 1] }}
     >
       {"placeholder" in screen.image ? (
-        <ImagePlaceholder spec={screen.image.placeholder} className="w-[168px]" />
+        <ImagePlaceholder spec={screen.image.placeholder} className="w-[210px]" />
       ) : (
         // eslint-disable-next-line @next/next/no-img-element
         <img src={screen.image.src} alt={screen.image.alt} className="w-full border border-border object-contain" />
       )}
-      <p className="mt-2.5 text-center text-xs text-text-muted">{screen.caption}</p>
+      {/* 12px * 1.25 = 15px, 16px * 1.25 = 20px */}
+      <p className="mt-2.5 text-center text-[15px] leading-5 text-text-muted">{screen.caption}</p>
     </motion.div>
   );
 }
