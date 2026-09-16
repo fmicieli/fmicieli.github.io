@@ -56,71 +56,60 @@ export function StrideProblemSection({
   return (
     <div className="flex h-full flex-1 flex-col">
       <SectionHeading heading={heading} subheading={subheading} />
-      <div className="mt-title-to-content flex flex-1 flex-col justify-center gap-8">
-        {/* Same "insight pill" row Tribu Music's ContextSection uses for its
-            research findings — short, parallel statements read better as
-            equal-weight cards in a row than as a divided list. What these
-            three describe in words, the two mockups below show side by
-            side. */}
-        <ul className="flex flex-col gap-3 sm:flex-row">
-          {bullets.map((bullet, i) => (
-            <motion.li
-              key={bullet}
-              className="flex flex-1 items-center justify-center rounded-card border-2 border-[var(--color-border-accent)] bg-surface p-4 text-center text-body text-text-secondary shadow-card backdrop-blur-card"
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false, margin: "-40px" }}
-              transition={{ duration: 0.5, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
-            >
-              {bullet}
-            </motion.li>
-          ))}
-        </ul>
-
-        <div className="mx-auto grid w-full max-w-[520px] grid-cols-2 items-start gap-6 sm:gap-10">
+      <div className="mt-title-to-content flex flex-1 flex-col justify-center">
+        {/* Each mockup is paired with the text that explains it, instead of
+            a shared row of bullets sitting above both — the three problem
+            statements merge into one card under the generic screen (what's
+            wrong), and the persona callout sits under Stride's own screen
+            (who it's solved for), so the comparison reads top-to-bottom in
+            each column rather than needing to cross-reference a row above. */}
+        <div className="mx-auto grid w-full max-w-[620px] grid-cols-2 items-start gap-6 sm:gap-10">
           <motion.div
-            className="flex flex-col items-center gap-3"
+            className="flex flex-col items-center gap-4"
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false, margin: "-40px" }}
-            transition={{ duration: 0.5, delay: 0.24, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.5, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
           >
             <p className="text-label font-semibold uppercase tracking-[0.08em] text-text-secondary">
               {compareLabels.generic}
             </p>
-            <div className="w-full max-w-[200px]">
+            {/* 200 * 1.25 */}
+            <div className="w-full max-w-[250px]">
               <IPhoneMockup>
                 <GenericAppScreen />
               </IPhoneMockup>
             </div>
+            <ul className="flex w-full flex-col gap-2.5 rounded-card border-2 border-[var(--color-border-accent)] bg-surface p-4 text-body text-text-secondary shadow-card backdrop-blur-card">
+              {bullets.map((bullet) => (
+                <li key={bullet} className="flex items-start gap-2.5">
+                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent/60" aria-hidden="true" />
+                  {bullet}
+                </li>
+              ))}
+            </ul>
           </motion.div>
 
           <motion.div
-            className="flex flex-col items-center gap-3"
+            className="flex flex-col items-center gap-4"
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false, margin: "-40px" }}
-            transition={{ duration: 0.5, delay: 0.32, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.5, delay: 0.16, ease: [0.22, 1, 0.36, 1] }}
           >
             <p className="text-label font-semibold uppercase tracking-[0.08em] text-accent">{compareLabels.stride}</p>
-            <div className="w-full max-w-[200px]">
+            {/* 200 * 1.25 */}
+            <div className="w-full max-w-[250px]">
               <IPhoneMockup
                 screenSrc="/projects/stride/wireframes-hifi/b1-hoy.png"
                 screenAlt="Stride's Today screen, in high fidelity"
               />
             </div>
+            <div className="w-full rounded-card border border-[var(--color-border-accent)] bg-accent-soft p-4 text-center text-body leading-relaxed text-text-primary">
+              {callout}
+            </div>
           </motion.div>
         </div>
-
-        <motion.div
-          className="mx-auto max-w-[64ch] rounded-card border border-[var(--color-border-accent)] bg-accent-soft p-5 text-center text-body leading-relaxed text-text-primary"
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, margin: "-40px" }}
-          transition={{ duration: 0.5, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-        >
-          {callout}
-        </motion.div>
       </div>
     </div>
   );
