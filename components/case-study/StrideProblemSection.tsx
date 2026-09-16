@@ -63,7 +63,7 @@ export function StrideProblemSection({
             sitting empty. The three problem statements merge into one card
             next to the generic screen (what's wrong), and the persona
             callout sits next to Stride's own screen (who it's solved for). */}
-        <div className="mx-auto flex w-full max-w-[1040px] flex-col gap-10 sm:flex-row sm:items-center">
+        <div className="mx-auto flex w-full max-w-[1040px] flex-col gap-10 sm:flex-row sm:items-center sm:gap-20">
           <motion.div
             className="flex flex-1 flex-col items-center gap-4 sm:flex-row sm:items-center sm:gap-6"
             initial={{ opacity: 0, y: 16 }}
@@ -75,14 +75,14 @@ export function StrideProblemSection({
               <p className="text-label font-semibold uppercase tracking-[0.08em] text-text-secondary">
                 {compareLabels.generic}
               </p>
-              {/* 200 * 1.25 */}
-              <div className="w-[250px]">
-                <IPhoneMockup>
+              {/* 200 * 1.25 * 1.15 */}
+              <div className="w-[288px]">
+                <IPhoneMockup insetColors={{ top: "#1a1a1e", bottom: "#262627" }}>
                   <GenericAppScreen />
                 </IPhoneMockup>
               </div>
             </div>
-            <ul className="flex flex-1 flex-col gap-2.5 rounded-card border-2 border-[var(--color-border-accent)] bg-surface p-4 text-body text-text-secondary shadow-card backdrop-blur-card">
+            <ul className="flex flex-1 flex-col gap-2.5 text-body text-text-secondary">
               {bullets.map((bullet) => (
                 <li key={bullet} className="flex items-start gap-2.5">
                   <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent/60" aria-hidden="true" />
@@ -101,17 +101,16 @@ export function StrideProblemSection({
           >
             <div className="flex shrink-0 flex-col items-center gap-3">
               <p className="text-label font-semibold uppercase tracking-[0.08em] text-accent">{compareLabels.stride}</p>
-              {/* 200 * 1.25 */}
-              <div className="w-[250px]">
+              {/* 200 * 1.25 * 1.15 */}
+              <div className="w-[288px]">
                 <IPhoneMockup
                   screenSrc="/projects/stride/wireframes-hifi/b1-hoy.png"
                   screenAlt="Stride's Today screen, in high fidelity"
+                  insetColors={{ top: "#1a1a1e", bottom: "#262627" }}
                 />
               </div>
             </div>
-            <div className="flex-1 rounded-card border border-[var(--color-border-accent)] bg-accent-soft p-4 text-center text-body leading-relaxed text-text-primary">
-              {callout}
-            </div>
+            <div className="flex-1 text-center text-body leading-relaxed text-text-secondary">{callout}</div>
           </motion.div>
         </div>
       </div>

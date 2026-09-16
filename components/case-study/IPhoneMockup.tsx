@@ -16,15 +16,25 @@ import type { ReactNode } from "react";
  * Pass either `screenSrc` (a real screenshot) or `children` (a coded, fake
  * screen — e.g. StrideProblemSection's grayscale "generic app" mockup,
  * which has no real screenshot to show).
+ *
+ * `insetColors`: our screenshots weren't designed with a real dynamic-island
+ * exclusion zone, so laid edge-to-edge in the cutout, the frame's dynamic
+ * island silhouette and home-indicator curve sit right on top of real
+ * content (a greeting, a nav label). Passing this adds a solid-color strip
+ * above and below the screen instead — matching the screenshot's own top/
+ * bottom background — so the whole screenshot shows uncropped, shifted
+ * clear of both, like a real device screenshot's safe-area padding.
  */
 export function IPhoneMockup({
   screenSrc,
   screenAlt,
   children,
+  insetColors,
 }: {
   screenSrc?: string;
   screenAlt?: string;
   children?: ReactNode;
+  insetColors?: { top: string; bottom: string };
 }) {
   return (
     <div className="relative mx-auto w-full max-w-[300px]" style={{ aspectRatio: "1530 / 3036" }}>
@@ -32,7 +42,22 @@ export function IPhoneMockup({
         className="absolute overflow-hidden"
         style={{ left: "7.84%", top: "3.95%", width: "84.31%", height: "92.09%" }}
       >
-        {screenSrc ? (
+        {insetColors ? (
+          <div className="flex h-full w-full flex-col">
+            {/* Clears the dynamic island */}
+            <div className="shrink-0" style={{ height: "6%", backgroundColor: insetColors.top }} />
+            <div className="min-h-0 flex-1" style={{ backgroundColor: insetColors.top }}>
+              {screenSrc ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={screenSrc} alt={screenAlt ?? ""} className="h-full w-full object-contain" />
+              ) : (
+                children
+              )}
+            </div>
+            {/* Clears the home-indicator curve */}
+            <div className="shrink-0" style={{ height: "4%", backgroundColor: insetColors.bottom }} />
+          </div>
+        ) : screenSrc ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={screenSrc} alt={screenAlt ?? ""} className="h-full w-full object-cover" />
         ) : (
