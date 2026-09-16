@@ -520,11 +520,11 @@ export const projects: Project[] = [
         subheading:
           "21 screens were transcribed in grayscale, with no rounded corners and no design components — a deliberately simple step, focused on validating content, layout, and flow before investing in visual polish.",
         screens: [
-          { caption: "A2 · Goal", image: { src: "/projects/stride/wireframes-lofi/a2-meta.jpg", alt: "Low-fidelity wireframe: onboarding goal selection screen" } },
-          { caption: "A7 · Account", image: { src: "/projects/stride/wireframes-lofi/a7-cuenta.jpg", alt: "Low-fidelity wireframe: onboarding account creation screen" } },
-          { caption: "B1 · Today", image: { src: "/projects/stride/wireframes-lofi/b1-hoy.jpg", alt: "Low-fidelity wireframe: Today screen with today's workout" } },
-          { caption: "B2 · My plan", image: { src: "/projects/stride/wireframes-lofi/b2-mi-plan.jpg", alt: "Low-fidelity wireframe: My plan screen with weekly breakdown" } },
-          { caption: "C3 · Pause", image: { src: "/projects/stride/wireframes-lofi/c3-pausa.jpg", alt: "Low-fidelity wireframe: workout paused modal" } },
+          { caption: "Goal", image: { src: "/projects/stride/wireframes-lofi/a2-meta.jpg", alt: "Low-fidelity wireframe: onboarding goal selection screen" } },
+          { caption: "Account", image: { src: "/projects/stride/wireframes-lofi/a7-cuenta.jpg", alt: "Low-fidelity wireframe: onboarding account creation screen" } },
+          { caption: "Today", image: { src: "/projects/stride/wireframes-lofi/b1-hoy.jpg", alt: "Low-fidelity wireframe: Today screen with today's workout" } },
+          { caption: "My plan", image: { src: "/projects/stride/wireframes-lofi/b2-mi-plan.jpg", alt: "Low-fidelity wireframe: My plan screen with weekly breakdown" } },
+          { caption: "Pause", image: { src: "/projects/stride/wireframes-lofi/c3-pausa.jpg", alt: "Low-fidelity wireframe: workout paused modal" } },
         ],
       },
       {
@@ -575,13 +575,13 @@ export const projects: Project[] = [
         subheading:
           "The MVP's 21 screens were rebuilt using real instances of the design system's components (not loose elements that only imitate their look), replacing grayscale with the definitive color, typography, and spacing tokens. Flow: Onboarding → Today → Active workout → Progress → Profile.",
         screens: [
-          { caption: "A2 · Goal", image: { src: "/projects/stride/wireframes-hifi/a2-meta.png", alt: "High-fidelity screen: onboarding goal selection" } },
-          { caption: "A7 · Account", image: { src: "/projects/stride/wireframes-hifi/a7-cuenta.png", alt: "High-fidelity screen: onboarding account creation" } },
-          { caption: "B1 · Today", image: { src: "/projects/stride/wireframes-hifi/b1-hoy.png", alt: "High-fidelity screen: Today, with today's workout" } },
+          { caption: "Goal", image: { src: "/projects/stride/wireframes-hifi/a2-meta.png", alt: "High-fidelity screen: onboarding goal selection" } },
+          { caption: "Account", image: { src: "/projects/stride/wireframes-hifi/a7-cuenta.png", alt: "High-fidelity screen: onboarding account creation" } },
+          { caption: "Today", image: { src: "/projects/stride/wireframes-hifi/b1-hoy.png", alt: "High-fidelity screen: Today, with today's workout" } },
           { caption: "Active workout · Paused", image: { src: "/projects/stride/wireframes-hifi/c3-pausa.png", alt: "High-fidelity screen: active workout, paused state" } },
-          { caption: "B2 · Progress", image: { src: "/projects/stride/wireframes-hifi/b2-progreso.png", alt: "High-fidelity screen: Progress, with streak and history" } },
-          { caption: "B3 · Achievements", image: { src: "/projects/stride/wireframes-hifi/b3-logros.png", alt: "High-fidelity screen: Achievements" } },
-          { caption: "B4 · Profile", image: { src: "/projects/stride/wireframes-hifi/b4-perfil.png", alt: "High-fidelity screen: Profile" } },
+          { caption: "Progress", image: { src: "/projects/stride/wireframes-hifi/b2-progreso.png", alt: "High-fidelity screen: Progress, with streak and history" } },
+          { caption: "Achievements", image: { src: "/projects/stride/wireframes-hifi/b3-logros.png", alt: "High-fidelity screen: Achievements" } },
+          { caption: "Profile", image: { src: "/projects/stride/wireframes-hifi/b4-perfil.png", alt: "High-fidelity screen: Profile" } },
         ],
       },
       {

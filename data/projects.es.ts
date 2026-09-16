@@ -158,11 +158,11 @@ export const projects: Project[] = [
         subheading:
           "Se transcribieron 21 pantallas en escala de grises, sin bordes redondeados y sin componentes de diseño — un paso deliberadamente simple, enfocado en validar contenido, layout y flujo antes de invertir en estética visual.",
         screens: [
-          { caption: "A2 · Meta", image: { src: "/projects/stride/wireframes-lofi/a2-meta.jpg", alt: "Wireframe de baja fidelidad: pantalla de selección de meta del onboarding" } },
-          { caption: "A7 · Cuenta", image: { src: "/projects/stride/wireframes-lofi/a7-cuenta.jpg", alt: "Wireframe de baja fidelidad: pantalla de creación de cuenta del onboarding" } },
-          { caption: "B1 · Hoy", image: { src: "/projects/stride/wireframes-lofi/b1-hoy.jpg", alt: "Wireframe de baja fidelidad: pantalla Hoy con el entrenamiento del día" } },
-          { caption: "B2 · Mi plan", image: { src: "/projects/stride/wireframes-lofi/b2-mi-plan.jpg", alt: "Wireframe de baja fidelidad: pantalla Mi plan con el desglose semanal" } },
-          { caption: "C3 · Pausa", image: { src: "/projects/stride/wireframes-lofi/c3-pausa.jpg", alt: "Wireframe de baja fidelidad: modal de entrenamiento en pausa" } },
+          { caption: "Meta", image: { src: "/projects/stride/wireframes-lofi/a2-meta.jpg", alt: "Wireframe de baja fidelidad: pantalla de selección de meta del onboarding" } },
+          { caption: "Cuenta", image: { src: "/projects/stride/wireframes-lofi/a7-cuenta.jpg", alt: "Wireframe de baja fidelidad: pantalla de creación de cuenta del onboarding" } },
+          { caption: "Hoy", image: { src: "/projects/stride/wireframes-lofi/b1-hoy.jpg", alt: "Wireframe de baja fidelidad: pantalla Hoy con el entrenamiento del día" } },
+          { caption: "Mi plan", image: { src: "/projects/stride/wireframes-lofi/b2-mi-plan.jpg", alt: "Wireframe de baja fidelidad: pantalla Mi plan con el desglose semanal" } },
+          { caption: "Pausa", image: { src: "/projects/stride/wireframes-lofi/c3-pausa.jpg", alt: "Wireframe de baja fidelidad: modal de entrenamiento en pausa" } },
         ],
       },
       {
@@ -213,13 +213,13 @@ export const projects: Project[] = [
         subheading:
           "Las 21 pantallas del MVP se reconstruyeron usando instancias reales de los componentes del sistema de diseño (no elementos sueltos que solo imitan su apariencia), reemplazando la escala de grises por los tokens de color, tipografía y espaciado definitivos. Flujo: Onboarding → Hoy → Entrenamiento activo → Progreso → Perfil.",
         screens: [
-          { caption: "A2 · Meta", image: { src: "/projects/stride/wireframes-hifi/a2-meta.png", alt: "Pantalla de alta fidelidad: selección de meta del onboarding" } },
-          { caption: "A7 · Cuenta", image: { src: "/projects/stride/wireframes-hifi/a7-cuenta.png", alt: "Pantalla de alta fidelidad: creación de cuenta del onboarding" } },
-          { caption: "B1 · Hoy", image: { src: "/projects/stride/wireframes-hifi/b1-hoy.png", alt: "Pantalla de alta fidelidad: Hoy, con el entrenamiento del día" } },
+          { caption: "Meta", image: { src: "/projects/stride/wireframes-hifi/a2-meta.png", alt: "Pantalla de alta fidelidad: selección de meta del onboarding" } },
+          { caption: "Cuenta", image: { src: "/projects/stride/wireframes-hifi/a7-cuenta.png", alt: "Pantalla de alta fidelidad: creación de cuenta del onboarding" } },
+          { caption: "Hoy", image: { src: "/projects/stride/wireframes-hifi/b1-hoy.png", alt: "Pantalla de alta fidelidad: Hoy, con el entrenamiento del día" } },
           { caption: "Entrenamiento activo · Pausa", image: { src: "/projects/stride/wireframes-hifi/c3-pausa.png", alt: "Pantalla de alta fidelidad: entrenamiento activo en pausa" } },
-          { caption: "B2 · Progreso", image: { src: "/projects/stride/wireframes-hifi/b2-progreso.png", alt: "Pantalla de alta fidelidad: Progreso, con racha e historial" } },
-          { caption: "B3 · Logros", image: { src: "/projects/stride/wireframes-hifi/b3-logros.png", alt: "Pantalla de alta fidelidad: Logros" } },
-          { caption: "B4 · Perfil", image: { src: "/projects/stride/wireframes-hifi/b4-perfil.png", alt: "Pantalla de alta fidelidad: Perfil" } },
+          { caption: "Progreso", image: { src: "/projects/stride/wireframes-hifi/b2-progreso.png", alt: "Pantalla de alta fidelidad: Progreso, con racha e historial" } },
+          { caption: "Logros", image: { src: "/projects/stride/wireframes-hifi/b3-logros.png", alt: "Pantalla de alta fidelidad: Logros" } },
+          { caption: "Perfil", image: { src: "/projects/stride/wireframes-hifi/b4-perfil.png", alt: "Pantalla de alta fidelidad: Perfil" } },
         ],
       },
       {

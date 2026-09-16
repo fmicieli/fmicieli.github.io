@@ -49,7 +49,7 @@ export function WireframeFilmstripSection({
     <div className="flex h-full flex-1 flex-col">
       <SectionHeading heading={heading} subheading={subheading} />
       <div className="mt-title-to-content flex flex-1 flex-col justify-center">
-        <div className="flex gap-[21px] overflow-x-auto pb-4 pt-1">
+        <div className="flex flex-wrap justify-center gap-x-[21px] gap-y-6 pt-1">
           {screens.map((screen, i) => (
             <WireframeCard key={screen.caption} screen={screen} i={i} />
           ))}
