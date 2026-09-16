@@ -50,7 +50,8 @@ function WireframeCard({
         <img src={screen.image.src} alt={screen.image.alt} className="w-full border border-border object-contain" />
       )}
       {/* 12px * 1.25 = 15px, 16px * 1.25 = 20px */}
-      <p className="mt-2.5 text-center text-[15px] leading-5 text-text-muted">{screen.caption}</p>
+      {/* gap: 10px * 1.5 */}
+      <p className="mt-[15px] text-center text-[15px] leading-5 text-text-muted">{screen.caption}</p>
     </motion.div>
   );
 }
