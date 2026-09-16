@@ -57,7 +57,7 @@ export function ResearchSection({
     <div className="flex h-full flex-1 flex-col">
       <SectionHeading heading={heading} subheading={subheading} />
       <div className="mt-title-to-content flex flex-1 flex-col justify-center gap-8">
-        <ul className="flex flex-wrap justify-center gap-6 sm:justify-start">
+        <ul className="flex flex-wrap justify-center gap-[28.8px] sm:justify-start">
           {competitors.map((competitor) => (
             <li key={competitor.name} className="flex flex-col items-center gap-2">
               {/* eslint-disable-next-line @next/next/no-img-element */}

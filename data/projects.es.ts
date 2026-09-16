@@ -86,10 +86,10 @@ export const projects: Project[] = [
           noplan: "termina sin ningún plan",
         },
         insights: [
-          "Solo una app (5K Runner) le pregunta al usuario por su capacidad real en sus propios términos (\"¿cuánto creés que podés correr hoy?\", con piso en \"apenas un poco\") — pero esconde todo el valor detrás de un paywall inmediato.",
-          "Runna evalúa nivel y objetivo, pero 9 de sus 10 opciones asumen que el usuario ya corre; \"empezar de cero\" no es una opción de primera clase.",
-          "Nike Run Club, Strava y Adidas Running no hacen ninguna pregunta sobre capacidad física antes de dejar al usuario elegir o arrancar solo.",
-          "Zombies Run es la única que entrega un entrenamiento real dentro del propio onboarding, pero sin chequear si corresponde, y da un salto de intensidad fuerte en la semana 3 sin ningún control intermedio.",
+          "5K Runner es la única que pregunta la capacidad real en términos simples — pero esconde todo detrás de un paywall inmediato.",
+          "Runna evalúa nivel y objetivo, pero 9 de 10 opciones asumen que ya corrés — \"empezar de cero\" no es una opción de primera clase.",
+          "Nike Run Club, Strava y Adidas Running nunca preguntan sobre capacidad física antes de arrancar.",
+          "Zombies Run da un entrenamiento real en el onboarding, pero sin chequear si corresponde, con un salto fuerte en la semana 3.",
         ],
         quote:
           "El patrón correcto ya existe y funciona en al menos un competidor — pero siempre viene atado a una fricción que lo anula. Ahí está el espacio libre para Stride.",
@@ -140,9 +140,9 @@ export const projects: Project[] = [
         heading: "04 · Arquitectura de la información",
         subheading:
           "Una sola pantalla central (\"Hoy\") resuelve la pregunta \"¿qué me toca hoy?\". El onboarding numerado tiene 6 pasos (meta → punto de partida → disponibilidad → proyección → plan generado → cuenta), y la navegación se revela de forma progresiva para no abrumar desde el día uno.",
+        startLabel: "Inicio",
         onboardingLabel: "Onboarding",
         onboardingSub: "6 pasos",
-        navNote: "navegación inferior — 4 secciones",
         navItems: [
           { label: "Hoy", sub: "entrenamiento de hoy", highlight: true },
           { label: "Progreso", sub: "racha + historial" },
@@ -151,8 +151,6 @@ export const projects: Project[] = [
         ],
         subflowLabel: "Entrenamiento",
         subflowSub: "activo · sub-flujo",
-        discrepancyNote:
-          "⚠️ Nota de integración: el diagrama sigue los 4 tabs validados — Hoy / Progreso / Logros / Perfil (así están en el mockup validado). El texto del informe original, al describir la revelación progresiva de la navegación, menciona \"Progreso y Comunidad\" en vez de \"Logros\" — una discrepancia entre las dos fuentes que quedó sin resolver, para que Flor confirme cuál es la correcta.",
       },
       {
         type: "wireframe-filmstrip",
@@ -160,14 +158,11 @@ export const projects: Project[] = [
         subheading:
           "Se transcribieron 21 pantallas en escala de grises, sin bordes redondeados y sin componentes de diseño — un paso deliberadamente simple, enfocado en validar contenido, layout y flujo antes de invertir en estética visual.",
         screens: [
-          { caption: "A1 · Bienvenida", image: { placeholder: "Bienvenida" } },
-          { caption: "A2 · Meta", image: { placeholder: "Meta" } },
-          { caption: "A4 · Disponibilidad", image: { placeholder: "Disponibilidad" } },
-          { caption: "A6 · Plan generado", image: { placeholder: "Plan generado" } },
-          { caption: "B1 · Hoy", image: { placeholder: "Hoy" } },
-          { caption: "B2 · Progreso", image: { placeholder: "Progreso" } },
-          { caption: "B3 · Logros", image: { placeholder: "Logros" } },
-          { caption: "B4 · Perfil", image: { placeholder: "Perfil" } },
+          { caption: "A2 · Meta", image: { src: "/projects/stride/wireframes-lofi/a2-meta.jpg", alt: "Wireframe de baja fidelidad: pantalla de selección de meta del onboarding" } },
+          { caption: "A7 · Cuenta", image: { src: "/projects/stride/wireframes-lofi/a7-cuenta.jpg", alt: "Wireframe de baja fidelidad: pantalla de creación de cuenta del onboarding" } },
+          { caption: "B1 · Hoy", image: { src: "/projects/stride/wireframes-lofi/b1-hoy.jpg", alt: "Wireframe de baja fidelidad: pantalla Hoy con el entrenamiento del día" } },
+          { caption: "B2 · Mi plan", image: { src: "/projects/stride/wireframes-lofi/b2-mi-plan.jpg", alt: "Wireframe de baja fidelidad: pantalla Mi plan con el desglose semanal" } },
+          { caption: "C3 · Pausa", image: { src: "/projects/stride/wireframes-lofi/c3-pausa.jpg", alt: "Wireframe de baja fidelidad: modal de entrenamiento en pausa" } },
         ],
       },
       {
@@ -191,15 +186,26 @@ export const projects: Project[] = [
         componentLabels: {
           primaryButton: "Reanudar entrenamiento",
           pillBadge: "Entrenamiento de hoy",
-          listItem: "Cambiar objetivo",
           statValue: "0 días",
           statLabel: "racha actual",
-          achievementTitle: "Racha de 7 días",
+          achievementTitle: "Primer km",
+          achievementLocked: "5 km",
           dangerAction: "Eliminar cuenta",
           navItems: ["Hoy", "Progreso", "Logros", "Perfil"],
+          textFieldLabel: "Objetivo de distancia",
+          textFieldPlaceholder: "Ingresá tu objetivo",
+          dayInitials: ["L", "M", "X", "J", "V", "S", "D"],
+          statusBadges: ["Descanso", "Actual", "+2 km"],
+          dateFieldLabel: "Fecha de inicio",
+          dateFieldValue: "12 mar 2026",
+          statGrid: [
+            { value: "12", label: "km esta semana" },
+            { value: "3h 20m", label: "tiempo total" },
+          ],
+          textFieldFilledValue: "5 km",
+          textFieldErrorValue: "0 km",
+          textFieldErrorMessage: "Ingresá un número mayor a 0",
         },
-        fontNote:
-          "⚠️ Nota de integración: el informe describe el acento de marca como \"verde menta\", pero el brief de diseño validado (y este panel) usan verde lima (#9BE83C) con hexs exactos — tratado como el dato correcto acá porque viene con tokens validados; el informe probablemente usa \"menta\" de forma imprecisa.",
       },
       {
         type: "wireframe-filmstrip",
@@ -207,14 +213,13 @@ export const projects: Project[] = [
         subheading:
           "Las 21 pantallas del MVP se reconstruyeron usando instancias reales de los componentes del sistema de diseño (no elementos sueltos que solo imitan su apariencia), reemplazando la escala de grises por los tokens de color, tipografía y espaciado definitivos. Flujo: Onboarding → Hoy → Entrenamiento activo → Progreso → Perfil.",
         screens: [
-          { caption: "A1 · Bienvenida", image: { placeholder: "Bienvenida" } },
-          { caption: "A2 · Meta", image: { placeholder: "Meta" } },
-          { caption: "A4 · Disponibilidad", image: { placeholder: "Disponibilidad" } },
-          { caption: "A6 · Plan generado", image: { placeholder: "Plan generado" } },
-          { caption: "B1 · Hoy", image: { placeholder: "Hoy" } },
-          { caption: "B2 · Progreso", image: { placeholder: "Progreso" } },
-          { caption: "B3 · Logros", image: { placeholder: "Logros" } },
-          { caption: "B4 · Perfil", image: { placeholder: "Perfil" } },
+          { caption: "A2 · Meta", image: { src: "/projects/stride/wireframes-hifi/a2-meta.png", alt: "Pantalla de alta fidelidad: selección de meta del onboarding" } },
+          { caption: "A7 · Cuenta", image: { src: "/projects/stride/wireframes-hifi/a7-cuenta.png", alt: "Pantalla de alta fidelidad: creación de cuenta del onboarding" } },
+          { caption: "B1 · Hoy", image: { src: "/projects/stride/wireframes-hifi/b1-hoy.png", alt: "Pantalla de alta fidelidad: Hoy, con el entrenamiento del día" } },
+          { caption: "Entrenamiento activo · Pausa", image: { src: "/projects/stride/wireframes-hifi/c3-pausa.png", alt: "Pantalla de alta fidelidad: entrenamiento activo en pausa" } },
+          { caption: "B2 · Progreso", image: { src: "/projects/stride/wireframes-hifi/b2-progreso.png", alt: "Pantalla de alta fidelidad: Progreso, con racha e historial" } },
+          { caption: "B3 · Logros", image: { src: "/projects/stride/wireframes-hifi/b3-logros.png", alt: "Pantalla de alta fidelidad: Logros" } },
+          { caption: "B4 · Perfil", image: { src: "/projects/stride/wireframes-hifi/b4-perfil.png", alt: "Pantalla de alta fidelidad: Perfil" } },
         ],
       },
       {

@@ -294,9 +294,9 @@ export function CaseStudyBlocks({ blocks }: { blocks: CaseStudyBlock[] }) {
               <ArchitectureSitemapSection
                 heading={block.heading}
                 subheading={block.subheading}
+                startLabel={block.startLabel}
                 onboardingLabel={block.onboardingLabel}
                 onboardingSub={block.onboardingSub}
-                navNote={block.navNote}
                 navItems={block.navItems}
                 subflowLabel={block.subflowLabel}
                 subflowSub={block.subflowSub}
@@ -310,11 +310,9 @@ export function CaseStudyBlocks({ blocks }: { blocks: CaseStudyBlock[] }) {
               <DesignSystemSection
                 heading={block.heading}
                 subheading={block.subheading}
-                stats={block.stats}
                 typeSpecimen={block.typeSpecimen}
                 sectionLabels={block.sectionLabels}
                 componentLabels={block.componentLabels}
-                fontNote={block.fontNote}
               />
             )}
             {block.type === "development" && (

@@ -39,7 +39,7 @@ function PricingTable({ table, competitors }: { table: SimpleTable; competitors:
                     <div className="flex items-center gap-2.5">
                       {logoByName.get(cell) && (
                         // eslint-disable-next-line @next/next/no-img-element
-                        <img src={logoByName.get(cell)} alt="" className="h-6 w-6 shrink-0 rounded-[2px] object-contain" />
+                        <img src={logoByName.get(cell)} alt="" className="h-[29px] w-[29px] shrink-0 rounded-[2px] object-contain" />
                       )}
                       {cell}
                     </div>

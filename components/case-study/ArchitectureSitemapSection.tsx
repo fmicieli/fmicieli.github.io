@@ -1,24 +1,48 @@
 "use client";
 
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
 import type { SitemapNavItem } from "@/data/projects";
 import { SectionHeading } from "@/components/case-study/SectionHeading";
 
+type Line = { x1: number; y1: number; x2: number; y2: number };
+
+/** Center-x / top-or-bottom-y of `el`, in coordinates relative to
+ * `container`'s own box — what the SVG overlay (itself absolutely
+ * positioned over the same container) needs to draw a connector that lands
+ * exactly on the real, currently-laid-out edge of a reflowing HTML box. */
+function edgePoint(el: HTMLElement, container: HTMLElement, edge: "top" | "bottom") {
+  const r = el.getBoundingClientRect();
+  const c = container.getBoundingClientRect();
+  return { x: r.left - c.left + r.width / 2, y: (edge === "top" ? r.top : r.bottom) - c.top };
+}
+
+/** Right-angle ("elbow") connector — straight down from the source, across,
+ * then straight down into the target — instead of a diagonal line, so a fan
+ * of connectors out of one shared source reads as a trunk that splits into
+ * branches rather than a starburst of diagonals. Degenerates to a single
+ * straight vertical segment when x1 === x2 (e.g. Start -> Onboarding). */
+function elbowPath(line: Line) {
+  const midY = line.y1 + (line.y2 - line.y1) / 2;
+  return `M ${line.x1} ${line.y1} L ${line.x1} ${midY} L ${line.x2} ${midY} L ${line.x2} ${line.y2}`;
+}
+
 /**
- * The one diagram the brief calls out as "validated" and worth reproducing
- * exactly — everything else in this case study is copy/tables, but this is
- * drawn as inline SVG so the boxes/arrows read crisply at any size. Colors
- * come from the site's real CSS custom properties (read at paint time via
- * `var(--color-...)`, same as every other component), not the light palette
- * the original reference mockup used — this diagram is page chrome, not a
- * recreation of Stride's own product UI, so it stays in the site's own
- * dark/accent language rather than switching to the lime brand identity.
+ * The IA diagram's boxes are plain reflowing HTML (a flex row that wraps to
+ * 2 or 1 columns on narrow screens) rather than fixed SVG coordinates, so
+ * they stay a comfortable, fixed reading size at any viewport width instead
+ * of shrinking like a scaled image. The connecting arrows are drawn on a
+ * transparent SVG layer sized to match the container's real pixel box and
+ * re-measured (via ResizeObserver, so it also catches font-load reflow)
+ * every time those HTML boxes' actual positions change — the only way the
+ * connectors can stay correct once the boxes are free to wrap.
  */
 export function ArchitectureSitemapSection({
   heading,
   subheading,
+  startLabel,
   onboardingLabel,
   onboardingSub,
-  navNote,
   navItems,
   subflowLabel,
   subflowSub,
@@ -26,102 +50,170 @@ export function ArchitectureSitemapSection({
 }: {
   heading: string;
   subheading: string;
+  startLabel: string;
   onboardingLabel: string;
   onboardingSub: string;
-  navNote: string;
   navItems: SitemapNavItem[];
   subflowLabel: string;
   subflowSub: string;
   discrepancyNote?: string;
 }) {
-  const navWidth = 150;
-  const gap = 20;
-  const startX = 400 - (navItems.length * navWidth + (navItems.length - 1) * gap) / 2;
+  const containerRef = useRef<HTMLDivElement>(null);
+  const startRef = useRef<HTMLDivElement>(null);
+  const onboardingRef = useRef<HTMLDivElement>(null);
+  const subflowRef = useRef<HTMLDivElement>(null);
+  const navRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  const [lines, setLines] = useState<Line[]>([]);
+  const [size, setSize] = useState({ width: 0, height: 0 });
+
+  useLayoutEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    function measure() {
+      const container = containerRef.current;
+      const start = startRef.current;
+      const onboarding = onboardingRef.current;
+      if (!container || !start || !onboarding) return;
+
+      const startBottom = edgePoint(start, container, "bottom");
+      const onboardingTop = edgePoint(onboarding, container, "top");
+      const next: Line[] = [{ x1: startBottom.x, y1: startBottom.y, x2: onboardingTop.x, y2: onboardingTop.y }];
+
+      const from = edgePoint(onboarding, container, "bottom");
+      navRefs.current
+        .filter((el): el is HTMLDivElement => el !== null)
+        .forEach((el) => {
+          const to = edgePoint(el, container, "top");
+          next.push({ x1: from.x, y1: from.y, x2: to.x, y2: to.y });
+        });
+
+      const firstNav = navRefs.current[0];
+      if (subflowRef.current && firstNav) {
+        const subFrom = edgePoint(firstNav, container, "bottom");
+        const subTo = edgePoint(subflowRef.current, container, "top");
+        next.push({ x1: subFrom.x, y1: subFrom.y, x2: subTo.x, y2: subTo.y });
+      }
+
+      setLines(next);
+      setSize({ width: container.offsetWidth, height: container.offsetHeight });
+    }
+
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(container);
+    return () => observer.disconnect();
+  }, [navItems.length]);
+
+  // Belt-and-suspenders: web fonts swapping in after first paint can shift
+  // box widths without firing a container resize on some browsers.
+  useEffect(() => {
+    const id = window.setTimeout(() => {
+      window.dispatchEvent(new Event("resize"));
+    }, 300);
+    return () => window.clearTimeout(id);
+  }, []);
 
   return (
     <div className="flex h-full flex-1 flex-col">
       <SectionHeading heading={heading} subheading={subheading} />
       <div className="mt-title-to-content flex flex-1 flex-col justify-center">
-        <svg viewBox="0 0 800 330" className="w-full max-w-[820px]">
-          <line x1={400} y1={70} x2={startX + navWidth / 2} y2={140} stroke="var(--color-border)" strokeWidth={2} />
-          <line
-            x1={startX + navWidth / 2}
-            y1={205}
-            x2={startX + navWidth / 2}
-            y2={250}
-            stroke="var(--color-border)"
-            strokeWidth={2}
-          />
+        <motion.div
+          ref={containerRef}
+          className="relative"
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, margin: "-40px" }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <svg
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0"
+            width={size.width}
+            height={size.height}
+          >
+            <defs>
+              <marker id="sitemap-arrow" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto">
+                <path d="M0,0 L7,3.5 L0,7 Z" fill="var(--color-text-muted)" />
+              </marker>
+            </defs>
+            {lines.map((line, i) => (
+              <path
+                key={i}
+                d={elbowPath({ ...line, y2: line.y2 - 7 })}
+                fill="none"
+                stroke="var(--color-border)"
+                strokeWidth={1.5}
+                markerEnd="url(#sitemap-arrow)"
+              />
+            ))}
+          </svg>
 
-          <rect x={300} y={20} width={200} height={50} rx={10} fill="var(--color-surface)" stroke="var(--color-border)" strokeWidth={1.5} />
-          <text x={400} y={42} textAnchor="middle" fontFamily="var(--font-display)" fontSize={14} fontWeight={600} fill="var(--color-text-primary)">
-            {onboardingLabel}
-          </text>
-          <text x={400} y={59} textAnchor="middle" fontSize={10} fill="var(--color-text-secondary)">
-            {onboardingSub}
-          </text>
+          <div className="relative flex justify-center">
+            <div
+              ref={startRef}
+              className="rounded-card border border-border bg-surface px-6 py-2.5 text-center shadow-card backdrop-blur-card"
+            >
+              <p className="font-display text-sm font-semibold text-text-primary">{startLabel}</p>
+            </div>
+          </div>
 
-          <text x={400} y={132} textAnchor="middle" fontSize={10} fill="var(--color-text-muted)">
-            {navNote}
-          </text>
-          <rect
-            x={50}
-            y={140}
-            width={700}
-            height={65}
-            rx={14}
-            fill="rgba(255,255,255,0.03)"
-            stroke="var(--color-border)"
-            strokeWidth={1.5}
-            strokeDasharray="4 4"
-          />
+          <div className="relative mt-10 flex justify-center">
+            <div
+              ref={onboardingRef}
+              className="rounded-card border border-border border-t-[var(--color-border-top-highlight)] bg-surface px-8 py-4 text-center shadow-card backdrop-blur-card"
+            >
+              <p className="font-display text-lg font-semibold text-text-primary">{onboardingLabel}</p>
+              <p className="mt-1.5 font-mono text-xs text-text-secondary">{onboardingSub}</p>
+            </div>
+          </div>
 
-          {navItems.map((item, i) => {
-            const x = startX + i * (navWidth + gap);
-            const cx = x + navWidth / 2;
-            return (
-              <g key={item.label}>
-                <rect
-                  x={x}
-                  y={155}
-                  width={navWidth}
-                  height={35}
-                  rx={9}
-                  fill={item.highlight ? "var(--color-accent-soft)" : "var(--color-surface)"}
-                  stroke={item.highlight ? "var(--color-accent)" : "var(--color-border)"}
-                  strokeWidth={1.5}
-                />
-                <text x={cx} y={177} textAnchor="middle" fontFamily="var(--font-display)" fontSize={13} fontWeight={600} fill="var(--color-text-primary)">
-                  {item.label}
-                </text>
-                <text x={cx} y={222} textAnchor="middle" fontSize={8.5} fill="var(--color-text-muted)">
-                  {item.sub}
-                </text>
-              </g>
-            );
-          })}
+          {/* Entrenamiento (the sub-flow) nests directly under Hoy/Today
+              (navItems[0]) in the same column, instead of centering under
+              the whole row — a plain document-flow stack, so it always
+              lands under that specific box regardless of how many items
+              wrap next to it. */}
+          <div className="relative mt-16 flex flex-wrap items-start justify-center gap-[26px]">
+            {navItems.map((item, i) => {
+              const box = (
+                <div
+                  ref={(el) => {
+                    navRefs.current[i] = el;
+                  }}
+                  className="w-[210px] rounded-card border border-border border-t-[var(--color-border-top-highlight)] bg-surface p-4 text-center shadow-card backdrop-blur-card"
+                >
+                  <p className="font-display text-lg font-semibold text-text-primary">{item.label}</p>
+                  <p className="mt-1.5 whitespace-nowrap font-mono text-xs font-normal text-text-muted">
+                    {item.sub}
+                  </p>
+                </div>
+              );
 
-          <rect
-            x={startX}
-            y={250}
-            width={navWidth}
-            height={55}
-            rx={10}
-            fill="rgba(255,255,255,0.03)"
-            stroke="var(--color-border)"
-            strokeWidth={1.5}
-            strokeDasharray="3 3"
-          />
-          <text x={startX + navWidth / 2} y={273} textAnchor="middle" fontFamily="var(--font-display)" fontSize={12} fontWeight={600} fill="var(--color-text-primary)">
-            {subflowLabel}
-          </text>
-          <text x={startX + navWidth / 2} y={288} textAnchor="middle" fontSize={9} fill="var(--color-text-secondary)">
-            {subflowSub}
-          </text>
-        </svg>
+              if (i !== 0) {
+                return <div key={item.label}>{box}</div>;
+              }
+
+              return (
+                <div key={item.label} className="flex flex-col items-center gap-16">
+                  {box}
+                  <div
+                    ref={subflowRef}
+                    className="rounded-card border border-dashed border-border bg-surface px-6 py-4 text-center shadow-card backdrop-blur-card"
+                  >
+                    <p className="font-display text-lg font-semibold text-text-primary">{subflowLabel}</p>
+                    <p className="mt-1.5 whitespace-nowrap font-mono text-xs font-normal text-text-muted">
+                      {subflowSub}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </motion.div>
 
         {discrepancyNote && (
-          <p className="mt-5 max-w-[64ch] border-l-2 border-border pl-4 text-xs leading-relaxed text-text-muted">
+          <p className="mt-8 max-w-[64ch] border-l-2 border-border pl-4 text-xs leading-relaxed text-text-muted">
             {discrepancyNote}
           </p>
         )}

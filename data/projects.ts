@@ -284,9 +284,9 @@ export type CaseStudyBlock =
       type: "architecture-sitemap";
       heading: string;
       subheading: string;
+      startLabel: string;
       onboardingLabel: string;
       onboardingSub: string;
-      navNote: string;
       navItems: SitemapNavItem[];
       subflowLabel: string;
       subflowSub: string;
@@ -307,14 +307,23 @@ export type CaseStudyBlock =
       componentLabels: {
         primaryButton: string;
         pillBadge: string;
-        listItem: string;
         statValue: string;
         statLabel: string;
         achievementTitle: string;
         dangerAction: string;
         navItems: [string, string, string, string];
+        textFieldLabel: string;
+        textFieldPlaceholder: string;
+        dayInitials: [string, string, string, string, string, string, string];
+        statusBadges: [string, string, string];
+        dateFieldLabel: string;
+        dateFieldValue: string;
+        statGrid: [{ value: string; label: string }, { value: string; label: string }];
+        textFieldFilledValue: string;
+        textFieldErrorValue: string;
+        textFieldErrorMessage: string;
+        achievementLocked: string;
       };
-      fontNote?: string;
     }
   | {
       type: "development";
@@ -439,10 +448,10 @@ export const projects: Project[] = [
           noplan: "ends with no plan at all",
         },
         insights: [
-          "Only one app (5K Runner) asks the user about their real ability in their own terms (\"how much do you think you can run today?\", with a floor of \"just a little\") — but hides all the value behind an immediate paywall.",
-          "Runna assesses level and goal, but 9 of its 10 goal options assume the user already runs; \"starting from zero\" isn't a first-class option.",
-          "Nike Run Club, Strava, and Adidas Running don't ask a single question about physical ability before letting the user choose or start on their own.",
-          "Zombies Run is the only one that delivers a real workout inside its own onboarding, but without checking whether it's appropriate, and with a sharp intensity jump in week 3 with no intermediate check.",
+          "5K Runner is the only app that asks about real ability in plain terms — but hides it all behind an immediate paywall.",
+          "Runna assesses level and goal, but 9 of 10 options assume the user already runs — \"starting from zero\" isn't first-class.",
+          "Nike Run Club, Strava, and Adidas Running never ask about physical ability before letting the user start on their own.",
+          "Zombies Run gives a real workout in onboarding, but without checking fit, and with a sharp intensity jump in week 3.",
         ],
         quote:
           "The right pattern already exists and works in at least one competitor — but it always comes tied to a friction that cancels it out. That's the open space for Stride.",
@@ -493,9 +502,9 @@ export const projects: Project[] = [
         heading: "04 · Information architecture",
         subheading:
           "A single central screen (\"Today\") answers \"what's on for me today?\" The numbered onboarding has 6 steps (goal → starting point → availability → projection → generated plan → account), and navigation reveals itself progressively so it doesn't overwhelm from day one.",
+        startLabel: "Start",
         onboardingLabel: "Onboarding",
         onboardingSub: "6 steps",
-        navNote: "bottom navigation — 4 sections",
         navItems: [
           { label: "Today", sub: "today's workout", highlight: true },
           { label: "Progress", sub: "streak + history" },
@@ -504,8 +513,6 @@ export const projects: Project[] = [
         ],
         subflowLabel: "Active workout",
         subflowSub: "sub-flow",
-        discrepancyNote:
-          "⚠️ Integration note: the diagram follows the validated 4 tabs — Today / Progress / Achievements / Profile (as in the validated mockup). The source report's own text, when describing the progressive navigation reveal, mentions \"Progress and Community\" instead of \"Achievements\" — a discrepancy between the two source documents left unresolved for Flor to confirm.",
       },
       {
         type: "wireframe-filmstrip",
@@ -513,14 +520,11 @@ export const projects: Project[] = [
         subheading:
           "21 screens were transcribed in grayscale, with no rounded corners and no design components — a deliberately simple step, focused on validating content, layout, and flow before investing in visual polish.",
         screens: [
-          { caption: "A1 · Welcome", image: { placeholder: "Welcome" } },
-          { caption: "A2 · Goal", image: { placeholder: "Goal" } },
-          { caption: "A4 · Availability", image: { placeholder: "Availability" } },
-          { caption: "A6 · Generated plan", image: { placeholder: "Generated plan" } },
-          { caption: "B1 · Today", image: { placeholder: "Today" } },
-          { caption: "B2 · Progress", image: { placeholder: "Progress" } },
-          { caption: "B3 · Achievements", image: { placeholder: "Achievements" } },
-          { caption: "B4 · Profile", image: { placeholder: "Profile" } },
+          { caption: "A2 · Goal", image: { src: "/projects/stride/wireframes-lofi/a2-meta.jpg", alt: "Low-fidelity wireframe: onboarding goal selection screen" } },
+          { caption: "A7 · Account", image: { src: "/projects/stride/wireframes-lofi/a7-cuenta.jpg", alt: "Low-fidelity wireframe: onboarding account creation screen" } },
+          { caption: "B1 · Today", image: { src: "/projects/stride/wireframes-lofi/b1-hoy.jpg", alt: "Low-fidelity wireframe: Today screen with today's workout" } },
+          { caption: "B2 · My plan", image: { src: "/projects/stride/wireframes-lofi/b2-mi-plan.jpg", alt: "Low-fidelity wireframe: My plan screen with weekly breakdown" } },
+          { caption: "C3 · Pause", image: { src: "/projects/stride/wireframes-lofi/c3-pausa.jpg", alt: "Low-fidelity wireframe: workout paused modal" } },
         ],
       },
       {
@@ -544,15 +548,26 @@ export const projects: Project[] = [
         componentLabels: {
           primaryButton: "Resume workout",
           pillBadge: "Today's workout",
-          listItem: "Change goal",
           statValue: "0 days",
           statLabel: "current streak",
-          achievementTitle: "7-day streak",
+          achievementTitle: "First km",
+          achievementLocked: "5 km",
           dangerAction: "Delete account",
           navItems: ["Today", "Progress", "Achievements", "Profile"],
+          textFieldLabel: "Distance goal",
+          textFieldPlaceholder: "Enter your goal",
+          dayInitials: ["M", "T", "W", "T", "F", "S", "S"],
+          statusBadges: ["Rest", "Current", "+2 km"],
+          dateFieldLabel: "Start date",
+          dateFieldValue: "Mar 12, 2026",
+          statGrid: [
+            { value: "12", label: "km this week" },
+            { value: "3h 20m", label: "total time" },
+          ],
+          textFieldFilledValue: "5 km",
+          textFieldErrorValue: "0 km",
+          textFieldErrorMessage: "Enter a number greater than 0",
         },
-        fontNote:
-          "⚠️ Integration note: the source report describes the brand accent as \"mint green,\" but the validated design brief (and this panel) use lime green (#9BE83C) with exact hex tokens — treated as correct here since it comes with validated tokens; the report likely uses \"mint\" imprecisely.",
       },
       {
         type: "wireframe-filmstrip",
@@ -560,14 +575,13 @@ export const projects: Project[] = [
         subheading:
           "The MVP's 21 screens were rebuilt using real instances of the design system's components (not loose elements that only imitate their look), replacing grayscale with the definitive color, typography, and spacing tokens. Flow: Onboarding → Today → Active workout → Progress → Profile.",
         screens: [
-          { caption: "A1 · Welcome", image: { placeholder: "Welcome" } },
-          { caption: "A2 · Goal", image: { placeholder: "Goal" } },
-          { caption: "A4 · Availability", image: { placeholder: "Availability" } },
-          { caption: "A6 · Generated plan", image: { placeholder: "Generated plan" } },
-          { caption: "B1 · Today", image: { placeholder: "Today" } },
-          { caption: "B2 · Progress", image: { placeholder: "Progress" } },
-          { caption: "B3 · Achievements", image: { placeholder: "Achievements" } },
-          { caption: "B4 · Profile", image: { placeholder: "Profile" } },
+          { caption: "A2 · Goal", image: { src: "/projects/stride/wireframes-hifi/a2-meta.png", alt: "High-fidelity screen: onboarding goal selection" } },
+          { caption: "A7 · Account", image: { src: "/projects/stride/wireframes-hifi/a7-cuenta.png", alt: "High-fidelity screen: onboarding account creation" } },
+          { caption: "B1 · Today", image: { src: "/projects/stride/wireframes-hifi/b1-hoy.png", alt: "High-fidelity screen: Today, with today's workout" } },
+          { caption: "Active workout · Paused", image: { src: "/projects/stride/wireframes-hifi/c3-pausa.png", alt: "High-fidelity screen: active workout, paused state" } },
+          { caption: "B2 · Progress", image: { src: "/projects/stride/wireframes-hifi/b2-progreso.png", alt: "High-fidelity screen: Progress, with streak and history" } },
+          { caption: "B3 · Achievements", image: { src: "/projects/stride/wireframes-hifi/b3-logros.png", alt: "High-fidelity screen: Achievements" } },
+          { caption: "B4 · Profile", image: { src: "/projects/stride/wireframes-hifi/b4-perfil.png", alt: "High-fidelity screen: Profile" } },
         ],
       },
       {
