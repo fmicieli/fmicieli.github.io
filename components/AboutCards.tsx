@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, useTransform, type MotionValue } from "framer-motion";
+import { HoverBorderTrace } from "@/components/HoverBorderTrace";
 import { useTranslation } from "@/lib/i18n/ui";
 
 // Tool-name tags are proper nouns — not translated, kept in one fixed order
@@ -42,7 +43,7 @@ function CardContent({ item }: { item: Skill }) {
         {item.tags.map((tag) => (
           <span
             key={tag}
-            className="rounded-full border border-white bg-white/20 px-2.5 py-1.5 text-tag font-medium text-white"
+            className="rounded-full border border-white bg-white/20 px-2.5 py-2 text-label font-medium text-white"
           >
             {tag}
           </span>
@@ -53,7 +54,7 @@ function CardContent({ item }: { item: Skill }) {
 }
 
 const CARD_STYLE =
-  "flex flex-col gap-1.5 rounded-card border border-border border-t-[var(--color-border-top-highlight)] bg-surface px-6 pt-[18px] pb-6 shadow-card backdrop-blur-card";
+  "group relative flex flex-col gap-1.5 rounded-card border border-border border-t-[var(--color-border-top-highlight)] bg-surface px-6 pt-[18px] pb-6 shadow-card backdrop-blur-card";
 
 /**
  * Desktop/tablet only: the four cards start tightly overlapped and fanned —
@@ -113,6 +114,7 @@ function StackToRow({ progress, skills }: { progress: MotionValue<number>; skill
             }}
             className={CARD_STYLE}
           >
+            <HoverBorderTrace />
             <CardContent item={item} />
           </motion.div>
         );
@@ -132,6 +134,7 @@ function StackedGrid({ progress, skills }: { progress: MotionValue<number>; skil
     <div className="mx-auto grid max-w-4xl grid-cols-2 gap-8 sm:hidden">
       {skills.map((item) => (
         <motion.div key={item.title} style={{ opacity, y }} className={CARD_STYLE}>
+          <HoverBorderTrace />
           <CardContent item={item} />
         </motion.div>
       ))}

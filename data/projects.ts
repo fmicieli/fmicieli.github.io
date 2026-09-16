@@ -1,6 +1,7 @@
 export type CaseStudySection = {
   heading: string;
   body: string;
+  images?: CaseStudyImage[];
 };
 
 export type CaseStudyMeta = { label: string; value: string };
@@ -161,8 +162,6 @@ export type CaseStudyBlock =
       midFiHeading: string;
       midFiText: string;
       midFiImages: LabeledImage[];
-      figmaLinkLabel: string;
-      figmaLinkHref: string;
     }
   | {
       type: "usability-test";
@@ -228,8 +227,6 @@ export type CaseStudyBlock =
       subheading: string;
       intro: string;
       bullets: string[];
-      linkLabel: string;
-      linkHref: string;
       screens: LabeledImage[];
     }
   | {
@@ -364,6 +361,9 @@ export type Project = {
   };
   /** When present, the project page renders these instead of `sections`. */
   caseStudyBlocks?: CaseStudyBlock[];
+  /** Phone-framed mockup shown next to the generic (non-`caseStudyBlocks`)
+   * header, for projects that don't have a full `hero` block. */
+  heroImage?: CaseStudyImage;
 };
 
 export const projects: Project[] = [
@@ -911,8 +911,8 @@ export const projects: Project[] = [
     title: "Tribu Music",
     tagline: "A mobile app that connects people through live music.",
     tags: ["Product Design", "UI"],
-    coverImage: "/projects/tribu-music/hifi-screen-discover.png",
-    coverAlt: "Screens from the Tribu Music app redesign",
+    coverImage: "/projects/tribu-music/cover.png",
+    coverAlt: "Tribu Music case study cover, showing the app logo and home screen",
     behanceUrl: "https://www.behance.net/gallery/241107187/Tribu-Music-Caso-de-estudio",
     contentReady: true,
     sections: {
@@ -1085,9 +1085,6 @@ export const projects: Project[] = [
           { src: "/projects/tribu-music/wireframe-midfi-settings.png", alt: "Mid-fidelity wireframe of the settings screen", label: "Settings" },
           { src: "/projects/tribu-music/wireframe-midfi-event.png", alt: "Mid-fidelity wireframe of the event profile screen", label: "Event Profile" },
         ],
-        figmaLinkLabel: "View on Figma",
-        figmaLinkHref:
-          "https://www.figma.com/design/lEMkBV42DJcfRvPf1TUCDU/Curso-UI---Micieli-Florencia?node-id=554-4414&t=SW1tVbjaGYvh1s8m-4",
       },
       {
         type: "usability-test",
@@ -1358,9 +1355,6 @@ export const projects: Project[] = [
           "Interactions and micro-animations",
           "States for every element",
         ],
-        linkLabel: "View Prototype",
-        linkHref:
-          "https://www.figma.com/design/lEMkBV42DJcfRvPf1TUCDU/Curso-UI---Micieli-Florencia?node-id=560-5065&t=SW1tVbjaGYvh1s8m-4",
         screens: [
           { src: "/projects/tribu-music/hifi-screen-login.png", alt: "High-fidelity login screen", label: "Login" },
           { src: "/projects/tribu-music/hifi-screen-discover.png", alt: "High-fidelity discover/home screen", label: "Discover" },
@@ -1446,14 +1440,25 @@ export const projects: Project[] = [
   {
     slug: "out",
     title: "Section design for OUT",
-    tagline: "Design of a product section for OUT.",
+    tagline: "Explore, book, and live unique experiences in your city.",
     tags: ["UI", "Design System"],
-    coverImage: null,
-    coverAlt: "Screens from the OUT project",
+    coverImage: "/projects/out/cover.png",
+    coverAlt: "OUT app booking screen for a curated wine-tasting experience, shown on a phone mockup",
     behanceUrl: "https://www.behance.net/gallery/230515938/Diseno-de-seccion-para-OUT",
     contentReady: false,
+    heroImage: {
+      src: "/projects/out/hero-experience-profile.jpg",
+      alt: "OUT app experience profile screen for \"Entre Cosechas\", showing photos, details, and a booking panel",
+    },
     sections: {
-      context: { heading: "Context & problem", body: "TODO: content pending" },
+      context: {
+        heading: "Context",
+        body: "OUT is an app that helps you find unique bars and restaurants in Buenos Aires. You can explore by neighborhood, style, or type of experience (like rooftops, live music, or cocktail bars). It shows you all the information you need to decide where to go: photos, contact info, ambiance, and more. **Ideal for anyone who wants to go out and discover new places without wasting time searching.**\n\nFor this project I developed a new section called **\"Experiences\"**, where users can discover special events at featured bars, with the option to book and pay directly from the app.\n\nWe also optimized the size of typography and interactive elements — buttons, filters, and more — to ensure better visibility and usability for all users.",
+        images: [
+          { src: "/projects/out/context-mockup-categories.png", alt: "OUT app screen showing venue categories: Skybar, Elegant, Themed, Speakeasy, Casual" },
+          { src: "/projects/out/context-mockup-home.png", alt: "OUT app home screen showing a promo banner and featured and award-winning bars" },
+        ],
+      },
       process: { heading: "Process", body: "TODO: content pending" },
       decisions: { heading: "Key decisions", body: "TODO: content pending" },
       result: { heading: "Result", body: "TODO: content pending" },

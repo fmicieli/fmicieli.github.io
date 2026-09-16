@@ -160,8 +160,6 @@ export function CaseStudyBlocks({ blocks }: { blocks: CaseStudyBlock[] }) {
                 midFiHeading={block.midFiHeading}
                 midFiText={block.midFiText}
                 midFiImages={block.midFiImages}
-                figmaLinkLabel={block.figmaLinkLabel}
-                figmaLinkHref={block.figmaLinkHref}
               />
             )}
             {block.type === "context" && (
@@ -245,7 +243,6 @@ export function CaseStudyBlocks({ blocks }: { blocks: CaseStudyBlock[] }) {
               <UiKitSection
                 heading={block.heading}
                 subheading={block.subheading}
-                intro={block.intro}
                 groups={block.groups}
               />
             )}
@@ -255,8 +252,6 @@ export function CaseStudyBlocks({ blocks }: { blocks: CaseStudyBlock[] }) {
                 subheading={block.subheading}
                 intro={block.intro}
                 bullets={block.bullets}
-                linkLabel={block.linkLabel}
-                linkHref={block.linkHref}
                 screens={block.screens}
               />
             )}

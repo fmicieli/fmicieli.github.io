@@ -177,7 +177,7 @@ export function BrandIdentitySection({
         <button
           type="button"
           onClick={() => setShowAll(true)}
-          className="inline-flex h-9 items-center justify-center self-start rounded-[5px] border border-border bg-surface px-5 text-[14px] font-medium text-text-primary transition-colors hover:border-accent/30 hover:bg-surface-hover"
+          className="inline-flex h-9 items-center justify-center self-start rounded-control border border-[var(--color-border-interactive)] bg-surface px-5 text-[14px] font-medium text-text-primary transition-[border-width,border-color,background-color] hover:border-2 hover:border-accent/30 hover:bg-surface-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2"
         >
           {viewAllLabel}
         </button>
@@ -271,7 +271,7 @@ export function BrandIdentitySection({
                   {accessibility.areas.map((area) => (
                     <li
                       key={area}
-                      className="rounded-full border border-border bg-surface px-3 py-1.5 text-[13px] text-text-secondary"
+                      className="rounded-full border border-border bg-surface px-3 py-2 text-label text-text-secondary"
                     >
                       {area}
                     </li>

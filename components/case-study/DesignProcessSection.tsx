@@ -51,7 +51,7 @@ function ImageRow({
                 : "w-full rounded-lg shadow-lg shadow-black/30"
             }
           />
-          <p className="text-center text-[13px] font-medium text-text-secondary">{image.label}</p>
+          <p className="text-center text-label font-medium text-text-secondary">{image.label}</p>
         </motion.li>
       ))}
     </ul>
@@ -120,8 +120,6 @@ export function DesignProcessSection({
   midFiHeading,
   midFiText,
   midFiImages,
-  figmaLinkLabel,
-  figmaLinkHref,
 }: {
   heading: string;
   subheading: string;
@@ -138,8 +136,6 @@ export function DesignProcessSection({
   midFiHeading: string;
   midFiText: string;
   midFiImages: LabeledImage[];
-  figmaLinkLabel: string;
-  figmaLinkHref: string;
 }) {
   const steps = [
     { heading: happyPathHeading },
@@ -212,17 +208,7 @@ export function DesignProcessSection({
           )}
           {activeIndex === 3 && (
             <>
-              <div className="flex flex-wrap items-end justify-between gap-4">
-                <SubHeading title={midFiHeading} text={midFiText} />
-                <a
-                  href={figmaLinkHref}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex h-9 shrink-0 items-center justify-center rounded-[5px] bg-accent px-5 text-[14px] font-bold text-[#121212] transition-opacity hover:opacity-90"
-                >
-                  {figmaLinkLabel}
-                </a>
-              </div>
+              <SubHeading title={midFiHeading} text={midFiText} />
               <ImageRow images={midFiImages} compact uniform />
             </>
           )}

@@ -19,7 +19,7 @@ export function DataTable({ table, dense }: { table: SimpleTable; dense?: boolea
             {table.columns.map((col) => (
               <th
                 key={col}
-                className={`border-b border-border font-medium text-text-primary ${dense ? "px-3 py-[9.2px] text-[13px]" : "px-4 py-[11.5px] text-body"}`}
+                className={`border-b border-border font-medium text-text-primary ${dense ? "px-3 py-2 text-label" : "px-4 py-3 text-body"}`}
               >
                 {col}
               </th>
@@ -39,7 +39,7 @@ export function DataTable({ table, dense }: { table: SimpleTable; dense?: boolea
               {row.map((cell, j) => (
                 <td
                   key={j}
-                  className={`text-text-secondary ${dense ? "px-3 py-[9.2px] text-[13px]" : "px-4 py-[11.5px] text-body"} ${j === 0 ? "text-text-primary" : ""}`}
+                  className={`text-text-secondary ${dense ? "px-3 py-2 text-label" : "px-4 py-3 text-body"} ${j === 0 ? "text-text-primary" : ""}`}
                 >
                   {cell}
                 </td>

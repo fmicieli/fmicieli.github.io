@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import type { CaseStudyImage, SolutionPoint } from "@/data/projects";
 import { SectionHeading } from "@/components/case-study/SectionHeading";
@@ -27,6 +28,15 @@ export function SolutionSection({
   phoneDemo?: { frameSrc: string; frameAlt: string; scrollSrc: string };
 }) {
   const hasVisual = Boolean(image || phoneDemo);
+  // Mirrors PhoneScrollDemo's own scroll-into-view + start-delay gate (see
+  // its onStartedChange prop below) so the annotation callouts' fade
+  // animation only starts ticking once the mockup's own auto-scroll does —
+  // otherwise the two ran on independent clocks: the mockup paused until
+  // scrolled into view, but the callouts' 16s CSS loop started counting
+  // from page mount, so by the time a visitor actually scrolled down here
+  // the callouts could already be mid-fade or hidden while the mockup was
+  // still sitting at its static starting frame.
+  const [phoneStarted, setPhoneStarted] = useState(false);
 
   return (
     <div className="flex h-full flex-1 flex-col">
@@ -128,6 +138,7 @@ export function SolutionSection({
                     frameSrc={phoneDemo.frameSrc}
                     frameAlt={phoneDemo.frameAlt}
                     scrollSrc={phoneDemo.scrollSrc}
+                    onStartedChange={setPhoneStarted}
                   />
                 </div>
               ) : (
@@ -144,7 +155,10 @@ export function SolutionSection({
               {phoneDemo && (
                 <div
                   className="relative min-h-[64px] flex-1"
-                  style={{ animation: "annotation-group-fade 16s ease-in-out infinite" }}
+                  style={{
+                    animation: "annotation-group-fade 16s ease-in-out infinite",
+                    animationPlayState: phoneStarted ? "running" : "paused",
+                  }}
                 >
                   {annotations.map((annotation, i) => (
                     <div

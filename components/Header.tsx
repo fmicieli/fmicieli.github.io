@@ -26,7 +26,7 @@ function LanguageSwitcher({
         type="button"
         onClick={() => setLanguage("en")}
         aria-pressed={language === "en"}
-        className={`flex h-11 min-w-11 items-center justify-center px-1.5 text-sm transition-colors ${
+        className={`flex h-11 min-w-11 items-center justify-center rounded-[2px] px-1.5 text-sm transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2 ${
           language === "en" ? "font-medium text-accent" : "text-text-secondary hover:text-text-primary"
         }`}
       >
@@ -39,7 +39,7 @@ function LanguageSwitcher({
         type="button"
         onClick={() => setLanguage("es")}
         aria-pressed={language === "es"}
-        className={`flex h-11 min-w-11 items-center justify-center px-1.5 text-sm transition-colors ${
+        className={`flex h-11 min-w-11 items-center justify-center rounded-[2px] px-1.5 text-sm transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2 ${
           language === "es" ? "font-medium text-accent" : "text-text-secondary hover:text-text-primary"
         }`}
       >
@@ -76,7 +76,7 @@ export function Header() {
               <a
                 key={link.href}
                 href={link.href}
-                className="text-sm text-text-secondary transition-colors hover:text-text-primary"
+                className="rounded-[2px] text-sm text-text-secondary transition-colors hover:text-text-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2"
               >
                 {link.label}
               </a>
@@ -100,7 +100,7 @@ export function Header() {
           available width). */}
       <button
         type="button"
-        className="absolute right-2 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-lg text-text-primary sm:hidden"
+        className="absolute right-2 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-lg text-text-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2 sm:hidden"
         aria-label={open ? t.header.closeMenu : t.header.openMenu}
         aria-expanded={open}
         onClick={() => setOpen((v) => !v)}
@@ -141,7 +141,7 @@ export function Header() {
               <a
                 key={link.href}
                 href={link.href}
-                className="rounded-lg px-3 py-3 text-sm text-text-secondary transition-colors hover:bg-white/5 hover:text-text-primary"
+                className="rounded-lg px-3 py-3 text-sm text-text-secondary transition-colors hover:bg-white/5 hover:text-text-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2"
                 onClick={() => setOpen(false)}
               >
                 {link.label}

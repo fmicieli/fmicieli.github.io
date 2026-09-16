@@ -22,12 +22,12 @@ function BeforeAfterCard({ pair, i }: { pair: BeforeAfterPair; i: number }) {
       <p className="text-[14px] font-medium text-text-primary">{pair.label}</p>
       <div className="grid grid-cols-2 gap-4">
         <div className="flex flex-col gap-1.5">
-          <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-text-muted">{t.caseStudy.before}</p>
+          <p className="text-label font-semibold uppercase tracking-[0.08em] text-text-secondary">{t.caseStudy.before}</p>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={pair.before.src} alt={pair.before.alt} loading="lazy" className="w-full rounded-md border border-border" />
         </div>
         <div className="flex flex-col gap-1.5">
-          <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-accent">{t.caseStudy.after}</p>
+          <p className="text-label font-semibold uppercase tracking-[0.08em] text-accent">{t.caseStudy.after}</p>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={pair.after.src} alt={pair.after.alt} loading="lazy" className="w-full rounded-md border border-border" />
         </div>
@@ -89,7 +89,7 @@ export function UsabilityTestSection({
               viewport={{ once: false, margin: "-40px" }}
               transition={{ duration: 0.5, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
             >
-              <span className="font-display text-stat-md font-bold text-accent">{i + 1}</span>
+              <span className="text-center font-display text-[28.8px] leading-[33.6px] font-bold text-accent">{i + 1}</span>
               <p className="text-body leading-relaxed text-text-secondary">{task}</p>
             </motion.li>
           ))}
@@ -101,7 +101,7 @@ export function UsabilityTestSection({
           <button
             type="button"
             onClick={() => setShowAll(true)}
-            className="inline-flex h-9 items-center justify-center rounded-[5px] border border-border bg-surface px-5 text-[14px] font-medium text-text-primary transition-colors hover:border-accent/30 hover:bg-surface-hover"
+            className="inline-flex h-9 items-center justify-center rounded-control border border-[var(--color-border-interactive)] bg-surface px-5 text-[14px] font-medium text-text-primary transition-[border-width,border-color,background-color] hover:border-2 hover:border-accent/30 hover:bg-surface-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2"
           >
             {viewAllLabel}
           </button>

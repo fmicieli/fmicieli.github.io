@@ -56,27 +56,38 @@ export function CaseStudyPageContent({ slug }: { slug: string }) {
           on every viewport entry avoids depending on that first-mount
           timing being exact. */}
       <Reveal once={false} className="pt-section-top">
-        <Link href="/#projects" className="text-sm text-text-secondary hover:text-text-primary">
+        <Link href="/#projects" className="rounded-[2px] text-sm text-text-secondary hover:text-text-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2">
           {t.projectPage.backToProjects}
         </Link>
 
         {!project.caseStudyBlocks && (
-          <>
-            <h1 className="mt-6 font-display text-3xl font-semibold sm:text-4xl">
-              {project.title}
-            </h1>
-            <p className="mt-3 max-w-xl leading-relaxed text-text-secondary">{project.tagline}</p>
-            <ul className="mt-3 flex flex-wrap gap-2">
-              {project.tags.map((tag) => (
-                <li
-                  key={tag}
-                  className="rounded-full border border-border px-3 py-1 text-sm text-text-secondary"
-                >
-                  {tag}
-                </li>
-              ))}
-            </ul>
-          </>
+          <div className={project.heroImage ? "grid items-center gap-10 sm:grid-cols-2" : undefined}>
+            <div>
+              <h1 className="mt-6 font-display text-3xl font-semibold sm:text-4xl">
+                {project.title}
+              </h1>
+              <p className="mt-3 max-w-xl leading-relaxed text-text-secondary">{project.tagline}</p>
+              <ul className="mt-3 flex flex-wrap gap-2">
+                {project.tags.map((tag) => (
+                  <li
+                    key={tag}
+                    className="rounded-full border border-border px-3 py-1 text-sm text-text-secondary"
+                  >
+                    {tag}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            {project.heroImage && (
+              // Flat screenshot given a phone frame purely via a large
+              // border-radius, same technique as CaseStudyHero's default
+              // `mockupRadius` — no bezel asset needed.
+              <div className="mx-auto w-full max-w-[300px] overflow-hidden rounded-[3.25rem] border border-border shadow-xl shadow-black/30">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={project.heroImage.src} alt={project.heroImage.alt} className="h-auto w-full" />
+              </div>
+            )}
+          </div>
         )}
 
         {!project.contentReady && (
@@ -86,7 +97,7 @@ export function CaseStudyPageContent({ slug }: { slug: string }) {
               href={project.behanceUrl}
               target="_blank"
               rel="noreferrer"
-              className="underline underline-offset-4 hover:text-text-primary"
+              className="rounded-[2px] underline underline-offset-4 hover:text-text-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2"
             >
               {t.projectPage.viewOnBehance}
             </a>
@@ -105,8 +116,8 @@ export function CaseStudyPageContent({ slug }: { slug: string }) {
       ) : (
         <>
           <div className="mt-4 divide-y divide-white/10">
-            {sections.map((section, i) => (
-              <CaseStudySection key={section.heading} section={section} reverse={i % 2 === 1} />
+            {sections.map((section) => (
+              <CaseStudySection key={section.heading} section={section} />
             ))}
           </div>
           {/* No next-steps block to embed Footer in for this (placeholder

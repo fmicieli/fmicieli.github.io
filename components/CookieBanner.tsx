@@ -34,13 +34,13 @@ export function CookieBanner() {
   return (
     <div
       role="status"
-      className="glass fixed inset-x-4 bottom-4 z-50 flex flex-col gap-3 p-4 text-sm sm:inset-x-auto sm:right-4 sm:max-w-sm"
+      className="fixed inset-x-4 bottom-4 z-50 flex flex-col gap-3 rounded-card border border-border border-t-[var(--color-border-top-highlight)] bg-surface p-4 text-sm shadow-card backdrop-blur-card sm:inset-x-auto sm:right-4 sm:max-w-sm"
     >
       <p className="text-text-secondary">{t.cookieBanner.text}</p>
       <button
         type="button"
         onClick={dismiss}
-        className="self-start rounded-lg bg-accent px-4 py-2.5 text-sm font-medium text-text-primary transition-transform hover:scale-[1.03]"
+        className="inline-flex h-9 shrink-0 items-center justify-center self-start rounded-control bg-text-primary px-5 text-[14px] font-medium text-bg transition hover:scale-[1.03] hover:bg-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2"
       >
         {t.cookieBanner.button}
       </button>

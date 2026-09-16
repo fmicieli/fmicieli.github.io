@@ -50,7 +50,7 @@ export function NextStepsSection({
       </ul>
 
       {disclaimer && (
-        <p className="mt-8 border-t border-border pt-6 text-sm leading-relaxed text-text-muted">
+        <p className="mt-8 border-t border-border pt-6 text-sm leading-relaxed text-text-secondary">
           {disclaimer}
         </p>
       )}

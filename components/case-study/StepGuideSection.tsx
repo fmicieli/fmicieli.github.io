@@ -42,11 +42,11 @@ const CONNECTOR_SLOT = 56;
 const MUTED_SIZE = 39;
 const MUTED_FONT = 22;
 const MUTED_BG = "rgba(255, 255, 255, 0.1)";
-const MUTED_TEXT = "#b3a6b8"; // --color-text-secondary
+const MUTED_TEXT = "#a8a8a8"; // --color-text-secondary
 const ACTIVE_SIZE = 80;
 const ACTIVE_FONT = 40;
-const ACTIVE_BG = "rgba(226, 63, 142, 0.15)"; // --color-accent-soft
-const ACTIVE_TEXT = "#e23f8e"; // --color-accent
+const ACTIVE_BG = "rgba(255, 154, 196, 0.15)"; // --color-accent-soft
+const ACTIVE_TEXT = "#ff9ac4"; // --color-accent
 
 // How much of one step's raw scroll range (0-1 between it and the next)
 // counts as "a minimum scroll" before the transition commits and finishes

@@ -549,8 +549,8 @@ export const projects: Project[] = [
     title: "Tribu Music",
     tagline: "Una app móvil que conecta personas a través de la música en vivo.",
     tags: ["Diseño de Producto", "UI"],
-    coverImage: "/projects/tribu-music/hifi-screen-discover.png",
-    coverAlt: "Pantallas del rediseño de la app Tribu Music",
+    coverImage: "/projects/tribu-music/cover.png",
+    coverAlt: "Portada del caso de estudio de Tribu Music, con el logo de la app y la pantalla de inicio",
     behanceUrl: "https://www.behance.net/gallery/241107187/Tribu-Music-Caso-de-estudio",
     contentReady: true,
     sections: {
@@ -723,9 +723,6 @@ export const projects: Project[] = [
           { src: "/projects/tribu-music/wireframe-midfi-settings.png", alt: "Wireframe de media fidelidad de ajustes", label: "Ajustes" },
           { src: "/projects/tribu-music/wireframe-midfi-event.png", alt: "Wireframe de media fidelidad del perfil del evento", label: "Perfil del Evento" },
         ],
-        figmaLinkLabel: "Ver Figma",
-        figmaLinkHref:
-          "https://www.figma.com/design/lEMkBV42DJcfRvPf1TUCDU/Curso-UI---Micieli-Florencia?node-id=554-4414&t=SW1tVbjaGYvh1s8m-4",
       },
       {
         type: "usability-test",
@@ -996,9 +993,6 @@ export const projects: Project[] = [
           "Interacciones y microanimaciones",
           "Estados de todos los elementos",
         ],
-        linkLabel: "Ver Prototipo",
-        linkHref:
-          "https://www.figma.com/design/lEMkBV42DJcfRvPf1TUCDU/Curso-UI---Micieli-Florencia?node-id=560-5065&t=SW1tVbjaGYvh1s8m-4",
         screens: [
           { src: "/projects/tribu-music/hifi-screen-login.png", alt: "Pantalla de alta fidelidad de inicio de sesión", label: "Inicio de Sesión" },
           { src: "/projects/tribu-music/hifi-screen-discover.png", alt: "Pantalla de alta fidelidad de descubrir/inicio", label: "Descubrir" },
@@ -1084,14 +1078,25 @@ export const projects: Project[] = [
   {
     slug: "out",
     title: "Diseño de sección para OUT",
-    tagline: "Diseño de una sección de producto para OUT.",
+    tagline: "Explorá, reservá y viví experiencias únicas en tu ciudad.",
     tags: ["UI", "Sistema de Diseño"],
-    coverImage: null,
-    coverAlt: "Pantallas del proyecto OUT",
+    coverImage: "/projects/out/cover.png",
+    coverAlt: "Pantalla de reserva de la app OUT para una experiencia de cata de vinos, sobre un mockup de teléfono",
     behanceUrl: "https://www.behance.net/gallery/230515938/Diseno-de-seccion-para-OUT",
     contentReady: false,
+    heroImage: {
+      src: "/projects/out/hero-experience-profile.jpg",
+      alt: "Pantalla de perfil de experiencia de la app OUT para \"Entre Cosechas\", con fotos, detalles y panel de reserva",
+    },
     sections: {
-      context: { heading: "Contexto y problema", body: "TODO: contenido pendiente" },
+      context: {
+        heading: "Contexto",
+        body: "OUT es una app que te ayuda a encontrar bares y restaurantes únicos en Buenos Aires. Podés explorar por zona, estilo o tipo de experiencia (como terrazas, música en vivo o coctelería). Te muestra toda la información que necesitás para decidir a dónde ir: fotos, contacto, ambiente y más. **Ideal para quienes quieren salir y descubrir lugares diferentes sin perder tiempo buscando.**\n\nEn este proyecto se desarrollo una nueva sección llamada **\"Experiencias\"**, donde se pueden descubrir eventos especiales en los bares destacados, con la posibilidad de reservar y pagar directamente desde la app.\n\nAdemás, se optimizaron los tamaños de tipografías y elementos interactivos, como botones, filtros, etc. para garantizar una mejor visibilidad y usabilidad para todos los usuarios.",
+        images: [
+          { src: "/projects/out/context-mockup-categories.png", alt: "Pantalla de la app OUT mostrando categorías de lugares: Skybar, Elegante, Temático, Speakeasy, Casual" },
+          { src: "/projects/out/context-mockup-home.png", alt: "Pantalla de inicio de la app OUT mostrando un banner de promoción y bares destacados y premiados" },
+        ],
+      },
       process: { heading: "Proceso", body: "TODO: contenido pendiente" },
       decisions: { heading: "Decisiones clave", body: "TODO: contenido pendiente" },
       result: { heading: "Resultado", body: "TODO: contenido pendiente" },

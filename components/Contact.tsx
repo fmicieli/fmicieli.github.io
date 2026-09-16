@@ -17,7 +17,7 @@ export function Contact() {
             {t.contact.prompt}{" "}
             <a
               href="mailto:fmicieli94@gmail.com"
-              className="text-accent underline underline-offset-4 hover:text-text-primary"
+              className="rounded-[2px] text-accent underline underline-offset-4 hover:text-text-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2"
             >
               fmicieli94@gmail.com
             </a>

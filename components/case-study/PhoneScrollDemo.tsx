@@ -31,10 +31,16 @@ export function PhoneScrollDemo({
   frameSrc,
   frameAlt,
   scrollSrc,
+  onStartedChange,
 }: {
   frameSrc: string;
   frameAlt: string;
   scrollSrc: string;
+  /** Fires whenever this component's own scroll-into-view + start-delay
+   *  gate flips, so a sibling element (Solution's annotation callouts) can
+   *  run its own CSS animation in lockstep with this one instead of ticking
+   *  from page mount regardless of visibility — see SolutionSection.tsx. */
+  onStartedChange?: (started: boolean) => void;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: false, margin: "-100px" });
@@ -48,6 +54,10 @@ export function PhoneScrollDemo({
     const timeout = setTimeout(() => setStarted(true), START_DELAY_MS);
     return () => clearTimeout(timeout);
   }, [inView]);
+
+  useEffect(() => {
+    onStartedChange?.(started);
+  }, [started, onStartedChange]);
 
   return (
     <div

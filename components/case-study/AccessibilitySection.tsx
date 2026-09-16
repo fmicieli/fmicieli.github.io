@@ -64,7 +64,7 @@ export function AccessibilitySection({
             {areas.map((area) => (
               <li
                 key={area}
-                className="rounded-full border border-border bg-surface px-3 py-1.5 text-[13px] text-text-secondary"
+                className="rounded-full border border-border bg-surface px-3 py-2 text-label text-text-secondary"
               >
                 {area}
               </li>

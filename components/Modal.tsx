@@ -56,7 +56,7 @@ export function Modal({
             type="button"
             onClick={onClose}
             aria-label="Close"
-            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[5px] text-text-secondary transition-colors hover:bg-white/10 hover:text-text-primary"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-control text-text-secondary transition-colors hover:bg-white/10 hover:text-text-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2"
           >
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
               <path

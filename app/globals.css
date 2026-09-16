@@ -31,25 +31,33 @@
      the top of a pane of glass — paired with border-t-[var(...)] at each
      card, not part of the plain 4-side --color-border. */
   --color-border-top-highlight: rgba(255, 255, 255, 0.36);
-  --color-border-accent: rgba(226, 63, 142, 0.4);
+  --color-border-accent: rgba(255, 154, 196, 0.4);
+  /* Border for interactive controls (outline buttons): --color-border alone
+     is only 1.63:1 against the page background — under the 3:1 WCAG 1.4.11
+     needs for a non-text UI component boundary. This gives 3.76:1. */
+  --color-border-interactive: rgba(255, 255, 255, 0.4);
 
   /* Pure white, not an off-white — text sitting on the translucent
      white-overlay cards needs the crispest possible contrast against that
      fill, and #f5f0f2 vs #ffffff was an imperceptible difference anyway. */
   --color-text-primary: #ffffff;
-  --color-text-secondary: #b3a6b8;
-  --color-text-muted: #7a6d7f;
+  /* Single neutral gray for all secondary/muted text — previously split
+     into --color-text-secondary (#b3a6b8, 8.59:1) and --color-text-muted
+     (#7a6d7f, 4.10:1, which failed AA's 4.5:1 floor for normal text).
+     Merged into one AAA-contrast value (8.37:1). */
+  --color-text-secondary: #a8a8a8;
 
-  --color-accent: #e23f8e;
-  --color-accent-soft: rgba(226, 63, 142, 0.15);
+  --color-accent: #ff9ac4;
+  --color-accent-soft: rgba(255, 154, 196, 0.15);
 
   /* Elevation */
   --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  --shadow-card-accent: 0 4px 24px rgba(226, 63, 142, 0.15);
+  --shadow-card-accent: 0 4px 24px rgba(255, 154, 196, 0.15);
 
   /* Radius */
   --radius-card: 12px;
   --radius-pill: 999px;
+  --radius-control: 5px;
 }
 
 @theme inline {
@@ -59,9 +67,9 @@
   --color-border: var(--color-border);
   --color-border-top-highlight: var(--color-border-top-highlight);
   --color-border-accent: var(--color-border-accent);
+  --color-border-interactive: var(--color-border-interactive);
   --color-text-primary: var(--color-text-primary);
   --color-text-secondary: var(--color-text-secondary);
-  --color-text-muted: var(--color-text-muted);
   --color-accent: var(--color-accent);
   --color-accent-soft: var(--color-accent-soft);
 
@@ -70,6 +78,7 @@
 
   --radius-card: var(--radius-card);
   --radius-pill: var(--radius-pill);
+  --radius-control: var(--radius-control);
 
   /* Backs the `backdrop-blur-card` utility (Tailwind's `--blur-*` theme
      namespace drives both `blur-*` and `backdrop-blur-*`) — the actual
@@ -127,12 +136,10 @@
   --text-card-title--line-height: 26px;
   --text-subtitle: 16px;
   --text-subtitle--line-height: 24px;
-  --text-label: 11px;
-  --text-label--line-height: 16px;
+  --text-label: 14px;
+  --text-label--line-height: 20px;
   --text-body: 16px;
   --text-body--line-height: 24px;
-  --text-tag: 13px;
-  --text-tag--line-height: 18px;
   --text-stat-lg: 40px;
   --text-stat-lg--line-height: 44px;
   --text-stat-md: 24px;
@@ -159,7 +166,7 @@ body {
      the moment you scroll past Hero. Still layered on top of the same
      --color-bg base, so it stays subtle rather than tinting everything. */
   background:
-    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(226, 63, 142, 0.1), transparent 65%),
+    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255, 154, 196, 0.1), transparent 65%),
     var(--color-bg);
   background-attachment: fixed;
   color: var(--color-text-primary);
@@ -168,21 +175,6 @@ body {
 
 h1, h2, h3, h4 {
   font-family: var(--font-display);
-}
-
-/* Glassmorphism shared surface: frosted panel that reads over scrolling content.
-   Only the standard `backdrop-filter` is written here — Tailwind's Lightning
-   CSS build step auto-adds the -webkit- prefix, and writing both by hand
-   makes it drop the standard property entirely from the compiled output. */
-.glass {
-  background-color: rgba(245, 240, 243, 0.08);
-  backdrop-filter: blur(14px);
-  border: 0.5px solid rgba(245, 240, 243, 0.14);
-  border-radius: 12px;
-  transition:
-    background-color 300ms ease,
-    backdrop-filter 300ms ease,
-    border-color 300ms ease;
 }
 
 /* Slow auto-scroll for the phone mockup demo in the case study's Solution

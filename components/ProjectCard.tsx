@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Project } from "@/data/projects";
+import { HoverBorderTrace } from "@/components/HoverBorderTrace";
 import { useTranslation } from "@/lib/i18n/ui";
 
 export function ProjectCard({ project }: { project: Project }) {
@@ -7,7 +8,7 @@ export function ProjectCard({ project }: { project: Project }) {
   return (
     <Link
       href={`/projects/${project.slug}`}
-      className="group flex w-full flex-col overflow-hidden rounded-card border border-border border-t-[var(--color-border-top-highlight)] bg-surface shadow-card backdrop-blur-card transition-transform hover:-translate-y-1 hover:scale-[1.01] sm:h-[190px] sm:flex-row"
+      className="group relative flex w-full flex-col overflow-hidden rounded-card border border-border border-t-[var(--color-border-top-highlight)] bg-surface shadow-card backdrop-blur-card transition-transform hover:-translate-y-1 hover:scale-[1.01] focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2 sm:h-[190px] sm:flex-row"
     >
       {/* Row layout (sm+) sizes the image off the card's own h-[190px] row
           height, which leaves plenty of room next to it for the text
@@ -42,13 +43,18 @@ export function ProjectCard({ project }: { project: Project }) {
           {project.tags.map((tag) => (
             <li
               key={tag}
-              className="rounded-full border border-white bg-white/20 px-2.5 py-1.5 text-tag font-medium text-white"
+              className="rounded-full border border-white bg-white/20 px-2.5 py-2 text-label font-medium text-white"
             >
               {tag}
             </li>
           ))}
         </ul>
       </div>
+      {/* Rendered last (not first) so it paints on top of the image and
+          text columns — as the first child it used to sit underneath the
+          image's own box in paint order, making the traced line invisible
+          along the image side of the card. */}
+      <HoverBorderTrace />
     </Link>
   );
 }

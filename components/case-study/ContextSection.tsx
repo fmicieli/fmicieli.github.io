@@ -93,7 +93,7 @@ function PersonaCard({ persona }: { persona: PersonaData }) {
             </div>
           ))}
         </dl>
-        <p className="mt-2 border-t border-border pt-3 text-sm leading-relaxed text-text-muted">
+        <p className="mt-2 border-t border-border pt-3 text-sm leading-relaxed text-text-secondary">
           <span className="font-semibold text-text-secondary">{persona.justificacionLabel}: </span>
           {persona.justificacion}
         </p>
@@ -162,7 +162,7 @@ function ViewFullButton({
     <button
       type="button"
       onClick={onClick}
-      className={`inline-flex h-9 shrink-0 items-center justify-center rounded-[5px] border border-border bg-surface px-5 text-[14px] font-medium text-text-primary transition-colors hover:border-accent/30 hover:bg-surface-hover ${className}`}
+      className={`inline-flex h-9 shrink-0 items-center justify-center rounded-control border border-[var(--color-border-interactive)] bg-surface px-5 text-[14px] font-medium text-text-primary transition-[border-width,border-color,background-color] hover:border-2 hover:border-accent/30 hover:bg-surface-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2 ${className}`}
     >
       {label}
     </button>

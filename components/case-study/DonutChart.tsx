@@ -4,11 +4,11 @@ import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import type { PieChartData } from "@/data/projects";
 
-// Violet shades echoing Tribu Music's own accent (#D4B5FF) rather than the
-// site's pink accent — these charts are case-study content being
-// documented (the real survey results), same treatment as the "Sistema de
-// Color" swatches rendering in Tribu's literal palette.
-const SLICE_COLORS = ["#D4B5FF", "#B48EF0", "#8F6AD1", "#6B49AC"];
+// Shades of the portfolio site's own accent (--color-accent, #ff9ac4) —
+// matches the rest of the site's chrome (buttons, links, the landing page)
+// instead of Tribu Music's own violet brand color, which is reserved for
+// the "Sistema de Color" swatches actually documenting Tribu's palette.
+const SLICE_COLORS = ["#ffc2dd", "#ff9ac4", "#e56a9e", "#b8447a"];
 
 const SIZE = 160;
 const RADIUS = 56;
@@ -90,7 +90,7 @@ export function DonutChart({ data, index }: { data: PieChartData; index: number 
       </svg>
       <ul className="flex flex-col gap-1.5 self-stretch">
         {data.slices.map((slice, i) => (
-          <li key={slice.label} className="flex items-center justify-between gap-3 text-[13px] text-text-secondary">
+          <li key={slice.label} className="flex items-center justify-between gap-3 text-label text-text-secondary">
             <span className="flex items-center gap-2">
               <span
                 className="h-2.5 w-2.5 shrink-0 rounded-full"

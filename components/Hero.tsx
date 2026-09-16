@@ -225,10 +225,11 @@ export function Hero() {
   const rawY = useMotionValue(30);
   const glowX = useSpring(rawX, { stiffness: 60, damping: 20 });
   const glowY = useSpring(rawY, { stiffness: 60, damping: 20 });
-  // rgba(226,63,142,...) = --color-accent (#e23f8e) — was the old, since-
-  // replaced accent color (#8a2f52) hardcoded here instead of tokenized;
-  // updated to match so the vignette tracks the current brand color.
-  const glowBackground = useMotionTemplate`radial-gradient(circle at ${glowX}% ${glowY}%, rgba(226,63,142,0.35), transparent 55%)`;
+  // rgba(255,154,196,...) = --color-accent (#ff9ac4) — hardcoded here
+  // instead of tokenized since useMotionTemplate needs a literal, parseable
+  // color string; keep this in sync by hand whenever the accent token
+  // changes.
+  const glowBackground = useMotionTemplate`radial-gradient(circle at ${glowX}% ${glowY}%, rgba(255,154,196,0.35), transparent 55%)`;
 
   // Cursor-driven tilt for the 3D logo: whichever side the pointer is nearer
   // to dips back slightly (like pressing down on that edge), on top of the
@@ -313,7 +314,7 @@ export function Hero() {
             <button
               type="button"
               onClick={handleCtaClick}
-              className="mt-5 inline-flex h-9 items-center justify-center rounded-[5px] bg-text-primary px-5 text-[14px] font-medium text-bg transition hover:scale-[1.03] hover:bg-accent"
+              className="mt-5 inline-flex h-9 items-center justify-center rounded-control bg-text-primary px-5 text-[14px] font-medium text-bg transition hover:scale-[1.03] hover:bg-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2"
             >
               {t.hero.viewMore}
             </button>
