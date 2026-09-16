@@ -157,6 +157,7 @@ export const projects: Project[] = [
         heading: "05 · Wireframes de baja fidelidad",
         subheading:
           "Se transcribieron 21 pantallas en escala de grises, sin bordes redondeados y sin componentes de diseño — un paso deliberadamente simple, enfocado en validar contenido, layout y flujo antes de invertir en estética visual.",
+        cardWidth: 252, // 210 * 1.2
         screens: [
           { caption: "Meta", image: { src: "/projects/stride/wireframes-lofi/a2-meta.jpg", alt: "Wireframe de baja fidelidad: pantalla de selección de meta del onboarding" } },
           { caption: "Cuenta", image: { src: "/projects/stride/wireframes-lofi/a7-cuenta.jpg", alt: "Wireframe de baja fidelidad: pantalla de creación de cuenta del onboarding" } },
@@ -212,6 +213,7 @@ export const projects: Project[] = [
         heading: "07 · Wireframes de alta fidelidad",
         subheading:
           "Las 21 pantallas del MVP se reconstruyeron usando instancias reales de los componentes del sistema de diseño (no elementos sueltos que solo imitan su apariencia), reemplazando la escala de grises por los tokens de color, tipografía y espaciado definitivos. Flujo: Onboarding → Hoy → Entrenamiento activo → Progreso → Perfil.",
+        cardWidth: 184, // más angosto que el default (210) para que 7 pantallas queden 4 + 3, no 3 + 3 + 1
         screens: [
           { caption: "Meta", image: { src: "/projects/stride/wireframes-hifi/a2-meta.png", alt: "Pantalla de alta fidelidad: selección de meta del onboarding" } },
           { caption: "Cuenta", image: { src: "/projects/stride/wireframes-hifi/a7-cuenta.png", alt: "Pantalla de alta fidelidad: creación de cuenta del onboarding" } },

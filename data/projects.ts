@@ -289,7 +289,16 @@ export type CaseStudyBlock =
       subflowSub: string;
       discrepancyNote?: string;
     }
-  | { type: "wireframe-filmstrip"; heading: string; subheading: string; screens: WireframeScreen[] }
+  | {
+      type: "wireframe-filmstrip";
+      heading: string;
+      subheading: string;
+      screens: WireframeScreen[];
+      /** Card width in px. Defaults to 210 (see WireframeFilmstripSection)
+       * when omitted — set explicitly per section to control how screens
+       * wrap into rows (e.g. avoiding a lone last screen on its own row). */
+      cardWidth?: number;
+    }
   | {
       type: "design-system";
       heading: string;
@@ -519,6 +528,7 @@ export const projects: Project[] = [
         heading: "05 · Low-fidelity wireframes",
         subheading:
           "21 screens were transcribed in grayscale, with no rounded corners and no design components — a deliberately simple step, focused on validating content, layout, and flow before investing in visual polish.",
+        cardWidth: 252, // 210 * 1.2
         screens: [
           { caption: "Goal", image: { src: "/projects/stride/wireframes-lofi/a2-meta.jpg", alt: "Low-fidelity wireframe: onboarding goal selection screen" } },
           { caption: "Account", image: { src: "/projects/stride/wireframes-lofi/a7-cuenta.jpg", alt: "Low-fidelity wireframe: onboarding account creation screen" } },
@@ -574,6 +584,7 @@ export const projects: Project[] = [
         heading: "07 · High-fidelity wireframes",
         subheading:
           "The MVP's 21 screens were rebuilt using real instances of the design system's components (not loose elements that only imitate their look), replacing grayscale with the definitive color, typography, and spacing tokens. Flow: Onboarding → Today → Active workout → Progress → Profile.",
+        cardWidth: 184, // narrower than the default 210 so 7 screens split 4 + 3, not 3 + 3 + 1
         screens: [
           { caption: "Goal", image: { src: "/projects/stride/wireframes-hifi/a2-meta.png", alt: "High-fidelity screen: onboarding goal selection" } },
           { caption: "Account", image: { src: "/projects/stride/wireframes-hifi/a7-cuenta.png", alt: "High-fidelity screen: onboarding account creation" } },

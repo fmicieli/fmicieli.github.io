@@ -299,7 +299,12 @@ export function CaseStudyBlocks({ blocks }: { blocks: CaseStudyBlock[] }) {
               />
             )}
             {block.type === "wireframe-filmstrip" && (
-              <WireframeFilmstripSection heading={block.heading} subheading={block.subheading} screens={block.screens} />
+              <WireframeFilmstripSection
+                heading={block.heading}
+                subheading={block.subheading}
+                screens={block.screens}
+                cardWidth={block.cardWidth}
+              />
             )}
             {block.type === "design-system" && (
               <DesignSystemSection
