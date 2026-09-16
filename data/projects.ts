@@ -256,6 +256,8 @@ export type CaseStudyBlock =
       subheading: string;
       bullets: string[];
       callout: string;
+      /** Labels above the generic-app-vs-Stride mockup comparison. */
+      compareLabels: { generic: string; stride: string };
     }
   | {
       type: "research";
@@ -432,6 +434,7 @@ export const projects: Project[] = [
         ],
         callout:
           "People who've never run before, with no technical vocabulary, who need small, achievable goals so they don't give up.",
+        compareLabels: { generic: "Typical running apps", stride: "Stride" },
       },
       {
         type: "research",

@@ -57,6 +57,7 @@ export const projects: Project[] = [
         ],
         callout:
           "Personas que nunca corrieron, sin vocabulario técnico, que necesitan objetivos chicos y alcanzables para no abandonar.",
+        compareLabels: { generic: "Apps de running típicas", stride: "Stride" },
       },
       {
         type: "research",

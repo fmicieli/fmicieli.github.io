@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 /**
  * Composites a real iPhone 15 Pro Max frame PNG (transparent screen cutout)
  * over a screenshot, same technique as PhoneScrollDemo — just static, no
@@ -10,16 +12,32 @@
  * is an enclosed transparent region distinct from the transparent
  * background outside the phone body, isolated via flood-fill from a corner.
  * left=7.84% top=3.95% width=84.31% height=92.09%.
+ *
+ * Pass either `screenSrc` (a real screenshot) or `children` (a coded, fake
+ * screen — e.g. StrideProblemSection's grayscale "generic app" mockup,
+ * which has no real screenshot to show).
  */
-export function IPhoneMockup({ screenSrc, screenAlt }: { screenSrc: string; screenAlt: string }) {
+export function IPhoneMockup({
+  screenSrc,
+  screenAlt,
+  children,
+}: {
+  screenSrc?: string;
+  screenAlt?: string;
+  children?: ReactNode;
+}) {
   return (
     <div className="relative mx-auto w-full max-w-[300px]" style={{ aspectRatio: "1530 / 3036" }}>
       <div
         className="absolute overflow-hidden"
         style={{ left: "7.84%", top: "3.95%", width: "84.31%", height: "92.09%" }}
       >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={screenSrc} alt={screenAlt} className="h-full w-full object-cover" />
+        {screenSrc ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={screenSrc} alt={screenAlt ?? ""} className="h-full w-full object-cover" />
+        ) : (
+          children
+        )}
       </div>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img

@@ -261,6 +261,7 @@ export function CaseStudyBlocks({ blocks }: { blocks: CaseStudyBlock[] }) {
                 subheading={block.subheading}
                 bullets={block.bullets}
                 callout={block.callout}
+                compareLabels={block.compareLabels}
               />
             )}
             {block.type === "research" && (
