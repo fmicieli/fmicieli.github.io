@@ -298,6 +298,10 @@ export type CaseStudyBlock =
        * when omitted — set explicitly per section to control how screens
        * wrap into rows (e.g. avoiding a lone last screen on its own row). */
       cardWidth?: number;
+      /** When true, cards on each wrapped row grow to fill 100% of the
+       * container width (cardWidth becomes their flex-basis) instead of
+       * staying fixed-size and centered. */
+      cardFill?: boolean;
     }
   | {
       type: "design-system";
@@ -585,6 +589,7 @@ export const projects: Project[] = [
         subheading:
           "The MVP's 21 screens were rebuilt using real instances of the design system's components (not loose elements that only imitate their look), replacing grayscale with the definitive color, typography, and spacing tokens. Flow: Onboarding → Today → Active workout → Progress → Profile.",
         cardWidth: 184, // narrower than the default 210 so 7 screens split 4 + 3, not 3 + 3 + 1
+        cardFill: true, // each row stretches to fill the full container width
         screens: [
           { caption: "Goal", image: { src: "/projects/stride/wireframes-hifi/a2-meta.png", alt: "High-fidelity screen: onboarding goal selection" } },
           { caption: "Account", image: { src: "/projects/stride/wireframes-hifi/a7-cuenta.png", alt: "High-fidelity screen: onboarding account creation" } },
