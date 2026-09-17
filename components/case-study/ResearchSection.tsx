@@ -56,7 +56,7 @@ export function ResearchSection({
   return (
     <div className="flex h-full flex-1 flex-col">
       <SectionHeading heading={heading} subheading={subheading} />
-      <div className="mt-title-to-content flex flex-1 flex-col justify-center gap-8">
+      <div className="mt-title-to-content flex flex-1 flex-col justify-center gap-16">
         <ul className="flex flex-wrap justify-center gap-[28.8px] sm:justify-start">
           {competitors.map((competitor) => (
             <li key={competitor.name} className="flex flex-col items-center gap-2">

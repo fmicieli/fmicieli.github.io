@@ -22,7 +22,9 @@ function GenericAppScreen() {
       className="flex h-full w-full flex-col gap-3 bg-neutral-900 px-4 text-neutral-300"
       style={{ paddingTop: "9%", paddingBottom: "7%" }}
     >
-      <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-neutral-500">New training plan</p>
+      <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-neutral-500 opacity-0" aria-hidden="true">
+        New training plan
+      </p>
       <p className="text-[13px] font-semibold text-neutral-100">Select your workout type</p>
       <ul className="flex flex-col gap-1.5">
         {plans.map((plan) => (
