@@ -305,7 +305,6 @@ export function CaseStudyBlocks({ blocks }: { blocks: CaseStudyBlock[] }) {
                 subheading={block.subheading}
                 screens={block.screens}
                 cardWidth={block.cardWidth}
-                fill={block.cardFill}
               />
             )}
             {block.type === "design-system" && (

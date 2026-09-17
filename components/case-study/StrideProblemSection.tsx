@@ -63,7 +63,7 @@ export function StrideProblemSection({
             sitting empty. The three problem statements merge into one card
             next to the generic screen (what's wrong), and the persona
             callout sits next to Stride's own screen (who it's solved for). */}
-        <div className="mx-auto flex w-full max-w-[1200px] flex-col gap-10 sm:flex-row sm:items-center sm:gap-28">
+        <div className="mx-auto flex w-full max-w-[1200px] flex-col gap-10 xl:flex-row xl:items-center xl:gap-16">
           <motion.div
             className="flex flex-1 flex-col items-center gap-4 sm:flex-row sm:items-center sm:gap-6"
             initial={{ opacity: 0, y: 16 }}
@@ -110,7 +110,7 @@ export function StrideProblemSection({
                 />
               </div>
             </div>
-            <div className="flex-1 text-center text-body font-semibold leading-relaxed text-white">{callout}</div>
+            <div className="flex-1 text-right text-body font-semibold leading-relaxed text-white">{callout}</div>
           </motion.div>
         </div>
       </div>

@@ -7,6 +7,26 @@ import { SectionHeading } from "@/components/case-study/SectionHeading";
 
 type Line = { x1: number; y1: number; x2: number; y2: number };
 
+/** Reveal order for the diagram: Start, then the arrow into Onboarding, then
+ * the arrows fanning out into the nav sections, then finally the arrow down
+ * into the Entrenamiento sub-flow nested under Today — each stage a beat
+ * after the last rather than the whole tree fading in at once. */
+const STAGE_START = 0;
+const STAGE_ONBOARDING = 0.45;
+const STAGE_NAV = 0.9;
+const STAGE_SUBFLOW = 1.4;
+const STAGE_EASE = [0.22, 1, 0.36, 1] as const;
+
+/** Which reveal stage a given connector line belongs to, by its index in the
+ * `lines` array as built by `measure()`: index 0 is Start->Onboarding, the
+ * next `navCount` are Onboarding->each nav box, and the last (if present) is
+ * the nav's first box -> the Entrenamiento sub-flow. */
+function lineStageDelay(i: number, navCount: number) {
+  if (i === 0) return STAGE_ONBOARDING;
+  if (i <= navCount) return STAGE_NAV;
+  return STAGE_SUBFLOW;
+}
+
 /** Center-x / top-or-bottom-y of `el`, in coordinates relative to
  * `container`'s own box — what the SVG overlay (itself absolutely
  * positioned over the same container) needs to draw a connector that lands
@@ -122,10 +142,10 @@ export function ArchitectureSitemapSection({
         <motion.div
           ref={containerRef}
           className="relative"
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
           viewport={{ once: false, margin: "-40px" }}
-          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.3 }}
         >
           <svg
             aria-hidden="true"
@@ -139,34 +159,49 @@ export function ArchitectureSitemapSection({
               </marker>
             </defs>
             {lines.map((line, i) => (
-              <path
+              <motion.g
                 key={i}
-                d={elbowPath({ ...line, y2: line.y2 - 7 })}
-                fill="none"
-                stroke="var(--color-border)"
-                strokeWidth={1.5}
-                markerEnd="url(#sitemap-arrow)"
-              />
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: false, margin: "-40px" }}
+                transition={{ duration: 0.4, delay: lineStageDelay(i, navItems.length), ease: STAGE_EASE }}
+              >
+                <path
+                  d={elbowPath({ ...line, y2: line.y2 - 7 })}
+                  fill="none"
+                  stroke="var(--color-border)"
+                  strokeWidth={1.5}
+                  markerEnd="url(#sitemap-arrow)"
+                />
+              </motion.g>
             ))}
           </svg>
 
           <div className="relative flex justify-center">
-            <div
+            <motion.div
               ref={startRef}
               className="rounded-card border border-border bg-surface px-6 py-2.5 text-center shadow-card backdrop-blur-card"
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false, margin: "-40px" }}
+              transition={{ duration: 0.5, delay: STAGE_START, ease: STAGE_EASE }}
             >
               <p className="font-display text-sm font-semibold text-text-primary">{startLabel}</p>
-            </div>
+            </motion.div>
           </div>
 
           <div className="relative mt-10 flex justify-center">
-            <div
+            <motion.div
               ref={onboardingRef}
               className="rounded-card border border-border border-t-[var(--color-border-top-highlight)] bg-surface px-8 py-4 text-center shadow-card backdrop-blur-card"
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false, margin: "-40px" }}
+              transition={{ duration: 0.5, delay: STAGE_ONBOARDING, ease: STAGE_EASE }}
             >
               <p className="font-display text-lg font-semibold text-text-primary">{onboardingLabel}</p>
               <p className="mt-1.5 font-mono text-xs text-text-secondary">{onboardingSub}</p>
-            </div>
+            </motion.div>
           </div>
 
           {/* Entrenamiento (the sub-flow) nests directly under Hoy/Today
@@ -177,17 +212,21 @@ export function ArchitectureSitemapSection({
           <div className="relative mt-16 flex flex-wrap items-start justify-center gap-[26px]">
             {navItems.map((item, i) => {
               const box = (
-                <div
+                <motion.div
                   ref={(el) => {
                     navRefs.current[i] = el;
                   }}
                   className="w-[210px] rounded-card border border-border border-t-[var(--color-border-top-highlight)] bg-surface p-4 text-center shadow-card backdrop-blur-card"
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: false, margin: "-40px" }}
+                  transition={{ duration: 0.5, delay: STAGE_NAV, ease: STAGE_EASE }}
                 >
                   <p className="font-display text-lg font-semibold text-text-primary">{item.label}</p>
                   <p className="mt-1.5 whitespace-nowrap font-mono text-xs font-normal text-text-muted">
                     {item.sub}
                   </p>
-                </div>
+                </motion.div>
               );
 
               if (i !== 0) {
@@ -197,15 +236,19 @@ export function ArchitectureSitemapSection({
               return (
                 <div key={item.label} className="flex flex-col items-center gap-16">
                   {box}
-                  <div
+                  <motion.div
                     ref={subflowRef}
                     className="rounded-card border border-dashed border-border bg-surface px-6 py-4 text-center shadow-card backdrop-blur-card"
+                    initial={{ opacity: 0, y: 16 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: false, margin: "-40px" }}
+                    transition={{ duration: 0.5, delay: STAGE_SUBFLOW, ease: STAGE_EASE }}
                   >
                     <p className="font-display text-lg font-semibold text-text-primary">{subflowLabel}</p>
                     <p className="mt-1.5 whitespace-nowrap font-mono text-xs font-normal text-text-muted">
                       {subflowSub}
                     </p>
-                  </div>
+                  </motion.div>
                 </div>
               );
             })}
