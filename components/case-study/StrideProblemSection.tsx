@@ -18,7 +18,10 @@ function GenericAppScreen() {
     { title: "Long run · negative split", meta: "Pace 5:45/km" },
   ];
   return (
-    <div className="flex h-full w-full flex-col gap-3 bg-neutral-900 p-4 text-neutral-300">
+    <div
+      className="flex h-full w-full flex-col gap-3 bg-neutral-900 px-4 text-neutral-300"
+      style={{ paddingTop: "9%", paddingBottom: "7%" }}
+    >
       <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-neutral-500">New training plan</p>
       <p className="text-[13px] font-semibold text-neutral-100">Select your workout type</p>
       <ul className="flex flex-col gap-1.5">
@@ -77,7 +80,7 @@ export function StrideProblemSection({
               </p>
               {/* 200 * 1.25 * 1.15 */}
               <div className="w-[288px]">
-                <IPhoneMockup insetColors={{ top: "#1a1a1e", bottom: "#262627" }}>
+                <IPhoneMockup>
                   <GenericAppScreen />
                 </IPhoneMockup>
               </div>
