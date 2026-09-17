@@ -106,10 +106,16 @@ export function StrideProblemSection({
               <p className="text-label font-semibold uppercase tracking-[0.08em] text-accent">{compareLabels.stride}</p>
               {/* 200 * 1.25 * 1.15 */}
               <div className="w-[288px]">
-                <IPhoneMockup
-                  screenSrc="/projects/stride/wireframes-hifi/b1-hoy.png"
-                  screenAlt="Stride's Today screen, in high fidelity"
-                  fit="contain"
+                {/* Manually composited (phone frame baked in) instead of
+                    going through IPhoneMockup's cutout — the "Hoy" screen's
+                    own content sits too close to its top/bottom edge for any
+                    cover/contain fit to avoid the frame's dynamic island or
+                    home-indicator curve overlapping it. */}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/projects/stride/problem-stride-mockup.png"
+                  alt="Stride's Today screen, in high fidelity"
+                  className="w-full"
                 />
               </div>
             </div>
