@@ -30,7 +30,18 @@ const SECTION_EASE = [0.65, 0, 0.35, 1] as const;
 // still fires and releases the lock even if the tab is backgrounded and
 // rAF gets paused mid-animation — the animation itself would stall in that
 // case, but the lock can't get stuck open forever the way it did before.
-const SECTION_LOCK_MS = (SECTION_DURATION + 0.3) * 1000;
+// The extra buffer past SECTION_DURATION (0.5s, not just 0.3s) also gives
+// a still-decelerating trackpad gesture's momentum tail more room to fully
+// die down before the lock lifts, so it doesn't immediately re-trigger a
+// second, unintended jump right as the first one finishes.
+const SECTION_LOCK_MS = (SECTION_DURATION + 0.5) * 1000;
+// Minimum |deltaY| (beyond the trackpad-jitter filter below) an event must
+// carry to actually trigger a section jump. Any single non-trivial wheel
+// tick used to be enough — fine for a deliberate mouse-wheel notch, but a
+// trackpad's gesture *starts* with several small-but-not-tiny deltas below
+// this before it ramps up, and those shouldn't each be capable of firing
+// off a full section transition on their own.
+const JUMP_THRESHOLD = 12;
 // How close to a tall section's top/bottom edge (in px) counts as "already
 // at the edge" for the purposes of handing off to the next/previous
 // section, vs. still having native scroll room left inside it.
@@ -127,6 +138,17 @@ export function ScrollMain({ className, children }: { className?: string; childr
       // of letting it overshoot.
       if (e.deltaY > 0 && remainingDown > Math.max(EDGE_TOLERANCE, e.deltaY)) return;
       if (e.deltaY < 0 && remainingUp > Math.max(EDGE_TOLERANCE, -e.deltaY)) return;
+    }
+
+    // Past the interior-scroll cutout above, every remaining case is a
+    // candidate section jump — gate it on real intent (see JUMP_THRESHOLD)
+    // rather than firing on the first non-trivial-but-still-small delta a
+    // trackpad gesture happens to open with. Still prevents default so a
+    // sub-threshold tick doesn't leak into native scroll and drift the
+    // page between sections on its own.
+    if (Math.abs(e.deltaY) < JUMP_THRESHOLD) {
+      e.preventDefault();
+      return;
     }
 
     const direction = e.deltaY > 0 ? 1 : -1;

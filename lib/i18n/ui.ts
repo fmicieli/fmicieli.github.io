@@ -26,10 +26,6 @@ type Ui = {
     behanceLine: string;
     behanceTodo: string;
   };
-  cookieBanner: {
-    text: string;
-    button: string;
-  };
   projectPage: {
     backToProjects: string;
     contentPending: string;
@@ -94,10 +90,6 @@ export const ui: Record<Language, Ui> = {
       behanceLine: "Full project history, while I migrate this portfolio: Behance",
       behanceTodo: "(TODO: content pending — missing the Behance profile URL)",
     },
-    cookieBanner: {
-      text: "This site uses minimal cookies to work correctly. None are used for third-party tracking.",
-      button: "Got it",
-    },
     projectPage: {
       backToProjects: "← Back to projects",
       contentPending:
@@ -160,10 +152,6 @@ export const ui: Record<Language, Ui> = {
       prompt: "¿Hablamos de un proyecto?",
       behanceLine: "Historial completo de proyectos, mientras migro este portfolio: Behance",
       behanceTodo: "(TODO: contenido pendiente — falta la URL del perfil de Behance)",
-    },
-    cookieBanner: {
-      text: "Este sitio usa cookies mínimas para funcionar correctamente. Ninguna se usa para seguimiento de terceros.",
-      button: "Entendido",
     },
     projectPage: {
       backToProjects: "← Volver a proyectos",

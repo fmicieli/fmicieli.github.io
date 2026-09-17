@@ -74,16 +74,24 @@ export function PhoneScrollDemo({
         className="absolute overflow-hidden rounded-none"
         style={{ left: "5.25%", top: "13.01%", width: "89.51%", height: "76%" }}
       >
+        {/* `key` forces a remount (not just a play-state toggle) every time
+            `started` flips: `animation-play-state: paused` freezes a CSS
+            animation wherever its progress happens to be, it doesn't
+            rewind it — so pausing mid-loop (e.g. scrolling away from this
+            section right as it panned partway down) and later un-pausing
+            resumed from that same stale mid-scroll frame instead of
+            restarting clean from the top. Remounting recreates the
+            animation fresh at its 0% keyframe every time; while not
+            started, no animation is attached at all, which is already
+            equivalent to that same 0% frame (translateY(0%)). */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
+          key={started ? "scrolling" : "paused"}
           src={scrollSrc}
           alt=""
           aria-hidden="true"
           className="w-full"
-          style={{
-            animation: "phone-scroll 16s ease-in-out infinite",
-            animationPlayState: started ? "running" : "paused",
-          }}
+          style={started ? { animation: "phone-scroll 16s ease-in-out infinite" } : undefined}
         />
       </div>
       {/* eslint-disable-next-line @next/next/no-img-element */}

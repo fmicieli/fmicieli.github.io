@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useInView } from "framer-motion";
 import type { TerminalLine } from "@/data/projects";
 import { SectionHeading } from "@/components/case-study/SectionHeading";
 import { IPhoneMockup } from "@/components/case-study/IPhoneMockup";
@@ -26,11 +27,28 @@ export function DevelopmentSection({
   videoPendingLabel: string;
   videoSrc?: string;
 }) {
+  // Every block on this page mounts unconditionally up front (see
+  // CaseStudyBlocks), so a plain <video autoPlay> here would start
+  // downloading the full file the instant the page loads — this section is
+  // #8 of 10, competing for bandwidth with everything actually above the
+  // fold. Deferring the <video> tag itself (not just its `src`) until the
+  // section scrolls near view means the browser never fetches it before
+  // then. "Seen once, keep mounted" (rather than mounting/unmounting on
+  // every viewport re-entry) avoids restarting playback each time a
+  // visitor scrolls past and back.
+  const mockupRef = useRef<HTMLDivElement>(null);
+  const mockupInView = useInView(mockupRef, { once: true, margin: "200px" });
+
   return (
     <div className="flex h-full flex-1 flex-col">
       <SectionHeading heading={heading} subheading={subheading} />
       <div className="mt-title-to-content flex flex-1 flex-col justify-center gap-8 lg:flex-row lg:items-center lg:gap-14">
-        <div className="flex-1">
+        {/* max-w caps this at 75% of its old, uncapped flex-1 width (was
+            filling all remaining space next to the 180px mockup; now stops
+            growing past ~723px, the equivalent width at a typical content
+            row once the mockup grew to 270px) — still fluid/shrinks below
+            that on narrower screens. */}
+        <div className="flex-1 lg:max-w-[723px]">
           <ul className="flex flex-wrap gap-2">
             {stack.map((item) => (
               <li key={item} className="rounded-lg border border-border bg-surface px-3 py-1.5 font-mono text-sm text-text-primary">
@@ -71,8 +89,10 @@ export function DevelopmentSection({
           </div>
         </div>
 
+        {/* 180px * 1.5 */}
         <motion.div
-          className="mx-auto w-[180px] shrink-0"
+          ref={mockupRef}
+          className="mx-auto w-[270px] shrink-0"
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: false, margin: "-40px" }}
@@ -80,11 +100,14 @@ export function DevelopmentSection({
         >
           {videoSrc ? (
             <IPhoneMockup>
-              <video src={videoSrc} autoPlay loop muted playsInline className="h-full w-full object-cover" />
+              {mockupInView && (
+                <video src={videoSrc} autoPlay loop muted playsInline className="h-full w-full object-cover" />
+              )}
             </IPhoneMockup>
           ) : (
             <div
-              className="flex h-[368px] w-[180px] items-center justify-center overflow-hidden rounded-[34px] border-8"
+              // 368px * 1.5, 180px * 1.5
+              className="flex h-[552px] w-[270px] items-center justify-center overflow-hidden rounded-[34px] border-8"
               style={{ borderColor: "#0D0D0F", background: "#0D0D0F" }}
             >
               <div className="flex flex-col items-center gap-2.5 p-5 text-center">

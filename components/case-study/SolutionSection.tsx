@@ -153,12 +153,19 @@ export function SolutionSection({
               )}
 
               {phoneDemo && (
+                // `key` forces a remount every time `phoneStarted` flips —
+                // see PhoneScrollDemo's matching comment: pausing a CSS
+                // animation freezes its current progress rather than
+                // rewinding it, so leaving this section mid-fade-out and
+                // coming back left the callouts stuck invisible (paused at
+                // whatever opacity the loop happened to be at) instead of
+                // showing again during the fresh "not yet scrolling" pause.
                 <div
+                  key={phoneStarted ? "fading" : "visible"}
                   className="relative min-h-[64px] flex-1"
-                  style={{
-                    animation: "annotation-group-fade 16s ease-in-out infinite",
-                    animationPlayState: phoneStarted ? "running" : "paused",
-                  }}
+                  style={
+                    phoneStarted ? { animation: "annotation-group-fade 16s ease-in-out infinite" } : undefined
+                  }
                 >
                   {annotations.map((annotation, i) => (
                     <div

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Space_Grotesk, Inter, Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-import { CookieBanner } from "@/components/CookieBanner";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 
 const spaceGrotesk = Space_Grotesk({
@@ -64,10 +63,7 @@ export default function RootLayout({
       <body
         className={`${spaceGrotesk.variable} ${inter.variable} ${plusJakartaSans.variable} ${jetBrainsMono.variable} antialiased bg-bg text-text-primary`}
       >
-        <LanguageProvider>
-          {children}
-          <CookieBanner />
-        </LanguageProvider>
+        <LanguageProvider>{children}</LanguageProvider>
       </body>
     </html>
   );
