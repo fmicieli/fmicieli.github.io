@@ -40,8 +40,17 @@ export function CaseStudyBlocks({ blocks }: { blocks: CaseStudyBlock[] }) {
         }
 
         if (block.type === "hero") {
+          // min-h-screen, not h-screen max-h-screen: a hero whose content
+          // (text column + mockup, stacked to one column on mobile) is
+          // taller than one viewport used to get clipped to exactly 100vh
+          // and centered — centering an overflowing flex column pushes its
+          // top half above the container's own top edge, rendering behind
+          // whatever precedes it on the page ("Back to projects").
+          // min-height lets the section grow past 100vh instead when
+          // content needs it; on any viewport where content already fits,
+          // it's visually identical to before.
           return (
-            <div key={i} className="flex h-screen max-h-screen flex-col justify-center pb-10 snap-start">
+            <div key={i} className="flex min-h-screen flex-col justify-center pb-10 snap-start">
               <CaseStudyHero
                 title={block.title}
                 subtitle={block.subtitle}

@@ -54,12 +54,18 @@ export function CaseStudyHero({
           </li>
         ))}
       </motion.ul>
-      {/* gap: 16px * 1.5. size: 30px * 1.15, 36px * 1.15 */}
-      <motion.h1 {...fadeUp(0.1)} className="mt-6 font-display text-[35px] font-semibold sm:text-[41px]">
+      {/* Enlarged sizes/gaps kick in at sm: only — at the mobile single-
+          column stack (text + mockup both in one column), the bigger
+          content pushed total height past h-screen, and centering an
+          overflowing flex column spills the top half above the
+          container's own top edge (it was rendering behind "Back to
+          projects"). Mobile keeps the original, already-fitting sizes. */}
+      {/* gap: 16px * 1.5. size: 36px * 1.15 */}
+      <motion.h1 {...fadeUp(0.1)} className="mt-4 font-display text-3xl font-semibold sm:mt-6 sm:text-[41px]">
         {title}
       </motion.h1>
       {/* gap: 12px * 1.5. size: 16px * 1.15 */}
-      <motion.p {...fadeUp(0.2)} className="mt-[18px] max-w-xl text-[18px] leading-relaxed text-text-secondary">
+      <motion.p {...fadeUp(0.2)} className="mt-3 max-w-xl leading-relaxed text-text-secondary sm:mt-[18px] sm:text-[18px]">
         {subtitle}
       </motion.p>
 
