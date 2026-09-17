@@ -243,6 +243,7 @@ export const projects: Project[] = [
         prototypeLabel: "Prototipo funcional",
         prototypeHref: "https://fmicieli.github.io/stride/",
         videoPendingLabel: "video de navegación pendiente de subir",
+        videoSrc: "/projects/stride/prototype-demo.mp4",
       },
       {
         type: "ai-agents",

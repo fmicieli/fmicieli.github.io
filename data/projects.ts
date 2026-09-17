@@ -347,6 +347,10 @@ export type CaseStudyBlock =
       prototypeLabel: string;
       prototypeHref: string;
       videoPendingLabel: string;
+      /** Screen-recording of the running prototype, composited into the
+       * same iPhone frame used elsewhere on the site — shown instead of
+       * the "pending upload" placeholder once a recording exists. */
+      videoSrc?: string;
     }
   | {
       type: "ai-agents";
@@ -620,6 +624,7 @@ export const projects: Project[] = [
         prototypeLabel: "Functional prototype",
         prototypeHref: "https://fmicieli.github.io/stride/",
         videoPendingLabel: "navigation video pending upload",
+        videoSrc: "/projects/stride/prototype-demo.mp4",
       },
       {
         type: "ai-agents",

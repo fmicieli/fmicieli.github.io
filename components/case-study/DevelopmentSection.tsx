@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import type { TerminalLine } from "@/data/projects";
 import { SectionHeading } from "@/components/case-study/SectionHeading";
+import { IPhoneMockup } from "@/components/case-study/IPhoneMockup";
 
 export function DevelopmentSection({
   heading,
@@ -13,6 +14,7 @@ export function DevelopmentSection({
   prototypeLabel,
   prototypeHref,
   videoPendingLabel,
+  videoSrc,
 }: {
   heading: string;
   subheading: string;
@@ -22,6 +24,7 @@ export function DevelopmentSection({
   prototypeLabel: string;
   prototypeHref: string;
   videoPendingLabel: string;
+  videoSrc?: string;
 }) {
   return (
     <div className="flex h-full flex-1 flex-col">
@@ -69,19 +72,29 @@ export function DevelopmentSection({
         </div>
 
         <motion.div
-          className="mx-auto flex h-[368px] w-[180px] shrink-0 items-center justify-center overflow-hidden rounded-[34px] border-8"
-          style={{ borderColor: "#0D0D0F", background: "#0D0D0F" }}
+          className="mx-auto w-[180px] shrink-0"
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: false, margin: "-40px" }}
           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         >
-          <div className="flex flex-col items-center gap-2.5 p-5 text-center">
-            <div className="flex h-11 w-11 items-center justify-center rounded-full border-[1.5px] border-dashed border-[#9C9CA0] text-[#9C9CA0]">
-              ▶
+          {videoSrc ? (
+            <IPhoneMockup>
+              <video src={videoSrc} autoPlay loop muted playsInline className="h-full w-full object-cover" />
+            </IPhoneMockup>
+          ) : (
+            <div
+              className="flex h-[368px] w-[180px] items-center justify-center overflow-hidden rounded-[34px] border-8"
+              style={{ borderColor: "#0D0D0F", background: "#0D0D0F" }}
+            >
+              <div className="flex flex-col items-center gap-2.5 p-5 text-center">
+                <div className="flex h-11 w-11 items-center justify-center rounded-full border-[1.5px] border-dashed border-[#9C9CA0] text-[#9C9CA0]">
+                  ▶
+                </div>
+                <span className="font-mono text-[14px] leading-relaxed text-[#9C9CA0]">{videoPendingLabel}</span>
+              </div>
             </div>
-            <span className="font-mono text-[14px] leading-relaxed text-[#9C9CA0]">{videoPendingLabel}</span>
-          </div>
+          )}
         </motion.div>
       </div>
     </div>

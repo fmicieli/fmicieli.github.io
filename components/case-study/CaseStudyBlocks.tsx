@@ -336,6 +336,7 @@ export function CaseStudyBlocks({ blocks }: { blocks: CaseStudyBlock[] }) {
                 prototypeLabel={block.prototypeLabel}
                 prototypeHref={block.prototypeHref}
                 videoPendingLabel={block.videoPendingLabel}
+                videoSrc={block.videoSrc}
               />
             )}
             {block.type === "ai-agents" && (
