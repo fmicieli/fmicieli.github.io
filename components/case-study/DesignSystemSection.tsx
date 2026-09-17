@@ -60,13 +60,20 @@ function ComponentCell({
       <span className="absolute left-3 top-2 font-stride-mono text-xs" style={{ color: DK_TEXT_2 }}>
         {label}
       </span>
-      {/* w-full: several previews (text fields, achievement box, bottom
-          nav, stat grid...) have their own `w-full` child expecting to
-          fill the cell's real width, not this wrapper's — transform
-          doesn't change layout sizing for percentage children, only how
-          the whole scaled box paints, so keeping this wrapper's own
-          layout width identical to the cell's is what keeps those intact. */}
-      <div className="w-full" style={{ transform: `scale(${scale})`, transformOrigin: "left center" }}>
+      {/* Width is 100/scale% (not 100%): with transform-origin "left
+          center", scaling a full-width box grows it by (scale-1) * its
+          own width, pushing its right edge past the cell's padding —
+          "button / primary", "button / secondary", and the text fields
+          were clipping under overflow-hidden as a result, and *wider*
+          cells (e.g. auto-fit choosing fewer, roomier columns) only made
+          it worse, since the overflow is proportional to the wrapper's
+          own width. Pre-shrinking to 100/scale% cancels that out exactly
+          — the scale transform lands it back at 100% post-transform,
+          which is also what any w-full descendant (text fields,
+          achievement box, bottom nav, stat grid...) needs to still fill
+          the cell's real width, since percentages resolve against this
+          wrapper's own (pre-transform) box, not the cell's. */}
+      <div style={{ width: `${100 / scale}%`, transform: `scale(${scale})`, transformOrigin: "left center" }}>
         {children}
       </div>
     </div>
@@ -241,8 +248,19 @@ export function DesignSystemSection({
           </motion.div>
 
           <motion.div
-            className="font-stride-sans grid h-full auto-rows-fr grid-cols-2 gap-2.5 rounded-card border p-2.5 sm:grid-cols-3"
-            style={{ borderColor: DK_LINE, background: DK_BG }}
+            // auto-fit/minmax instead of a fixed grid-cols-2 sm:grid-cols-3:
+            // at in-between widths (e.g. ~700px, still one column in the
+            // outer [360px_1fr] split but already past sm) 3 fixed columns
+            // left cells at ~180px — too narrow for "button / primary",
+            // "button / secondary", and the text fields at their 1.15x
+            // scale, clipping under overflow-hidden. auto-fit picks
+            // however many 210px+ columns actually fit at any width, so a
+            // cell is never narrower than what its content needs — width
+            // always fits; on a narrow-enough viewport that means fewer
+            // columns (down to 1) and a taller panel instead, which is the
+            // deliberate tradeoff (page scroll, not clipped content).
+            className="font-stride-sans grid h-full auto-rows-fr gap-2.5 rounded-card border p-2.5"
+            style={{ borderColor: DK_LINE, background: DK_BG, gridTemplateColumns: "repeat(auto-fit, minmax(210px, 1fr))" }}
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false, margin: "-40px" }}

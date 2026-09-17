@@ -172,8 +172,14 @@ export function ArchitectureSitemapSection({
                     --color-border-interactive (~3.76:1, already used
                     elsewhere on the site for exactly this "needs to read as
                     a boundary" case) at 2px. */}
+                {/* Line shortened 14px (was 8) before the box edge: the
+                    marker itself is 8px tall with its reference point at
+                    its center, so it only cleared ~4px past the old 8px
+                    cut — enough for the triangle's tip to overlap the box.
+                    14px leaves a clean ~10px gap between the arrowhead and
+                    the box. */}
                 <path
-                  d={elbowPath({ ...line, y2: line.y2 - 8 })}
+                  d={elbowPath({ ...line, y2: line.y2 - 14 })}
                   fill="none"
                   stroke="var(--color-border-interactive)"
                   strokeWidth={2}
