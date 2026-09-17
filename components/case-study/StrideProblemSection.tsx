@@ -109,11 +109,11 @@ export function StrideProblemSection({
                 <IPhoneMockup
                   screenSrc="/projects/stride/wireframes-hifi/b1-hoy.png"
                   screenAlt="Stride's Today screen, in high fidelity"
-                  insetColors={{ top: "#1a1a1e", bottom: "#262627" }}
+                  fit="contain"
                 />
               </div>
             </div>
-            <div className="flex-1 text-right text-body font-semibold leading-relaxed text-white">{callout}</div>
+            <div className="flex-1 text-left text-body font-semibold leading-relaxed text-white">{callout}</div>
           </motion.div>
         </div>
       </div>

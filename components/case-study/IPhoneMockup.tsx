@@ -15,51 +15,41 @@ import type { ReactNode } from "react";
  *
  * Pass either `screenSrc` (a real screenshot) or `children` (a coded, fake
  * screen — e.g. StrideProblemSection's grayscale "generic app" mockup,
- * which has no real screenshot to show).
+ * which has no real screenshot to show). By default the screen fills the
+ * cutout edge-to-edge via `object-cover`, the same way every other phone
+ * mockup on the site handles a screenshot that wasn't designed with a
+ * device's exact safe-area padding baked in.
  *
- * `insetColors`: our screenshots weren't designed with a real dynamic-island
- * exclusion zone, so laid edge-to-edge in the cutout, the frame's dynamic
- * island silhouette and home-indicator curve sit right on top of real
- * content (a greeting, a nav label). Passing this adds a solid-color strip
- * above and below the screen instead — matching the screenshot's own top/
- * bottom background — so the whole screenshot shows uncropped, shifted
- * clear of both, like a real device screenshot's safe-area padding.
+ * `fit="contain"` is for a screenshot with real content close enough to its
+ * own top/bottom edge that `cover` would sit the frame's dynamic island or
+ * home-indicator curve right on top of it — it scales the screenshot to the
+ * cutout's full width (never cropping or letterboxing left/right) and lets
+ * height fall where it does, cropped by the cutout if it runs long.
  */
 export function IPhoneMockup({
   screenSrc,
   screenAlt,
   children,
-  insetColors,
+  fit = "cover",
 }: {
   screenSrc?: string;
   screenAlt?: string;
   children?: ReactNode;
-  insetColors?: { top: string; bottom: string };
+  fit?: "cover" | "contain";
 }) {
   return (
     <div className="relative mx-auto w-full max-w-[300px]" style={{ aspectRatio: "1530 / 3036" }}>
       <div
-        className="absolute overflow-hidden"
+        className={`absolute overflow-hidden ${fit === "contain" ? "bg-black" : ""}`}
         style={{ left: "7.84%", top: "3.95%", width: "84.31%", height: "92.09%" }}
       >
-        {insetColors ? (
-          <div className="flex h-full w-full flex-col">
-            {/* Clears the dynamic island */}
-            <div className="shrink-0" style={{ height: "6%", backgroundColor: insetColors.top }} />
-            <div className="min-h-0 flex-1" style={{ backgroundColor: insetColors.top }}>
-              {screenSrc ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={screenSrc} alt={screenAlt ?? ""} className="h-full w-full object-contain" />
-              ) : (
-                children
-              )}
-            </div>
-            {/* Clears the home-indicator curve */}
-            <div className="shrink-0" style={{ height: "4%", backgroundColor: insetColors.bottom }} />
-          </div>
-        ) : screenSrc ? (
+        {screenSrc ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={screenSrc} alt={screenAlt ?? ""} className="h-full w-full object-cover" />
+          <img
+            src={screenSrc}
+            alt={screenAlt ?? ""}
+            className={fit === "contain" ? "h-auto w-full" : "h-full w-full object-cover"}
+          />
         ) : (
           children
         )}
