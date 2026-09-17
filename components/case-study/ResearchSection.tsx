@@ -68,7 +68,7 @@ export function ResearchSection({
         </ul>
 
         <div>
-          <p className="mb-4 font-mono text-label uppercase tracking-wide text-text-muted">{chartTitle}</p>
+          <p className="mb-4 font-mono text-label uppercase tracking-wide text-text-secondary">{chartTitle}</p>
           {/* Same row shape as BBVA's BenchmarkingSection: name label, a
               rounded-full pill track/fill (not the small-radius bar this
               used before), and the value read to the right of the bar
@@ -93,15 +93,15 @@ export function ResearchSection({
             ))}
           </div>
           <div className="mt-4 flex flex-wrap gap-4">
-            <span className="flex items-center gap-1.5 text-sm text-text-muted">
+            <span className="flex items-center gap-1.5 text-sm text-text-secondary">
               <i className="inline-block h-2.5 w-2.5 rounded-[3px] bg-accent" />
               {legend.workout}
             </span>
-            <span className="flex items-center gap-1.5 text-sm text-text-muted">
+            <span className="flex items-center gap-1.5 text-sm text-text-secondary">
               <i className="inline-block h-2.5 w-2.5 rounded-[3px] bg-text-secondary" />
               {legend.paywall}
             </span>
-            <span className="flex items-center gap-1.5 text-sm text-text-muted">
+            <span className="flex items-center gap-1.5 text-sm text-text-secondary">
               <i className="inline-block h-2.5 w-2.5 rounded-[3px] bg-white/20" />
               {legend.noplan}
             </span>
@@ -112,7 +112,7 @@ export function ResearchSection({
           {insights.map((insight, i) => (
             <motion.li
               key={insight}
-              className="rounded-card border border-border bg-surface p-4 text-sm leading-relaxed text-text-secondary"
+              className="rounded-card border border-border bg-surface p-4 text-body leading-relaxed text-text-secondary"
               initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: false, margin: "-40px" }}

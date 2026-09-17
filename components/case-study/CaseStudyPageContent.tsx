@@ -91,7 +91,7 @@ export function CaseStudyPageContent({ slug }: { slug: string }) {
         )}
 
         {!project.contentReady && (
-          <p className="mt-4 rounded-lg border border-[var(--color-border-accent)] bg-accent-soft px-4 py-3 text-sm text-text-secondary">
+          <p className="mt-4 rounded-lg border border-[var(--color-border-accent)] bg-accent-soft px-4 py-3 text-body text-text-secondary">
             {t.projectPage.contentPending}{" "}
             <a
               href={project.behanceUrl}

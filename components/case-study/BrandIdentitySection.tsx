@@ -22,10 +22,20 @@ function BulletList({ items }: { items: string[] }) {
   );
 }
 
+// WCAG relative luminance. 0.1791 is the crossover point where a
+// background's contrast against white and against black are equal —
+// above it, black text has the higher (and passing) contrast; below it,
+// white does. Used instead of a hardcoded "only #FAFAFA is light" check,
+// which let other pale swatch colors (e.g. a light purple accent) slip
+// through with white/70 text at ~1.5:1 — far under WCAG AA's 4.5:1 floor.
+function relativeLuminance(hex: string) {
+  const [r, g, b] = [0, 2, 4].map((i) => parseInt(hex.slice(i + 1, i + 3), 16) / 255);
+  const linear = (c: number) => (c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4);
+  return 0.2126 * linear(r) + 0.7152 * linear(g) + 0.0722 * linear(b);
+}
+
 function SwatchCard({ swatch }: { swatch: ColorSwatch }) {
-  // Light hex renders dark text on the swatch chip itself for legibility
-  // (Secondary is #FAFAFA — near white), everything else gets white text.
-  const isLight = swatch.hex.toUpperCase() === "#FAFAFA";
+  const isLight = relativeLuminance(swatch.hex) > 0.1791;
   return (
     <div className="flex flex-1 flex-col items-center gap-2">
       <div

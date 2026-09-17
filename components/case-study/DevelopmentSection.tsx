@@ -46,7 +46,7 @@ export function DevelopmentSection({
                     <span className="text-accent">$</span> {line.text}
                   </>
                 ) : (
-                  <span className="text-text-muted">{line.text}</span>
+                  <span className="text-text-secondary">{line.text}</span>
                 )}
               </div>
             ))}

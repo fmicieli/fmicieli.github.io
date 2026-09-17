@@ -35,7 +35,7 @@ export function NextStepsSection({
               {phase.items.map((item, j) => (
                 <motion.li
                   key={item}
-                  className="text-[14px] leading-[20px] text-text-secondary"
+                  className="text-body leading-relaxed text-text-secondary"
                   initial={{ opacity: 0, x: -8 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: false, margin: "-40px" }}
@@ -50,7 +50,7 @@ export function NextStepsSection({
       </ul>
 
       {disclaimer && (
-        <p className="mt-8 border-t border-border pt-6 text-sm leading-relaxed text-text-secondary">
+        <p className="mt-8 border-t border-border pt-6 text-body leading-relaxed text-text-secondary">
           {disclaimer}
         </p>
       )}

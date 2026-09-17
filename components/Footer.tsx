@@ -36,7 +36,7 @@ export function Footer() {
     // (Contact's own section on the home page, the case-study page's
     // px-page-x wrapper for NextStepsSection) rather than as a standalone
     // page-level sibling — adding its own here would double the margin.
-    <footer className="relative flex items-center justify-between gap-4 py-5 text-sm text-text-secondary">
+    <footer className="relative flex items-center justify-between gap-4 py-5 text-body text-text-secondary">
       <p>© {year} Florencia Micieli</p>
       <ul className="flex items-center gap-3">
         {SOCIAL_LINKS.map((link) => (

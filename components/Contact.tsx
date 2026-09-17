@@ -24,7 +24,7 @@ export function Contact() {
           </p>
         </Reveal>
         <Reveal delay={0.1}>
-          <p className="mt-2 text-sm text-text-secondary">
+          <p className="mt-2 text-body text-text-secondary">
             {t.contact.behanceLine}
             {" "}
             <span className="text-text-secondary">{t.contact.behanceTodo}</span>

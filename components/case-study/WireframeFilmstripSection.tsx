@@ -55,7 +55,7 @@ function WireframeCard({
       </div>
       {/* 12px * 1.25 = 15px, 16px * 1.25 = 20px */}
       {/* gap: 10px * 1.5 */}
-      <p className="mt-[15px] text-center text-[15px] leading-5 text-text-muted">{screen.caption}</p>
+      <p className="mt-[15px] text-center text-[15px] leading-5 text-text-secondary">{screen.caption}</p>
     </motion.div>
   );
 }

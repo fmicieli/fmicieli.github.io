@@ -155,7 +155,7 @@ export function ArchitectureSitemapSection({
           >
             <defs>
               <marker id="sitemap-arrow" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto">
-                <path d="M0,0 L7,3.5 L0,7 Z" fill="var(--color-text-muted)" />
+                <path d="M0,0 L7,3.5 L0,7 Z" fill="var(--color-text-secondary)" />
               </marker>
             </defs>
             {lines.map((line, i) => (
@@ -223,7 +223,7 @@ export function ArchitectureSitemapSection({
                   transition={{ duration: 0.5, delay: STAGE_NAV, ease: STAGE_EASE }}
                 >
                   <p className="font-display text-lg font-semibold text-text-primary">{item.label}</p>
-                  <p className="mt-1.5 whitespace-nowrap font-mono text-sm font-normal text-text-muted">
+                  <p className="mt-1.5 whitespace-nowrap font-mono text-sm font-normal text-text-secondary">
                     {item.sub}
                   </p>
                 </motion.div>
@@ -245,7 +245,7 @@ export function ArchitectureSitemapSection({
                     transition={{ duration: 0.5, delay: STAGE_SUBFLOW, ease: STAGE_EASE }}
                   >
                     <p className="font-display text-lg font-semibold text-text-primary">{subflowLabel}</p>
-                    <p className="mt-1.5 whitespace-nowrap font-mono text-sm font-normal text-text-muted">
+                    <p className="mt-1.5 whitespace-nowrap font-mono text-sm font-normal text-text-secondary">
                       {subflowSub}
                     </p>
                   </motion.div>
@@ -256,7 +256,7 @@ export function ArchitectureSitemapSection({
         </motion.div>
 
         {discrepancyNote && (
-          <p className="mt-8 max-w-[64ch] border-l-2 border-border pl-4 text-sm leading-relaxed text-text-muted">
+          <p className="mt-8 max-w-[64ch] border-l-2 border-border pl-4 text-body leading-relaxed text-text-secondary">
             {discrepancyNote}
           </p>
         )}

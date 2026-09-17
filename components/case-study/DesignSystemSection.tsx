@@ -15,6 +15,11 @@ const DK_LINE = "#303033";
 const LIME = "#9BE83C";
 const LIME_TINT = "rgba(155,232,60,.14)";
 const DANGER = "#E5484D";
+// DANGER itself, used as *text* on DK_SURFACE, is only 4.39:1 — under
+// WCAG AA's 4.5:1 floor for normal text. This lightened variant (same hue,
+// ~5.1:1 on DK_SURFACE) is for text only; DANGER itself stays unchanged
+// for the swatch fill/border, where it already passes.
+const DANGER_TEXT = "#E85E63";
 const DK_TEXT_2 = "#9C9CA0";
 
 function ComponentCell({
@@ -162,8 +167,12 @@ export function DesignSystemSection({
               ].map((swatch) => (
                 <div
                   key={swatch.name}
-                  className="font-stride-mono flex min-h-[76px] min-w-[90px] flex-1 flex-col justify-end p-3 text-[9.5px] text-white"
-                  style={{ background: swatch.hex }}
+                  className="font-stride-mono flex min-h-[76px] min-w-[90px] flex-1 flex-col justify-end p-3 text-[9.5px]"
+                  // White text on the "danger" swatch's own mid-brightness
+                  // red only reaches ~3.9:1 — under WCAG AA's 4.5:1 floor.
+                  // Dark text clears it (~5:1) there; the other three
+                  // swatches are all dark enough that white stays correct.
+                  style={{ background: swatch.hex, color: swatch.name === "danger" ? DK_BG : "#fff" }}
                 >
                   {swatch.name}
                   <br />
@@ -246,7 +255,7 @@ export function DesignSystemSection({
               </div>
             </ComponentCell>
             <ComponentCell label="danger action">
-              <div className="text-[11.5px] font-semibold" style={{ color: DANGER }}>
+              <div className="text-[11.5px] font-semibold" style={{ color: DANGER_TEXT }}>
                 {componentLabels.dangerAction}
               </div>
             </ComponentCell>
@@ -313,7 +322,7 @@ export function DesignSystemSection({
                 >
                   {componentLabels.textFieldErrorValue}
                 </div>
-                <p className="mt-1 text-[8.5px]" style={{ color: DANGER }}>
+                <p className="mt-1 text-[8.5px]" style={{ color: DANGER_TEXT }}>
                   {componentLabels.textFieldErrorMessage}
                 </p>
               </div>

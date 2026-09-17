@@ -34,7 +34,7 @@ export function CookieBanner() {
   return (
     <div
       role="status"
-      className="fixed inset-x-4 bottom-4 z-50 flex flex-col gap-3 rounded-card border border-border border-t-[var(--color-border-top-highlight)] bg-surface p-4 text-sm shadow-card backdrop-blur-card sm:inset-x-auto sm:right-4 sm:max-w-sm"
+      className="fixed inset-x-4 bottom-4 z-50 flex flex-col gap-3 rounded-card border border-border border-t-[var(--color-border-top-highlight)] bg-surface p-4 text-body shadow-card backdrop-blur-card sm:inset-x-auto sm:right-4 sm:max-w-sm"
     >
       <p className="text-text-secondary">{t.cookieBanner.text}</p>
       <button

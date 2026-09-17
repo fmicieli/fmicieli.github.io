@@ -8,7 +8,7 @@ function ItemList({ items }: { items: string[] }) {
   return (
     <ul className="flex flex-col gap-2.5">
       {items.map((item) => (
-        <li key={item} className="flex items-start gap-2 text-sm leading-relaxed text-text-secondary">
+        <li key={item} className="flex items-start gap-2 text-body leading-relaxed text-text-secondary">
           <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent/60" aria-hidden="true" />
           {item}
         </li>
@@ -48,7 +48,7 @@ export function AiAgentsSection({
             <ItemList items={humanItems} />
           </div>
         </div>
-        <p className="max-w-[64ch] text-sm leading-relaxed text-text-secondary">{note}</p>
+        <p className="max-w-[64ch] text-body leading-relaxed text-text-secondary">{note}</p>
       </div>
     </div>
   );

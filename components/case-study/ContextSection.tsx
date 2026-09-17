@@ -93,7 +93,7 @@ function PersonaCard({ persona }: { persona: PersonaData }) {
             </div>
           ))}
         </dl>
-        <p className="mt-2 border-t border-border pt-3 text-sm leading-relaxed text-text-secondary">
+        <p className="mt-2 border-t border-border pt-3 text-body leading-relaxed text-text-secondary">
           <span className="font-semibold text-text-secondary">{persona.justificacionLabel}: </span>
           {persona.justificacion}
         </p>
@@ -108,7 +108,7 @@ function PersonaCard({ persona }: { persona: PersonaData }) {
         <div className="grid gap-5 sm:grid-cols-3">
           <div>
             <p className="font-medium text-text-primary">{persona.objetivosLabel}</p>
-            <ul className="mt-2 flex flex-col gap-1.5 text-[14px] leading-relaxed text-text-secondary">
+            <ul className="mt-2 flex flex-col gap-1.5 text-body leading-relaxed text-text-secondary">
               {persona.objetivos.map((o) => (
                 <li key={o} className="flex items-start gap-2">
                   <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent/60" aria-hidden="true" />
@@ -119,7 +119,7 @@ function PersonaCard({ persona }: { persona: PersonaData }) {
           </div>
           <div>
             <p className="font-medium text-text-primary">{persona.motivacionesLabel}</p>
-            <ul className="mt-2 flex flex-col gap-1.5 text-[14px] leading-relaxed text-text-secondary">
+            <ul className="mt-2 flex flex-col gap-1.5 text-body leading-relaxed text-text-secondary">
               {persona.motivaciones.map((o) => (
                 <li key={o} className="flex items-start gap-2">
                   <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent/60" aria-hidden="true" />
@@ -130,7 +130,7 @@ function PersonaCard({ persona }: { persona: PersonaData }) {
           </div>
           <div>
             <p className="font-medium text-text-primary">{persona.frustracionesLabel}</p>
-            <ul className="mt-2 flex flex-col gap-1.5 text-[14px] leading-relaxed text-text-secondary">
+            <ul className="mt-2 flex flex-col gap-1.5 text-body leading-relaxed text-text-secondary">
               {persona.frustraciones.map((o) => (
                 <li key={o} className="flex items-start gap-2">
                   <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent/60" aria-hidden="true" />

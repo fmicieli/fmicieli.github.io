@@ -90,7 +90,7 @@ export function BenchmarkingDimensionsSection({
               transition={{ duration: 0.5, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
             >
               <p className="font-display text-card-title font-bold text-text-primary">{dim.title}</p>
-              <p className="mt-2.5 text-sm leading-relaxed text-text-secondary">{dim.text}</p>
+              <p className="mt-2.5 text-body leading-relaxed text-text-secondary">{dim.text}</p>
             </motion.div>
           ))}
         </div>
