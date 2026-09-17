@@ -89,26 +89,31 @@ export function DevelopmentSection({
           </div>
         </div>
 
-        {/* 180px * 1.5 */}
+        {/* 180px * 1.5 * 1.25 = 337.5px target size — w-full + max-w (not a
+            bare fixed width) so it shrinks on viewports narrower than
+            ~370px instead of overflowing main's own horizontal scroll
+            area (337.5px doesn't fit a 320px phone's content width once
+            the page-x gutters are subtracted). */}
         <motion.div
           ref={mockupRef}
-          className="mx-auto w-[270px] shrink-0"
+          className="mx-auto w-full max-w-[337.5px] shrink-0"
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: false, margin: "-40px" }}
           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         >
           {videoSrc ? (
-            <IPhoneMockup>
+            <IPhoneMockup maxWidthPx={337.5}>
               {mockupInView && (
                 <video src={videoSrc} autoPlay loop muted playsInline className="h-full w-full object-cover" />
               )}
             </IPhoneMockup>
           ) : (
             <div
-              // 368px * 1.5, 180px * 1.5
-              className="flex h-[552px] w-[270px] items-center justify-center overflow-hidden rounded-[34px] border-8"
-              style={{ borderColor: "#0D0D0F", background: "#0D0D0F" }}
+              // 368px * 1.5 * 1.25, 180px * 1.5 * 1.25 — aspect-ratio (not a
+              // fixed height) so it stays proportional as width shrinks.
+              className="flex w-full items-center justify-center overflow-hidden rounded-[34px] border-8"
+              style={{ borderColor: "#0D0D0F", background: "#0D0D0F", aspectRatio: "337.5 / 690" }}
             >
               <div className="flex flex-col items-center gap-2.5 p-5 text-center">
                 <div className="flex h-11 w-11 items-center justify-center rounded-full border-[1.5px] border-dashed border-[#9C9CA0] text-[#9C9CA0]">

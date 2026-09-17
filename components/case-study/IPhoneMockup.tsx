@@ -31,14 +31,22 @@ export function IPhoneMockup({
   screenAlt,
   children,
   fit = "cover",
+  maxWidthPx = 300,
 }: {
   screenSrc?: string;
   screenAlt?: string;
   children?: ReactNode;
   fit?: "cover" | "contain";
+  /** Caps how wide the frame itself ever renders, independent of its
+   * parent's width — was hardcoded to 300px (still the default here), which
+   * silently capped DevelopmentSection's mockup at 300px however wide its
+   * own wrapper grew. A plain Tailwind max-w-[Npx] class can't take this as
+   * a prop (arbitrary values need to be static strings for Tailwind's JIT
+   * scan), hence the inline style instead. */
+  maxWidthPx?: number;
 }) {
   return (
-    <div className="relative mx-auto w-full max-w-[300px]" style={{ aspectRatio: "1530 / 3036" }}>
+    <div className="relative mx-auto w-full" style={{ aspectRatio: "1530 / 3036", maxWidth: maxWidthPx }}>
       <div
         className={`absolute overflow-hidden ${fit === "contain" ? "bg-black" : ""}`}
         style={{ left: "7.84%", top: "3.95%", width: "84.31%", height: "92.09%" }}

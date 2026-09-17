@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useRef, useState, type MouseEvent } from "react";
 import {
   motion,
-  useMotionTemplate,
   useMotionValue,
   useScroll,
   useSpring,
@@ -21,9 +20,9 @@ const TRANSITION_HEIGHT_VH = 220;
 // transition's pace is fixed, never scrubbed by raw scroll speed.
 const TRANSITION_DURATION = 1100;
 
-// The header has no background of its own — instead the pinned hero reserves
-// this much space below it (header height + a 24px gap) so its content never
-// runs behind the header at any point in the scroll, not just at rest.
+// The pinned hero reserves this much space below the header (header height +
+// a 24px gap) so its content never runs behind the header at any point in
+// the scroll, not just at rest.
 const HEADER_GAP = 24;
 
 // Fraction of scrollYProgress for the pinned zone's middle snap stop: the
@@ -219,17 +218,17 @@ export function Hero() {
     goToStop("down");
   }
 
-  // Cursor-follow glow: the radial gradient's center tracks the pointer, with
-  // a spring so it trails smoothly instead of snapping.
+  // The glow itself no longer tracks the cursor (it used to, via a spring
+  // eased template on these same values) — it reads as a fixed, static
+  // bloom at this default position now. rawX/rawY and the spring stay,
+  // since the 3D logo's cursor-driven tilt below still depends on them.
   const rawX = useMotionValue(75);
   const rawY = useMotionValue(30);
   const glowX = useSpring(rawX, { stiffness: 60, damping: 20 });
   const glowY = useSpring(rawY, { stiffness: 60, damping: 20 });
-  // rgba(255,154,196,...) = --color-accent (#ff9ac4) — hardcoded here
-  // instead of tokenized since useMotionTemplate needs a literal, parseable
-  // color string; keep this in sync by hand whenever the accent token
-  // changes.
-  const glowBackground = useMotionTemplate`radial-gradient(circle at ${glowX}% ${glowY}%, rgba(255,154,196,0.35), transparent 55%)`;
+  // rgba(255,154,196,...) = --color-accent (#ff9ac4), matching the static
+  // position rawX/rawY start at (75%, 30%).
+  const glowBackground = "radial-gradient(circle at 75% 30%, rgba(255,154,196,0.35), transparent 55%)";
 
   // Cursor-driven tilt for the 3D logo: whichever side the pointer is nearer
   // to dips back slightly (like pressing down on that edge), on top of the

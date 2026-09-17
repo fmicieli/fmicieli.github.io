@@ -1,5 +1,17 @@
 @import "tailwindcss";
 
+/* Case-study sections lock to exactly one viewport (see CaseStudyBlocks)
+   only from this size up — verified against every block-based project's
+   actual content (Stride, BBVA, Tribu) at a range of real desktop sizes:
+   1024x768/1280x800/1512x900/1728x1000 all still overflowed a full 100vh
+   section somewhere (worst case, Stride's dense Design System panel, by
+   as much as ~2500px at 1024x768). Only at 1920x1080 (a maximized Full HD
+   display, not just any 1024px-wide "lg" window) did every section fit
+   with zero overflow. Below this, sections stay min-height (scrollable)
+   instead — forcing the exact 100vh box smaller than this would clip
+   content again, the same bug already fixed once for the mobile hero. */
+@custom-variant desktop-locked (@media (min-width: 1920px) and (min-height: 1080px));
+
 /*
  * Design tokens — single source of truth for color, spacing, typography and
  * elevation across the whole site (not just the case-study pages). Defined
@@ -156,18 +168,29 @@
   --font-stride-mono: var(--font-jetbrains-mono);
 }
 
+/* Shared by body and the fixed header's own backdrop (see Header.tsx) so
+   the header blends into the page instead of reading as a flat opaque
+   strip laid over it. Both use `background-attachment: fixed`, which ties
+   a background to the *viewport*, not the element's own box — applying
+   the identical gradient definition + fixed attachment on two different
+   elements makes them line up pixel-for-pixel, as if it were one
+   continuous background painted behind both. */
+:root {
+  --gradient-ambient:
+    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255, 154, 196, 0.1), transparent 65%),
+    var(--color-bg);
+}
+
 body {
   /* A faint, static wine-toned glow sits behind every page (fixed to the
      viewport, not the document, so it doesn't just scroll away after the
-     first screen) — the same accent color as Hero's interactive
-     cursor-follow glow, just quiet and non-interactive, so the rest of the
-     site (About cards outside Hero, Projects, Contact, every case-study
-     page) shares a bit of that identity instead of reading as flat black
-     the moment you scroll past Hero. Still layered on top of the same
-     --color-bg base, so it stays subtle rather than tinting everything. */
-  background:
-    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255, 154, 196, 0.1), transparent 65%),
-    var(--color-bg);
+     first screen) — the same accent color as Hero's own glow, just quiet,
+     so the rest of the site (About cards outside Hero, Projects, Contact,
+     every case-study page) shares a bit of that identity instead of
+     reading as flat black the moment you scroll past Hero. Still layered
+     on top of the same --color-bg base, so it stays subtle rather than
+     tinting everything. */
+  background: var(--gradient-ambient);
   background-attachment: fixed;
   color: var(--color-text-primary);
   font-family: var(--font-body);

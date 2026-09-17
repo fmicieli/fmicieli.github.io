@@ -62,13 +62,19 @@ export function Header() {
 
   return (
     <header className="fixed inset-x-0 top-0 z-50">
-      {/* Not a color of its own — bg-bg is the same token every section
-          sits on, so this always matches whatever's actually behind it.
-          Content is meant to be clipped before it ever reaches here (see
-          each section's own scroll-margin/clearance), so this exists to
-          make that cut read as an intentional header surface rather than
-          content just vanishing mid-scroll. */}
-      <div aria-hidden="true" className="absolute inset-0 bg-bg" />
+      {/* Same --gradient-ambient as body (see globals.css), not a flat
+          bg-bg — a plain solid color here read as a hard opaque strip
+          against the page's own soft ambient glow, most visible right at
+          the landing hero where that glow is brightest. Both use
+          background-attachment: fixed, which ties a background to the
+          viewport rather than the element's own (much shorter) box, so
+          this lines up with body's underneath it instead of just being a
+          second, independently-positioned copy of the same gradient. */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0"
+        style={{ background: "var(--gradient-ambient)", backgroundAttachment: "fixed" }}
+      />
       <div className="relative px-page-x pt-2">
         <div className="relative flex min-h-11 items-center justify-center py-1.5">
           <nav className="hidden items-center gap-4 sm:flex" aria-label="Main navigation">

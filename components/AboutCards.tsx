@@ -21,15 +21,10 @@ const CARD_GAP = 32;
 const CARD_STEP = CARD_WIDTH + CARD_GAP;
 const CARD_HEIGHT = 300;
 
-// Pre-scroll: cards sit close together and fanned (small alternating
-// rotation), like a stacked hand of cards — not spread across the screen.
-const STACK_STEP = 50;
-const ROTATE_STEP = 6;
-
 // How far below the viewport's bottom edge the row still sits at the mid
 // checkpoint, cut off by the sticky container's overflow-hidden, before the
 // second scroll gesture settles everything into the final row. Raised 30%
-// (was 460) so more of the fanned stack already shows before any scrolling.
+// (was 460) so more of the row already shows before any scrolling.
 const PEEK_OFFSET = 322;
 
 type Skill = { title: string; text: string; tags: string[] };
@@ -57,68 +52,42 @@ const CARD_STYLE =
   "group relative flex flex-col gap-1.5 rounded-card border border-border border-t-[var(--color-border-top-highlight)] bg-surface px-6 pt-[18px] pb-6 shadow-card backdrop-blur-card";
 
 /**
- * Desktop/tablet only: the four cards start tightly overlapped and fanned —
- * a stacked hand of cards, peeking up from below the viewport — then spread
- * apart into a single row as the hero's pinned scroll continues. Driven by
- * `progress` (0-1), a slice of the hero's own scrollYProgress rather than
- * the cards' own position in the page, since they live inside Hero's sticky
- * viewport and never actually scroll past it on their own.
- *
- * Each card's x/rotate target is unique, so each needs its own motion
- * value — four of each, named individually rather than built in a loop so
- * this stays a fixed, static set of hook calls. y is shared: it's a single
- * row now, so every card rises by the same amount.
+ * Desktop/tablet only: the four cards sit in their final row position the
+ * whole time (no overlapped/fanned pre-step) and simply rise + fade into
+ * place as the hero's pinned scroll continues. Driven by `progress` (0-1),
+ * a slice of the hero's own scrollYProgress rather than the cards' own
+ * position in the page, since they live inside Hero's sticky viewport and
+ * never actually scroll past it on their own.
  */
 function StackToRow({ progress, skills }: { progress: MotionValue<number>; skills: Skill[] }) {
   const opacity = useTransform(progress, [0, 0.4], [0, 1]);
   const y = useTransform(progress, [0, 1], [PEEK_OFFSET, 0]);
 
   const center = (skills.length - 1) / 2;
-  const startX = (i: number) => (i - center) * STACK_STEP;
   const finalX = (i: number) => (i - center) * CARD_STEP;
-  const startRotate = (i: number) => (i - center) * ROTATE_STEP;
-
-  const x0 = useTransform(progress, [0, 1], [startX(0), finalX(0)]);
-  const x1 = useTransform(progress, [0, 1], [startX(1), finalX(1)]);
-  const x2 = useTransform(progress, [0, 1], [startX(2), finalX(2)]);
-  const x3 = useTransform(progress, [0, 1], [startX(3), finalX(3)]);
-  const xByIndex = [x0, x1, x2, x3];
-
-  const rotate0 = useTransform(progress, [0, 1], [startRotate(0), 0]);
-  const rotate1 = useTransform(progress, [0, 1], [startRotate(1), 0]);
-  const rotate2 = useTransform(progress, [0, 1], [startRotate(2), 0]);
-  const rotate3 = useTransform(progress, [0, 1], [startRotate(3), 0]);
-  const rotateByIndex = [rotate0, rotate1, rotate2, rotate3];
 
   return (
     <div className="relative mx-auto hidden max-w-6xl sm:block" style={{ height: CARD_HEIGHT }}>
-      {skills.map((item, i) => {
-        // Cards nearer the center of the fan sit on top, like a real
-        // stacked deck.
-        const zIndex = Math.round(skills.length - Math.abs(i - center) * 2);
-        return (
-          <motion.div
-            key={item.title}
-            style={{
-              position: "absolute",
-              top: 0,
-              left: "50%",
-              marginLeft: -CARD_WIDTH / 2,
-              width: CARD_WIDTH,
-              height: CARD_HEIGHT,
-              x: xByIndex[i],
-              y,
-              rotate: rotateByIndex[i],
-              opacity,
-              zIndex,
-            }}
-            className={CARD_STYLE}
-          >
-            <HoverBorderTrace />
-            <CardContent item={item} />
-          </motion.div>
-        );
-      })}
+      {skills.map((item, i) => (
+        <motion.div
+          key={item.title}
+          style={{
+            position: "absolute",
+            top: 0,
+            left: "50%",
+            marginLeft: -CARD_WIDTH / 2,
+            width: CARD_WIDTH,
+            height: CARD_HEIGHT,
+            x: finalX(i),
+            y,
+            opacity,
+          }}
+          className={CARD_STYLE}
+        >
+          <HoverBorderTrace />
+          <CardContent item={item} />
+        </motion.div>
+      ))}
     </div>
   );
 }

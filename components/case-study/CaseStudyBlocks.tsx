@@ -40,17 +40,21 @@ export function CaseStudyBlocks({ blocks }: { blocks: CaseStudyBlock[] }) {
         }
 
         if (block.type === "hero") {
-          // min-h-screen, not h-screen max-h-screen: a hero whose content
-          // (text column + mockup, stacked to one column on mobile) is
-          // taller than one viewport used to get clipped to exactly 100vh
-          // and centered — centering an overflowing flex column pushes its
-          // top half above the container's own top edge, rendering behind
-          // whatever precedes it on the page ("Back to projects").
-          // min-height lets the section grow past 100vh instead when
-          // content needs it; on any viewport where content already fits,
-          // it's visually identical to before.
+          // Locked to exactly one viewport (h-screen + max-h-screen) only
+          // at desktop-locked (see globals.css for why that's 1920x1080,
+          // not just any "desktop" width — smaller desktops still
+          // overflowed one screen's worth of content somewhere). Below
+          // that, min-h-screen lets the section grow past 100vh instead:
+          // h-screen + max-h-screen with justify-center clipped an
+          // overflowing column to exactly 100vh and centering it pushed
+          // the top half above the container's own edge, rendering behind
+          // whatever precedes it on the page ("Back to projects") —
+          // min-height sidesteps that entirely.
           return (
-            <div key={i} className="flex min-h-screen flex-col justify-center pb-10 snap-start">
+            <div
+              key={i}
+              className="flex min-h-screen flex-col justify-center pb-10 snap-start desktop-locked:h-screen desktop-locked:max-h-screen"
+            >
               <CaseStudyHero
                 title={block.title}
                 subtitle={block.subtitle}
@@ -84,7 +88,11 @@ export function CaseStudyBlocks({ blocks }: { blocks: CaseStudyBlock[] }) {
         // that viewport via its own mt-auto (see NextStepsSection).
         if (block.type === "next-steps") {
           return (
-            <Reveal key={i} once={false} className="flex min-h-screen flex-col pt-section-top pb-12 snap-start">
+            <Reveal
+              key={i}
+              once={false}
+              className="flex min-h-screen flex-col pt-section-top pb-12 snap-start desktop-locked:h-screen desktop-locked:max-h-screen"
+            >
               <NextStepsSection
                 heading={block.heading}
                 subheading={block.subheading}
@@ -99,7 +107,11 @@ export function CaseStudyBlocks({ blocks }: { blocks: CaseStudyBlock[] }) {
         // pattern as "next-steps" above (see ClosingSection's own comment).
         if (block.type === "closing") {
           return (
-            <Reveal key={i} once={false} className="flex min-h-screen flex-col pt-section-top pb-12 snap-start">
+            <Reveal
+              key={i}
+              once={false}
+              className="flex min-h-screen flex-col pt-section-top pb-12 snap-start desktop-locked:h-screen desktop-locked:max-h-screen"
+            >
               <ClosingSection heading={block.heading} subheading={block.subheading} images={block.images} />
             </Reveal>
           );
@@ -109,7 +121,7 @@ export function CaseStudyBlocks({ blocks }: { blocks: CaseStudyBlock[] }) {
           <Reveal
             key={i}
             once={false}
-            className="flex min-h-screen flex-col pt-section-top pb-12 snap-start"
+            className="flex min-h-screen flex-col pt-section-top pb-12 snap-start desktop-locked:h-screen desktop-locked:max-h-screen"
           >
             {block.type === "problem" && (
               <ProblemSection
