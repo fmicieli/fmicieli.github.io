@@ -62,7 +62,7 @@ export function ResearchSection({
             <li key={competitor.name} className="flex flex-col items-center gap-2">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={competitor.logo} alt={competitor.name} className="h-[64px] w-[64px] rounded-[2px] object-contain" />
-              <p className="text-xs text-text-secondary">{competitor.name}</p>
+              <p className="text-sm text-text-secondary">{competitor.name}</p>
             </li>
           ))}
         </ul>
@@ -86,22 +86,22 @@ export function ResearchSection({
                     transition={{ duration: 0.6, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] }}
                   />
                 </div>
-                <p className="w-10 shrink-0 whitespace-nowrap text-right font-mono text-xs text-text-secondary">
+                <p className="w-10 shrink-0 whitespace-nowrap text-right font-mono text-sm text-text-secondary">
                   {bar.caption}
                 </p>
               </div>
             ))}
           </div>
           <div className="mt-4 flex flex-wrap gap-4">
-            <span className="flex items-center gap-1.5 text-xs text-text-muted">
+            <span className="flex items-center gap-1.5 text-sm text-text-muted">
               <i className="inline-block h-2.5 w-2.5 rounded-[3px] bg-accent" />
               {legend.workout}
             </span>
-            <span className="flex items-center gap-1.5 text-xs text-text-muted">
+            <span className="flex items-center gap-1.5 text-sm text-text-muted">
               <i className="inline-block h-2.5 w-2.5 rounded-[3px] bg-text-secondary" />
               {legend.paywall}
             </span>
-            <span className="flex items-center gap-1.5 text-xs text-text-muted">
+            <span className="flex items-center gap-1.5 text-sm text-text-muted">
               <i className="inline-block h-2.5 w-2.5 rounded-[3px] bg-white/20" />
               {legend.noplan}
             </span>

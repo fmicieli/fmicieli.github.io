@@ -17,7 +17,8 @@ function PricingTable({ table, competitors }: { table: SimpleTable; competitors:
         <thead>
           <tr className="bg-white/5">
             {table.columns.map((col) => (
-              <th key={col} className="border-b border-border px-3 py-[9.2px] text-[13px] font-medium text-text-primary">
+              // cell height: 9.2px * 1.5. text: 13px + 2px capped at 14px
+              <th key={col} className="border-b border-border px-3 py-[13.8px] text-[14px] font-medium text-text-primary">
                 {col}
               </th>
             ))}
@@ -35,7 +36,8 @@ function PricingTable({ table, competitors }: { table: SimpleTable; competitors:
             >
               {row.map((cell, j) =>
                 j === 0 ? (
-                  <td key={j} className="px-3 py-[9.2px] text-[13px] text-text-primary">
+                  // cell height: 9.2px * 1.5. text: 13px + 2px capped at 14px
+                  <td key={j} className="px-3 py-[13.8px] text-[14px] text-text-primary">
                     <div className="flex items-center gap-2.5">
                       {logoByName.get(cell) && (
                         // eslint-disable-next-line @next/next/no-img-element
@@ -45,7 +47,7 @@ function PricingTable({ table, competitors }: { table: SimpleTable; competitors:
                     </div>
                   </td>
                 ) : (
-                  <td key={j} className="px-3 py-[9.2px] text-[13px] text-text-secondary">
+                  <td key={j} className="px-3 py-[13.8px] text-[14px] text-text-secondary">
                     {cell}
                   </td>
                 )

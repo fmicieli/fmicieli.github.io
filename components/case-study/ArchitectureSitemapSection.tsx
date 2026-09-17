@@ -200,7 +200,7 @@ export function ArchitectureSitemapSection({
               transition={{ duration: 0.5, delay: STAGE_ONBOARDING, ease: STAGE_EASE }}
             >
               <p className="font-display text-lg font-semibold text-text-primary">{onboardingLabel}</p>
-              <p className="mt-1.5 font-mono text-xs text-text-secondary">{onboardingSub}</p>
+              <p className="mt-1.5 font-mono text-sm text-text-secondary">{onboardingSub}</p>
             </motion.div>
           </div>
 
@@ -223,7 +223,7 @@ export function ArchitectureSitemapSection({
                   transition={{ duration: 0.5, delay: STAGE_NAV, ease: STAGE_EASE }}
                 >
                   <p className="font-display text-lg font-semibold text-text-primary">{item.label}</p>
-                  <p className="mt-1.5 whitespace-nowrap font-mono text-xs font-normal text-text-muted">
+                  <p className="mt-1.5 whitespace-nowrap font-mono text-sm font-normal text-text-muted">
                     {item.sub}
                   </p>
                 </motion.div>
@@ -245,7 +245,7 @@ export function ArchitectureSitemapSection({
                     transition={{ duration: 0.5, delay: STAGE_SUBFLOW, ease: STAGE_EASE }}
                   >
                     <p className="font-display text-lg font-semibold text-text-primary">{subflowLabel}</p>
-                    <p className="mt-1.5 whitespace-nowrap font-mono text-xs font-normal text-text-muted">
+                    <p className="mt-1.5 whitespace-nowrap font-mono text-sm font-normal text-text-muted">
                       {subflowSub}
                     </p>
                   </motion.div>
@@ -256,7 +256,7 @@ export function ArchitectureSitemapSection({
         </motion.div>
 
         {discrepancyNote && (
-          <p className="mt-8 max-w-[64ch] border-l-2 border-border pl-4 text-xs leading-relaxed text-text-muted">
+          <p className="mt-8 max-w-[64ch] border-l-2 border-border pl-4 text-sm leading-relaxed text-text-muted">
             {discrepancyNote}
           </p>
         )}

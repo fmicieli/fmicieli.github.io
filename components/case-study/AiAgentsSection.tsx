@@ -40,11 +40,11 @@ export function AiAgentsSection({
       <div className="mt-title-to-content flex flex-1 flex-col justify-center gap-6">
         <div className="grid overflow-hidden rounded-card border border-border border-t-[var(--color-border-top-highlight)] bg-surface shadow-card backdrop-blur-card sm:grid-cols-2">
           <div className="border-b border-border p-6 sm:border-b-0 sm:border-r">
-            <p className="mb-4 font-mono text-xs font-medium text-accent">{aiLabel}</p>
+            <p className="mb-4 font-mono text-sm font-medium text-accent">{aiLabel}</p>
             <ItemList items={aiItems} />
           </div>
           <div className="p-6">
-            <p className="mb-4 font-mono text-xs font-medium text-text-primary">{humanLabel}</p>
+            <p className="mb-4 font-mono text-sm font-medium text-text-primary">{humanLabel}</p>
             <ItemList items={humanItems} />
           </div>
         </div>

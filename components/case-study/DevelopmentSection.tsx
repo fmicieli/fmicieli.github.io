@@ -38,7 +38,7 @@ export function DevelopmentSection({
 
           <p className="mt-5 max-w-[56ch] text-body leading-relaxed text-text-secondary">{body}</p>
 
-          <div className="mt-6 rounded-card border border-border bg-black p-6 font-mono text-[13px] leading-loose text-[#d9e8d9]">
+          <div className="mt-6 rounded-card border border-border bg-black p-6 font-mono text-[14px] leading-loose text-[#d9e8d9]">
             {terminalLines.map((line, i) => (
               <div key={i}>
                 {line.kind === "prompt" ? (
@@ -80,7 +80,7 @@ export function DevelopmentSection({
             <div className="flex h-11 w-11 items-center justify-center rounded-full border-[1.5px] border-dashed border-[#9C9CA0] text-[#9C9CA0]">
               ▶
             </div>
-            <span className="font-mono text-[10.5px] leading-relaxed text-[#9C9CA0]">{videoPendingLabel}</span>
+            <span className="font-mono text-[14px] leading-relaxed text-[#9C9CA0]">{videoPendingLabel}</span>
           </div>
         </motion.div>
       </div>
