@@ -267,13 +267,16 @@ export function DesignSystemSection({
             transition={{ duration: 0.5, delay: 0.22, ease: [0.22, 1, 0.36, 1] }}
           >
             <ComponentCell label="button / primary">
-              <div className="rounded-full px-4 py-2 text-xs font-bold" style={{ background: LIME, color: DK_BG }}>
+              <div
+                className="inline-flex items-center justify-center rounded-full px-5 py-3 text-xs font-bold"
+                style={{ background: LIME, color: DK_BG }}
+              >
                 {componentLabels.primaryButton}
               </div>
             </ComponentCell>
             <ComponentCell label="button / secondary">
               <div
-                className="rounded-full border px-4 py-2 text-xs font-bold"
+                className="inline-flex items-center justify-center rounded-full border px-5 py-3 text-xs font-bold"
                 style={{ borderColor: LIME, color: LIME }}
               >
                 {componentLabels.primaryButton}

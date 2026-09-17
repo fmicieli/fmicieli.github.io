@@ -30,11 +30,26 @@ function lineStageDelay(i: number, navCount: number) {
 /** Center-x / top-or-bottom-y of `el`, in coordinates relative to
  * `container`'s own box — what the SVG overlay (itself absolutely
  * positioned over the same container) needs to draw a connector that lands
- * exactly on the real, currently-laid-out edge of a reflowing HTML box. */
+ * exactly on the real, currently-laid-out edge of a reflowing HTML box.
+ *
+ * Deliberately uses offsetTop/offsetLeft (layout position, unaffected by
+ * CSS transforms) rather than getBoundingClientRect (paint-time position,
+ * which includes transforms). Every box here fades in via a `whileInView`
+ * translateY that resets and replays every time it scrolls out of and back
+ * into view (`once: false`) — measuring the animated rect would only line
+ * an arrow up with its box for the instant measure() happened to run after
+ * that transform had fully settled, and stay misaligned by that offset the
+ * rest of the time (what read as "arrows still overlapping the boxes"). */
 function edgePoint(el: HTMLElement, container: HTMLElement, edge: "top" | "bottom") {
-  const r = el.getBoundingClientRect();
-  const c = container.getBoundingClientRect();
-  return { x: r.left - c.left + r.width / 2, y: (edge === "top" ? r.top : r.bottom) - c.top };
+  let x = 0;
+  let y = 0;
+  let node: HTMLElement | null = el;
+  while (node && node !== container) {
+    x += node.offsetLeft;
+    y += node.offsetTop;
+    node = node.offsetParent as HTMLElement | null;
+  }
+  return { x: x + el.offsetWidth / 2, y: edge === "top" ? y : y + el.offsetHeight };
 }
 
 /** Right-angle ("elbow") connector — straight down from the source, across,
@@ -224,8 +239,8 @@ export function ArchitectureSitemapSection({
               the whole row — a plain document-flow stack, so it always
               lands under that specific box regardless of how many items
               wrap next to it. */}
-          {/* gap: 64px * 1.15, 26px * 1.15 */}
-          <div className="relative mt-[73.6px] flex flex-wrap items-start justify-center gap-[29.9px]">
+          {/* gap: 64px * 1.15 * 1.2, 26px * 1.15 * 1.2 */}
+          <div className="relative mt-[88.3px] flex flex-wrap items-start justify-center gap-[35.9px]">
             {navItems.map((item, i) => {
               const box = (
                 <motion.div
