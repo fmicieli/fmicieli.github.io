@@ -22,24 +22,28 @@ const SCREEN_ASPECT = "375 / 812";
  * later and this renders the actual screenshot instead, with zero layout
  * changes anywhere else.
  *
- * `cardWidth` is a fixed px width (`shrink-0`) for every card in every row —
- * cards never stretch to fill a wrapped row's leftover space, so a
- * shorter last row (e.g. 3 cards instead of 4) never renders larger than
- * the rows above it.
+ * Without `fill`, `cardWidth` is a fixed px width (`shrink-0`) for every
+ * card in every row — cards never stretch to fill a wrapped row's leftover
+ * space, so a shorter last row (e.g. 3 cards instead of 4) never renders
+ * larger than the rows above it. With `fill`, the card instead just takes
+ * 100% of its CSS Grid cell — see the grid comment below for why that's
+ * what makes a shorter last row match, not grow past, the row above it.
  */
 function WireframeCard({
   screen,
   i,
   cardWidth,
+  fill,
 }: {
   screen: WireframeScreen;
   i: number;
   cardWidth: number;
+  fill?: boolean;
 }) {
   return (
     <motion.div
-      className="flex shrink-0 flex-col items-center"
-      style={{ width: cardWidth }}
+      className={fill ? "flex w-full flex-col items-center" : "flex shrink-0 flex-col items-center"}
+      style={fill ? undefined : { width: cardWidth }}
       initial={{ opacity: 0, y: 12 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: false, margin: "-40px" }}
@@ -69,19 +73,31 @@ export function WireframeFilmstripSection({
   // passes a slightly narrower width (see its data entry) so its 7 screens
   // split 4 + 3 instead of leaving one screen stranded alone on its own row.
   cardWidth = 210,
+  // High-fi also passes `fill: true`: a CSS Grid (not flex-wrap) with
+  // `repeat(auto-fit, minmax(cardWidth, 1fr))` columns. Grid — unlike
+  // flexbox — fixes the column tracks for the *whole* grid once, from the
+  // container width, and every row shares them; so the first (full) row's
+  // cards grow to fill 100% of the width via `1fr`, and a shorter last row
+  // reuses those exact same column widths (matching row one, not growing
+  // to fill its own leftover space the way a wrapped flex line would).
+  fill = false,
 }: {
   heading: string;
   subheading: string;
   screens: WireframeScreen[];
   cardWidth?: number;
+  fill?: boolean;
 }) {
   return (
     <div className="flex h-full flex-1 flex-col">
       <SectionHeading heading={heading} subheading={subheading} />
       <div className="mt-title-to-content flex flex-1 flex-col justify-center">
-        <div className="flex flex-wrap justify-center gap-x-[21px] gap-y-6 pt-1">
+        <div
+          className={fill ? "gap-x-[21px] gap-y-6 pt-1" : "flex flex-wrap justify-center gap-x-[21px] gap-y-6 pt-1"}
+          style={fill ? { display: "grid", gridTemplateColumns: `repeat(auto-fit, minmax(${cardWidth}px, 1fr))` } : undefined}
+        >
           {screens.map((screen, i) => (
-            <WireframeCard key={screen.caption} screen={screen} i={i} cardWidth={cardWidth} />
+            <WireframeCard key={screen.caption} screen={screen} i={i} cardWidth={cardWidth} fill={fill} />
           ))}
         </div>
       </div>

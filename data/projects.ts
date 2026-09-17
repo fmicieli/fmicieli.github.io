@@ -300,6 +300,10 @@ export type CaseStudyBlock =
        * when omitted — set explicitly per section to control how screens
        * wrap into rows (e.g. avoiding a lone last screen on its own row). */
       cardWidth?: number;
+      /** When true, cards grow (via CSS Grid) to fill 100% of the
+       * container width; a shorter last row matches the row above's
+       * column width instead of growing to fill its own leftover space. */
+      cardFill?: boolean;
     }
   | {
       type: "design-system";
@@ -589,6 +593,7 @@ export const projects: Project[] = [
         subheading:
           "The MVP's 21 screens were rebuilt using real instances of the design system's components (not loose elements that only imitate their look), replacing grayscale with the definitive color, typography, and spacing tokens. Flow: Onboarding → Today → Active workout → Progress → Profile.",
         cardWidth: 184, // narrower than the default 210 so 7 screens split 4 + 3, not 3 + 3 + 1
+        cardFill: true, // both rows share the same column width; the full first row fills 100%
         screens: [
           { caption: "Goal", image: { src: "/projects/stride/wireframes-hifi/a2-meta.png", alt: "High-fidelity screen: onboarding goal selection" } },
           { caption: "Account", image: { src: "/projects/stride/wireframes-hifi/a7-cuenta.png", alt: "High-fidelity screen: onboarding account creation" } },

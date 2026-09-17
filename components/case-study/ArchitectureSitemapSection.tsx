@@ -154,8 +154,9 @@ export function ArchitectureSitemapSection({
             height={size.height}
           >
             <defs>
-              <marker id="sitemap-arrow" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto">
-                <path d="M0,0 L7,3.5 L0,7 Z" fill="var(--color-text-secondary)" />
+              {/* 7 * 1.15 */}
+              <marker id="sitemap-arrow" markerWidth="8" markerHeight="8" refX="6.3" refY="4" orient="auto">
+                <path d="M0,0 L8,4 L0,8 Z" fill="var(--color-text-secondary)" />
               </marker>
             </defs>
             {lines.map((line, i) => (
@@ -166,11 +167,16 @@ export function ArchitectureSitemapSection({
                 viewport={{ once: false, margin: "-40px" }}
                 transition={{ duration: 0.4, delay: lineStageDelay(i, navItems.length), ease: STAGE_EASE }}
               >
+                {/* Stroke color + width bumped for visibility (was
+                    --color-border at 1.5px — barely visible at ~1.6:1); now
+                    --color-border-interactive (~3.76:1, already used
+                    elsewhere on the site for exactly this "needs to read as
+                    a boundary" case) at 2px. */}
                 <path
-                  d={elbowPath({ ...line, y2: line.y2 - 7 })}
+                  d={elbowPath({ ...line, y2: line.y2 - 8 })}
                   fill="none"
-                  stroke="var(--color-border)"
-                  strokeWidth={1.5}
+                  stroke="var(--color-border-interactive)"
+                  strokeWidth={2}
                   markerEnd="url(#sitemap-arrow)"
                 />
               </motion.g>
@@ -180,27 +186,30 @@ export function ArchitectureSitemapSection({
           <div className="relative flex justify-center">
             <motion.div
               ref={startRef}
-              className="rounded-card border border-border bg-surface px-6 py-2.5 text-center shadow-card backdrop-blur-card"
+              className="rounded-card border border-[var(--color-border-interactive)] bg-surface px-[27.6px] py-[11.5px] text-center shadow-card backdrop-blur-card"
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: false, margin: "-40px" }}
               transition={{ duration: 0.5, delay: STAGE_START, ease: STAGE_EASE }}
             >
-              <p className="font-display text-sm font-semibold text-text-primary">{startLabel}</p>
+              {/* 14px * 1.15 */}
+              <p className="font-display text-[16.1px] font-semibold text-text-primary">{startLabel}</p>
             </motion.div>
           </div>
 
-          <div className="relative mt-10 flex justify-center">
+          {/* gap: 40px * 1.15 */}
+          <div className="relative mt-[46px] flex justify-center">
             <motion.div
               ref={onboardingRef}
-              className="rounded-card border border-border border-t-[var(--color-border-top-highlight)] bg-surface px-8 py-4 text-center shadow-card backdrop-blur-card"
+              className="rounded-card border border-[var(--color-border-interactive)] border-t-[var(--color-border-top-highlight)] bg-surface px-[36.8px] py-[18.4px] text-center shadow-card backdrop-blur-card"
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: false, margin: "-40px" }}
               transition={{ duration: 0.5, delay: STAGE_ONBOARDING, ease: STAGE_EASE }}
             >
-              <p className="font-display text-lg font-semibold text-text-primary">{onboardingLabel}</p>
-              <p className="mt-1.5 font-mono text-sm text-text-secondary">{onboardingSub}</p>
+              {/* 18px * 1.15, 14px * 1.15 */}
+              <p className="font-display text-[20.7px] font-semibold text-text-primary">{onboardingLabel}</p>
+              <p className="mt-[6.9px] font-mono text-[16.1px] text-text-secondary">{onboardingSub}</p>
             </motion.div>
           </div>
 
@@ -209,21 +218,24 @@ export function ArchitectureSitemapSection({
               the whole row — a plain document-flow stack, so it always
               lands under that specific box regardless of how many items
               wrap next to it. */}
-          <div className="relative mt-16 flex flex-wrap items-start justify-center gap-[26px]">
+          {/* gap: 64px * 1.15, 26px * 1.15 */}
+          <div className="relative mt-[73.6px] flex flex-wrap items-start justify-center gap-[29.9px]">
             {navItems.map((item, i) => {
               const box = (
                 <motion.div
                   ref={(el) => {
                     navRefs.current[i] = el;
                   }}
-                  className="w-[210px] rounded-card border border-border border-t-[var(--color-border-top-highlight)] bg-surface p-4 text-center shadow-card backdrop-blur-card"
+                  // 210px * 1.15
+                  className="w-[241.5px] rounded-card border border-[var(--color-border-interactive)] border-t-[var(--color-border-top-highlight)] bg-surface p-[18.4px] text-center shadow-card backdrop-blur-card"
                   initial={{ opacity: 0, y: 16 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: false, margin: "-40px" }}
                   transition={{ duration: 0.5, delay: STAGE_NAV, ease: STAGE_EASE }}
                 >
-                  <p className="font-display text-lg font-semibold text-text-primary">{item.label}</p>
-                  <p className="mt-1.5 whitespace-nowrap font-mono text-sm font-normal text-text-secondary">
+                  {/* 18px * 1.15, 14px * 1.15 */}
+                  <p className="font-display text-[20.7px] font-semibold text-text-primary">{item.label}</p>
+                  <p className="mt-[6.9px] whitespace-nowrap font-mono text-[16.1px] font-normal text-text-secondary">
                     {item.sub}
                   </p>
                 </motion.div>
@@ -234,18 +246,19 @@ export function ArchitectureSitemapSection({
               }
 
               return (
-                <div key={item.label} className="flex flex-col items-center gap-16">
+                // gap: 64px * 1.15
+                <div key={item.label} className="flex flex-col items-center gap-[73.6px]">
                   {box}
                   <motion.div
                     ref={subflowRef}
-                    className="rounded-card border border-dashed border-border bg-surface px-6 py-4 text-center shadow-card backdrop-blur-card"
+                    className="rounded-card border border-dashed border-[var(--color-border-interactive)] bg-surface px-[27.6px] py-[18.4px] text-center shadow-card backdrop-blur-card"
                     initial={{ opacity: 0, y: 16 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: false, margin: "-40px" }}
                     transition={{ duration: 0.5, delay: STAGE_SUBFLOW, ease: STAGE_EASE }}
                   >
-                    <p className="font-display text-lg font-semibold text-text-primary">{subflowLabel}</p>
-                    <p className="mt-1.5 whitespace-nowrap font-mono text-sm font-normal text-text-secondary">
+                    <p className="font-display text-[20.7px] font-semibold text-text-primary">{subflowLabel}</p>
+                    <p className="mt-[6.9px] whitespace-nowrap font-mono text-[16.1px] font-normal text-text-secondary">
                       {subflowSub}
                     </p>
                   </motion.div>

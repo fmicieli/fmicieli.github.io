@@ -54,10 +54,12 @@ export function CaseStudyHero({
           </li>
         ))}
       </motion.ul>
-      <motion.h1 {...fadeUp(0.1)} className="mt-4 font-display text-3xl font-semibold sm:text-4xl">
+      {/* gap: 16px * 1.5. size: 30px * 1.15, 36px * 1.15 */}
+      <motion.h1 {...fadeUp(0.1)} className="mt-6 font-display text-[35px] font-semibold sm:text-[41px]">
         {title}
       </motion.h1>
-      <motion.p {...fadeUp(0.2)} className="mt-3 max-w-xl leading-relaxed text-text-secondary">
+      {/* gap: 12px * 1.5. size: 16px * 1.15 */}
+      <motion.p {...fadeUp(0.2)} className="mt-[18px] max-w-xl text-[18px] leading-relaxed text-text-secondary">
         {subtitle}
       </motion.p>
 

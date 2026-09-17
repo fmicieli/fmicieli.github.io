@@ -25,21 +25,40 @@ const DK_TEXT_2 = "#9C9CA0";
 function ComponentCell({
   label,
   className,
+  scale = 1.15,
   children,
 }: {
   label: string;
   className?: string;
+  /** Bottom nav's 4 items already span edge-to-edge with no slack — the
+   * default 15% growth clipped its 4th item entirely under overflow-hidden.
+   * Passed as 1 there; every other cell keeps the default. */
+  scale?: number;
   children: React.ReactNode;
 }) {
   return (
+    // overflow-hidden + a scaled inner wrapper, rather than resizing every
+    // component preview's own fonts/padding by hand: the cell (and the
+    // fixed-size grid/panel it lives in) stays exactly the same size, the
+    // preview inside it just renders bigger, clipped if it would overflow.
+    // The label stays outside the scaled wrapper (a sibling, not a child
+    // of it) so it isn't affected.
     <div
-      className={`relative flex min-h-[92px] flex-col items-start justify-center gap-2 rounded-lg p-4 pt-7 ${className ?? ""}`}
+      className={`relative flex min-h-[92px] flex-col items-start justify-center gap-2 overflow-hidden rounded-lg p-4 pt-7 ${className ?? ""}`}
       style={{ background: DK_SURFACE }}
     >
       <span className="absolute left-3 top-2 font-stride-mono text-xs" style={{ color: DK_TEXT_2 }}>
         {label}
       </span>
-      {children}
+      {/* w-full: several previews (text fields, achievement box, bottom
+          nav, stat grid...) have their own `w-full` child expecting to
+          fill the cell's real width, not this wrapper's — transform
+          doesn't change layout sizing for percentage children, only how
+          the whole scaled box paints, so keeping this wrapper's own
+          layout width identical to the cell's is what keeps those intact. */}
+      <div className="w-full" style={{ transform: `scale(${scale})`, transformOrigin: "left center" }}>
+        {children}
+      </div>
     </div>
   );
 }
@@ -398,13 +417,13 @@ export function DesignSystemSection({
             {/* Same-size container as every other cell — 3 per row, no
                 span override — rather than the wider treatment this had
                 before. */}
-            <ComponentCell label="bottom nav">
+            <ComponentCell label="bottom nav" scale={1}>
               <div className="flex w-full items-start justify-between">
                 {componentLabels.navItems.map((label, i) => (
                   <div key={label} className="flex flex-col items-center gap-1">
                     <svg
                       viewBox="0 0 24 24"
-                      className="h-4 w-4"
+                      className="h-3.5 w-3.5"
                       fill="none"
                       stroke={i === 0 ? LIME : DK_TEXT_2}
                       strokeWidth={1.8}
@@ -412,7 +431,7 @@ export function DesignSystemSection({
                       {NAV_ICONS[i] ?? null}
                     </svg>
                     <span
-                      className="text-center text-[8px]"
+                      className="whitespace-nowrap text-center text-[6.5px] leading-tight"
                       style={i === 0 ? { color: LIME, fontWeight: 600 } : { color: DK_TEXT_2 }}
                     >
                       {label}
