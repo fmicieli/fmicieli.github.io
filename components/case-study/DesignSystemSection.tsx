@@ -44,7 +44,17 @@ function ComponentCell({
     // The label stays outside the scaled wrapper (a sibling, not a child
     // of it) so it isn't affected.
     <div
-      className={`relative flex min-h-[92px] flex-col items-start justify-center gap-2 overflow-hidden rounded-lg p-4 pt-7 ${className ?? ""}`}
+      // This min-h is what actually drives the whole panel's height:
+      // ComponentCell's own natural (pre-scale) content already needed
+      // ~132px per cell — more than the 92px floor this used to have, and
+      // more than the style panel's own content height too — so it was
+      // already the tallest of the grid's two `h-full` columns, silently
+      // winning the shared row-height calc. That left "text field · error"
+      // (3 stacked lines at 1.15x) and the buttons (1.15x width) clipped
+      // under overflow-hidden with no headroom. 153.6px = 132 * 1.15,
+      // which grows the whole shared panel by exactly 15% (measured) and
+      // gives every cell the extra room.
+      className={`relative flex min-h-[153.6px] flex-col items-start justify-center gap-2 overflow-hidden rounded-lg p-4 pt-7 ${className ?? ""}`}
       style={{ background: DK_SURFACE }}
     >
       <span className="absolute left-3 top-2 font-stride-mono text-xs" style={{ color: DK_TEXT_2 }}>
@@ -131,8 +141,9 @@ export function DesignSystemSection({
             panels instead of one long stacked sheet, so growing the
             component catalog doesn't just keep making the section taller.
             Stretched to equal height (the default for a grid row) so the
-            component grid's cells can grow to fill whatever height the
-            (usually taller) style panel sets. */}
+            shorter panel grows to fill whatever height the taller one
+            sets — in practice that's the component grid's own min-h-per-
+            cell total (see ComponentCell), not the style panel's content. */}
         <div className="grid gap-4 lg:grid-cols-[360px_1fr]">
           <motion.div
             className="font-stride-sans h-full overflow-hidden rounded-card border"
@@ -142,23 +153,28 @@ export function DesignSystemSection({
             viewport={{ once: false, margin: "-40px" }}
             transition={{ duration: 0.5, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="border-b px-8 py-10 text-center" style={{ borderColor: DK_LINE }}>
+            {/* py-10 * 1.15 (a proportionate bump, matching the rest of
+                this panel — not what drives the shared container's
+                height; see ComponentCell's min-h for that). */}
+            <div className="border-b px-8 py-[46px] text-center" style={{ borderColor: DK_LINE }}>
               {/* Real brand assets (the white/light variant, meant for a
                   dark surface like this one) — Logo-stride (wordmark) and
                   Isologo-stride (the standalone "S" mark), not a crop of
                   one file. */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/projects/stride/logo-full.png" alt="Stride" className="mx-auto h-auto w-[170px]" />
+              {/* gap: 14.4px * 1.5 */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/projects/stride/logo-s.png" alt="" aria-hidden="true" className="mx-auto mt-[14.4px] h-[35px] w-auto" />
+              <img src="/projects/stride/logo-s.png" alt="" aria-hidden="true" className="mx-auto mt-[21.6px] h-[35px] w-auto" />
             </div>
 
             <p className="font-stride-mono px-4 pb-2 pt-3 text-xs tracking-wide" style={{ color: DK_TEXT_2 }}>
               {sectionLabels.colorAccent}
             </p>
+            {/* min-h: 76px * 1.15 */}
             <div className="flex border-b" style={{ borderColor: DK_LINE }}>
               <div
-                className="font-stride-mono flex min-h-[76px] flex-1 flex-col justify-end p-3 text-[9.5px]"
+                className="font-stride-mono flex min-h-[87.4px] flex-1 flex-col justify-end p-3 text-[9.5px]"
                 style={{ background: LIME, color: DK_BG }}
               >
                 lime-500
@@ -166,7 +182,7 @@ export function DesignSystemSection({
                 #9BE83C
               </div>
               <div
-                className="font-stride-mono flex min-h-[76px] flex-1 flex-col justify-end p-3 text-[9.5px]"
+                className="font-stride-mono flex min-h-[87.4px] flex-1 flex-col justify-end p-3 text-[9.5px]"
                 style={{ background: LIME_TINT, color: LIME }}
               >
                 lime-tint
@@ -186,7 +202,7 @@ export function DesignSystemSection({
               ].map((swatch) => (
                 <div
                   key={swatch.name}
-                  className="font-stride-mono flex min-h-[76px] min-w-[90px] flex-1 flex-col justify-end p-3 text-[9.5px]"
+                  className="font-stride-mono flex min-h-[87.4px] min-w-[90px] flex-1 flex-col justify-end p-3 text-[9.5px]"
                   // White text on the "danger" swatch's own mid-brightness
                   // red only reaches ~3.9:1 — under WCAG AA's 4.5:1 floor.
                   // Dark text clears it (~5:1) there; the other three
@@ -202,9 +218,10 @@ export function DesignSystemSection({
 
             <div className="pt-2">
               {typeSpecimen.map((row, i) => (
+                // py-4 * 1.15
                 <div
                   key={row.sample}
-                  className={`flex flex-wrap items-baseline justify-between gap-4 px-5 py-4 ${
+                  className={`flex flex-wrap items-baseline justify-between gap-4 px-5 py-[18.4px] ${
                     i < typeSpecimen.length - 1 ? "border-b" : ""
                   }`}
                   style={{ borderColor: DK_LINE }}
