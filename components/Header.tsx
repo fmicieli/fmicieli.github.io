@@ -73,17 +73,22 @@ export function Header() {
           viewport rather than the element's own (much shorter) box, so
           this lines up with body's underneath it instead of just being a
           second, independently-positioned copy of the same gradient.
-          opacity: 0.8 (not fully opaque) so page content is still very
-          faintly readable through it while scrolling underneath. */}
+          opacity: 0.85 (not fully opaque) so page content is still very
+          faintly readable through it while scrolling underneath — same
+          value at every state (open/closed menu, any scroll position),
+          there's no separate state-specific opacity to keep in sync. */}
       <div
         aria-hidden="true"
         className="absolute inset-0"
-        style={{ background: "var(--gradient-ambient)", backgroundAttachment: "fixed", opacity: 0.8 }}
+        style={{ background: "var(--gradient-ambient)", backgroundAttachment: "fixed", opacity: 0.85 }}
       />
-      {/* Shorter on mobile (min-h-9/py-1/pt-1, was 11/1.5/2 at every size) —
-          sm: restores the original desktop measurements exactly. */}
-      <div className="relative px-page-x pt-1 sm:pt-2">
-        <div className="relative flex min-h-9 items-center justify-center py-1 sm:min-h-11 sm:py-1.5">
+      {/* Shorter on mobile, but with a clean, symmetric 8px top+bottom
+          around the row (py-2 here; the row itself carries no vertical
+          padding of its own on mobile any more) — sm: restores the
+          original desktop measurements exactly (pt-2 outer + py-1.5 on the
+          row, no bottom padding on the outer wrapper). */}
+      <div className="relative px-page-x pb-2 pt-2 sm:pb-0 sm:pt-2">
+        <div className="relative flex min-h-11 items-center justify-center sm:py-1.5">
           {/* Site mark, left — links home from anywhere, including a
               project page, making a separate "back to projects" control
               unnecessary (removed; see git history for the fixed strip
@@ -121,12 +126,11 @@ export function Header() {
       {/* Hamburger, mobile only — sits outside the 15vw content margin on
           purpose (a tap target like this should hug the real screen edge,
           not get pushed in by the same margin that centers the desktop
-          nav). 36px tap target (was 44px), matching the shorter mobile
-          header. */}
+          nav). Back to a 44px tap target (was briefly 36px). */}
       <div className="absolute right-2 top-1/2 -translate-y-1/2 sm:hidden">
         <button
           type="button"
-          className="flex h-9 w-9 items-center justify-center rounded-lg text-text-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2"
+          className="flex h-11 w-11 items-center justify-center rounded-lg text-text-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2"
           aria-label={open ? t.header.closeMenu : t.header.openMenu}
           aria-expanded={open}
           onClick={() => setOpen((v) => !v)}
