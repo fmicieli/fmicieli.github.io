@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { SectionHeading } from "@/components/case-study/SectionHeading";
 
 // Same dot-bullet list Tribu Music's ContextSection uses for the persona's
@@ -38,15 +39,27 @@ export function AiAgentsSection({
     <div className="flex h-full flex-1 flex-col">
       <SectionHeading heading={heading} subheading={subheading} />
       <div className="mt-title-to-content flex flex-1 flex-col justify-center gap-6">
-        <div className="grid overflow-hidden rounded-card border border-border border-t-[var(--color-border-top-highlight)] bg-surface shadow-card backdrop-blur-card sm:grid-cols-2">
-          <div className="border-b border-border p-6 sm:border-b-0 sm:border-r">
+        <div className="grid gap-6 sm:grid-cols-2">
+          <motion.div
+            className="rounded-card border border-border border-t-[var(--color-border-top-highlight)] bg-surface p-6 shadow-card backdrop-blur-card"
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false, margin: "-40px" }}
+            transition={{ duration: 0.5, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+          >
             <p className="mb-4 font-mono text-sm font-medium text-accent">{aiLabel}</p>
             <ItemList items={aiItems} />
-          </div>
-          <div className="p-6">
+          </motion.div>
+          <motion.div
+            className="rounded-card border border-border border-t-[var(--color-border-top-highlight)] bg-surface p-6 shadow-card backdrop-blur-card"
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false, margin: "-40px" }}
+            transition={{ duration: 0.5, delay: 0.24, ease: [0.22, 1, 0.36, 1] }}
+          >
             <p className="mb-4 font-mono text-sm font-medium text-text-primary">{humanLabel}</p>
             <ItemList items={humanItems} />
-          </div>
+          </motion.div>
         </div>
         <p className="max-w-[64ch] text-body leading-relaxed text-text-secondary">{note}</p>
       </div>
