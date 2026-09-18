@@ -34,7 +34,7 @@ function CardContent({ item }: { item: Skill }) {
     <>
       <h3 className="font-display text-card-title font-bold text-text-primary">{item.title}</h3>
       <p className="text-body leading-relaxed text-text-secondary">{item.text}</p>
-      <div className="mt-auto flex flex-wrap gap-2">
+      <div className="mt-4 flex flex-wrap gap-2 sm:mt-auto">
         {item.tags.map((tag) => (
           <span
             key={tag}

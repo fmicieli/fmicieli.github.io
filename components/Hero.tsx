@@ -43,6 +43,14 @@ export function Hero() {
   // identical to what it always rendered, so there's no hydration mismatch
   // or 0-height flash before this resolves.
   const [stickyHeight, setStickyHeight] = useState<number | null>(null);
+  // The plain viewport-only height — unlike `stickyHeight` above, this never
+  // grows to fit the (possibly much taller, stacked-column) cards content.
+  // The hero's own screen (glow, logo, heading/button, scroll hint) is
+  // pinned to this instead of the grown sticky box: those elements were
+  // centering themselves inside the *entire* grown box when they shared its
+  // height, landing far off the actual visible viewport once mobile's
+  // single-column cards made that box much taller than one screen.
+  const [viewportHeight, setViewportHeight] = useState<number | null>(null);
   useEffect(() => {
     function measure() {
       if (!containerRef.current) return;
@@ -50,6 +58,7 @@ export function Hero() {
       const clearance = headerHeight + HEADER_GAP;
       setHeaderClearance(clearance);
       const viewportStickyHeight = window.innerHeight - clearance;
+      setViewportHeight(viewportStickyHeight);
       // On mobile the cards now stack in a single column instead of a 2x2
       // grid (see AboutCards' StackedGrid), often taller than one viewport
       // once the heading above them is included — scrollHeight reports
@@ -294,41 +303,57 @@ export function Hero() {
         style={{ top: headerClearance, height: stickyHeight ?? `calc(100vh - ${headerClearance}px)` }}
         onMouseMove={handleMouseMove}
       >
-        <motion.div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0"
-          style={{ background: glowBackground }}
-        />
-
-        <Logo3D
-          scale={shapeScale}
-          opacity={shapeOpacity}
-          rotateX={shapeRotateX}
-          rotateY={shapeRotateY}
-          shine={shapeShine}
-          tiltX={logoTiltX}
-          tiltY={logoTiltY}
-        />
-
-        <div className="absolute inset-0 flex flex-col items-center justify-center px-page-x text-center">
+        {/* Pinned to the plain viewport height (never the grown
+            content-aware `stickyHeight` above) so the glow/logo/hero text
+            stay centered on the actual visible screen regardless of how
+            tall the cards below make the outer sticky box. */}
+        <div
+          className="absolute inset-x-0 top-0"
+          style={{ height: viewportHeight ?? `calc(100vh - ${headerClearance}px)` }}
+        >
           <motion.div
-            style={{ opacity: heroOpacity, y: heroY, willChange: "opacity, transform" }}
-            className="relative max-w-3xl"
-          >
-            <p className="mb-2 text-sm uppercase tracking-[0.2em] text-text-secondary">
-              Florencia Micieli
-            </p>
-            <h1 className="whitespace-nowrap font-display text-xl font-semibold leading-tight sm:text-4xl lg:text-6xl">
-              {t.hero.role}
-            </h1>
-            <button
-              type="button"
-              onClick={handleCtaClick}
-              className="mt-5 inline-flex h-9 items-center justify-center rounded-control bg-text-primary px-5 text-[14px] font-medium text-bg transition hover:scale-[1.03] hover:bg-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2"
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0"
+            style={{ background: glowBackground }}
+          />
+
+          <Logo3D
+            scale={shapeScale}
+            opacity={shapeOpacity}
+            rotateX={shapeRotateX}
+            rotateY={shapeRotateY}
+            shine={shapeShine}
+            tiltX={logoTiltX}
+            tiltY={logoTiltY}
+          />
+
+          <div className="absolute inset-0 flex flex-col items-center justify-center px-page-x text-center">
+            <motion.div
+              style={{ opacity: heroOpacity, y: heroY, willChange: "opacity, transform" }}
+              className="relative max-w-3xl"
             >
-              {t.hero.viewMore}
-            </button>
-          </motion.div>
+              <p className="mb-2 text-sm uppercase tracking-[0.2em] text-text-secondary">
+                Florencia Micieli
+              </p>
+              <h1 className="whitespace-nowrap font-display text-xl font-semibold leading-tight sm:text-4xl lg:text-6xl">
+                {t.hero.role}
+              </h1>
+              <button
+                type="button"
+                onClick={handleCtaClick}
+                className="mt-5 inline-flex h-9 items-center justify-center rounded-control bg-text-primary px-5 text-[14px] font-medium text-bg transition hover:scale-[1.03] hover:bg-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2"
+              >
+                {t.hero.viewMore}
+              </button>
+            </motion.div>
+          </div>
+
+          <motion.p
+            style={{ opacity: scrollHintOpacity }}
+            className="pointer-events-none absolute bottom-4 left-3 text-sm text-text-secondary sm:left-4"
+          >
+            {t.hero.scrollHint}
+          </motion.p>
         </div>
 
         {/* Heading sits directly above the cards with a fixed 48px gap, and
@@ -355,13 +380,6 @@ export function Hero() {
             <AboutCards progress={revealProgress} />
           </div>
         </div>
-
-        <motion.p
-          style={{ opacity: scrollHintOpacity }}
-          className="pointer-events-none absolute bottom-4 left-3 text-sm text-text-secondary sm:left-4"
-        >
-          {t.hero.scrollHint}
-        </motion.p>
       </div>
     </section>
   );
