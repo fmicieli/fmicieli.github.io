@@ -25,15 +25,11 @@ const TRANSITION_DURATION = 1100;
 // the scroll, not just at rest.
 const HEADER_GAP = 24;
 
-// Fraction of scrollYProgress for the pinned zone's middle snap stop: the
-// logo has finished fading (done by 0.7) and the testimonial cards have
-// arrived — visible, still stacked near the bottom — but haven't spread into
-// a row yet. One scroll gesture stops here; the next one finishes the spread.
-const MID_PROGRESS = 0.75;
 
 export function Hero() {
   const t = useTranslation();
   const containerRef = useRef<HTMLDivElement>(null);
+  const cardsWrapperRef = useRef<HTMLDivElement>(null);
 
   // Manually measure how many pixels of scroll the pinned transition spans
   // (container height minus the sticky viewport) and drive progress from
@@ -42,14 +38,30 @@ export function Hero() {
   // section's height shifts after web fonts finish loading.
   const [scrollRange, setScrollRange] = useState(1);
   const [headerClearance, setHeaderClearance] = useState(0);
+  // Null until first measured (client-only) — the sticky box falls back to
+  // the plain `calc(100vh - headerClearance)` string below in that window,
+  // identical to what it always rendered, so there's no hydration mismatch
+  // or 0-height flash before this resolves.
+  const [stickyHeight, setStickyHeight] = useState<number | null>(null);
   useEffect(() => {
     function measure() {
       if (!containerRef.current) return;
       const headerHeight = document.querySelector("header")?.offsetHeight ?? 0;
       const clearance = headerHeight + HEADER_GAP;
       setHeaderClearance(clearance);
-      const stickyHeight = window.innerHeight - clearance;
-      const range = Math.max(containerRef.current.offsetHeight - stickyHeight, 1);
+      const viewportStickyHeight = window.innerHeight - clearance;
+      // On mobile the cards now stack in a single column instead of a 2x2
+      // grid (see AboutCards' StackedGrid), often taller than one viewport
+      // once the heading above them is included — scrollHeight reports
+      // that true content height even while overflow-hidden is clipping it
+      // down to the sticky box's own height, so this doesn't need to
+      // temporarily lift the clip to get an honest measurement. Growing
+      // the sticky box to match means the pinned zone's height actually
+      // adjusts to fit its content instead of cutting off the last card.
+      const contentHeight = cardsWrapperRef.current?.scrollHeight ?? 0;
+      const nextStickyHeight = Math.max(viewportStickyHeight, contentHeight);
+      setStickyHeight(nextStickyHeight);
+      const range = Math.max(containerRef.current.offsetHeight - nextStickyHeight, 1);
       setScrollRange(range);
       // Published for HomeScrollSnap (app/page.tsx's section-snap system) —
       // see heroScrollState.ts for why this is shared instead of
@@ -99,11 +111,10 @@ export function Hero() {
     rafRef.current = requestAnimationFrame(step);
   }, []);
 
-  // The pinned zone has three snap stops — top, the mid-checkpoint (cards
-  // arrived but still stacked), and the end (cards spread into a row) —
-  // rather than jumping straight from top to bottom in one gesture. Each
-  // scroll/touch tick (or CTA click) advances to the next stop in that
-  // direction; a second gesture from the mid stop finishes the spread.
+  // The pinned zone has two snap stops — top and the end (cards fully
+  // settled under the text) — one scroll/touch gesture (or CTA click) goes
+  // straight from top to fully revealed, no intermediate half-risen stop
+  // along the way.
   const goToStop = useCallback(
     (direction: "down" | "up") => {
       const range = scrollRangeRef.current;
@@ -115,7 +126,7 @@ export function Hero() {
       // only ever owns scroll positions inside its own zone; anything past
       // `range` belongs to whatever comes after Hero.
       if (y > range + HERO_EXIT_MARGIN) return false;
-      const stops = [0, range * MID_PROGRESS, range];
+      const stops = [0, range];
       if (direction === "down") {
         const next = stops.find((stop) => stop > y + 1);
         if (next === undefined) return false;
@@ -190,7 +201,7 @@ export function Hero() {
       const y = window.scrollY;
       const range = scrollRangeRef.current;
       if (y <= 0 || y >= range) return;
-      const stops = [0, range * MID_PROGRESS, range];
+      const stops = [0, range];
       if (stops.some((stop) => Math.abs(stop - y) < 1)) return;
       goToStop(direction);
     }
@@ -280,7 +291,7 @@ export function Hero() {
     >
       <div
         className="sticky overflow-hidden px-page-x"
-        style={{ top: headerClearance, height: `calc(100vh - ${headerClearance}px)` }}
+        style={{ top: headerClearance, height: stickyHeight ?? `calc(100vh - ${headerClearance}px)` }}
         onMouseMove={handleMouseMove}
       >
         <motion.div
@@ -323,8 +334,15 @@ export function Hero() {
         {/* Heading sits directly above the cards with a fixed 48px gap, and
             the whole group is vertically centered as one block within the
             pinned viewport once settled — not bottom-anchored, which left
-            all the leftover space stacked above it instead of split evenly. */}
-        <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-6 overflow-hidden px-page-x text-center">
+            all the leftover space stacked above it instead of split evenly.
+            Ref used to measure this group's true content height (see the
+            sticky box's own height above) so the pinned zone grows to fit
+            it instead of clipping the last card via this same
+            overflow-hidden once mobile's stack is taller than one screen. */}
+        <div
+          ref={cardsWrapperRef}
+          className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-6 overflow-hidden px-page-x text-center"
+        >
           <motion.div
             style={{ opacity: headingOpacity, y: headingY, willChange: "opacity, transform" }}
             className="relative mx-auto max-w-2xl"

@@ -24,7 +24,10 @@ export function BenchmarkingSection({
       <SectionHeading heading={heading} subheading={subheading} />
 
       <div className="mt-title-to-content flex flex-1 flex-col justify-center">
-      <ul className="flex flex-wrap justify-center gap-8">
+      {/* gap-3/60px on mobile (was a flat gap-8/90px) so all 4 logos fit
+          one line instead of wrapping to 2: 4*60 + 3*12 = 276px, comfortably
+          under a phone's content width. sm: restores the original size. */}
+      <ul className="flex flex-nowrap justify-center gap-3 sm:flex-wrap sm:gap-8">
         {competitors.map((row, i) => (
           <motion.li
             key={row.name}
@@ -34,11 +37,11 @@ export function BenchmarkingSection({
             viewport={{ once: false, margin: "-40px" }}
             transition={{ duration: 0.5, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="flex h-[90px] w-[90px] items-center justify-center rounded-full bg-white p-3">
+            <div className="flex h-[60px] w-[60px] items-center justify-center rounded-full bg-white p-2 sm:h-[90px] sm:w-[90px] sm:p-3">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={row.logo} alt={row.name} className="h-full w-full object-contain" />
             </div>
-            <p className="text-body text-text-secondary">{row.name}</p>
+            <p className="text-center text-[11px] text-text-secondary sm:text-body">{row.name}</p>
           </motion.li>
         ))}
       </ul>

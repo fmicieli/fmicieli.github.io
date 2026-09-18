@@ -34,6 +34,18 @@ export function ClosingSection({
           {images.map((image, i) => (
             <motion.li
               key={image.src}
+              // min(...) here (not on the <img>): percentages resolve
+              // against the nearest ancestor with a definite width, and an
+              // <li> with no width of its own doesn't reliably give the
+              // <img> inside it one to resolve against. Putting it on the
+              // <li> itself — the actual flex item, sized directly against
+              // <ul>'s width — resolves it correctly. On a narrow mobile
+              // container, a third of it (minus a full 24px gap's share)
+              // undercuts the desktop-tuned 13.2rem width, so all 3 screens
+              // fit one line instead of wrapping to their own rows;
+              // resolves back to that original fixed width once a third of
+              // the container is already wider than it (roughly sm: up).
+              style={{ width: "min(calc(33.333% - 24px), 13.2rem)" }}
               initial={{ opacity: 0, y: 24, rotate: i % 2 === 0 ? -4 : 4 }}
               whileInView={{ opacity: 1, y: 0, rotate: i % 2 === 0 ? -2 : 2 }}
               viewport={{ once: false, margin: "-40px" }}
@@ -44,7 +56,7 @@ export function ClosingSection({
                 src={image.src}
                 alt={image.alt}
                 loading="lazy"
-                className="w-[10.8rem] rounded-2xl border border-border shadow-xl shadow-black/30 sm:w-[13.2rem]"
+                className="w-full rounded-2xl border border-border shadow-xl shadow-black/30"
               />
             </motion.li>
           ))}

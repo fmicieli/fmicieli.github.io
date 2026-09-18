@@ -93,14 +93,17 @@ function StackToRow({ progress, skills }: { progress: MotionValue<number>; skill
 }
 
 /** Mobile: a plain 2-column grid (no horizontal spread to animate — there's
- *  no room for a fanned row on a narrow screen), sharing the same
- *  peek-from-below/fade-in as the desktop version. */
+ *  no room for a fanned row, or even two side by side, on a narrow
+ *  screen), sharing the same peek-from-below/fade-in as the desktop
+ *  version. Single column (was 2) — see Hero.tsx for how the pinned
+ *  section grows to fit these stacked one under another instead of
+ *  clipping the last one or two. */
 function StackedGrid({ progress, skills }: { progress: MotionValue<number>; skills: Skill[] }) {
   const y = useTransform(progress, [0, 1], [PEEK_OFFSET, 0]);
   const opacity = useTransform(progress, [0, 0.4], [0, 1]);
 
   return (
-    <div className="mx-auto grid max-w-4xl grid-cols-2 gap-8 sm:hidden">
+    <div className="mx-auto grid max-w-sm grid-cols-1 gap-4 sm:hidden">
       {skills.map((item) => (
         <motion.div key={item.title} style={{ opacity, y }} className={CARD_STYLE}>
           <HoverBorderTrace />

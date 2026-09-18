@@ -1,8 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import type { LabeledImage } from "@/data/projects";
 import { SectionHeading } from "@/components/case-study/SectionHeading";
+import { Modal } from "@/components/Modal";
 
 export function PrototypeSection({
   heading,
@@ -17,6 +19,12 @@ export function PrototypeSection({
   bullets: string[];
   screens: LabeledImage[];
 }) {
+  // Same "click a small screen thumbnail to view it full-size" pattern as
+  // WireframeFilmstripSection — these render even smaller (w-24/w-28) than
+  // a wireframe filmstrip card, so it matters just as much here.
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const openScreen = openIndex !== null ? screens[openIndex] : null;
+
   return (
     <div className="flex h-full flex-1 flex-col">
       <SectionHeading heading={heading} subheading={subheading} />
@@ -47,19 +55,32 @@ export function PrototypeSection({
                 viewport={{ once: false, margin: "-40px" }}
                 transition={{ duration: 0.5, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] }}
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={screen.src}
-                  alt={screen.alt}
-                  loading="lazy"
-                  className="w-full rounded-xl border border-border shadow-lg shadow-black/30"
-                />
+                <button
+                  type="button"
+                  onClick={() => setOpenIndex(i)}
+                  aria-label={`View ${screen.label} in detail`}
+                  className="w-full overflow-hidden rounded-xl border border-border shadow-lg shadow-black/30 transition-opacity hover:opacity-80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2"
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={screen.src} alt={screen.alt} loading="lazy" className="w-full" />
+                </button>
                 <p className="text-center text-label font-medium text-text-secondary">{screen.label}</p>
               </motion.li>
             ))}
           </ul>
         </div>
       </div>
+
+      {openScreen && (
+        <Modal open={true} onClose={() => setOpenIndex(null)} title={openScreen.label}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={openScreen.src}
+            alt={openScreen.alt}
+            className="mx-auto h-auto max-h-[75vh] w-auto rounded-[2px]"
+          />
+        </Modal>
+      )}
     </div>
   );
 }

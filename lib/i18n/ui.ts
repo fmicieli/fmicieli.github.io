@@ -3,6 +3,7 @@ import { useLanguage, type Language } from "@/contexts/LanguageContext";
 type Ui = {
   header: {
     nav: { projects: string; about: string; contact: string };
+    homeLink: string;
     openMenu: string;
     closeMenu: string;
     languageSwitcher: { en: string; es: string; label: string };
@@ -27,7 +28,6 @@ type Ui = {
     behanceTodo: string;
   };
   projectPage: {
-    backToProjects: string;
     contentPending: string;
     viewOnBehance: string;
   };
@@ -49,6 +49,7 @@ export const ui: Record<Language, Ui> = {
   en: {
     header: {
       nav: { projects: "Projects", about: "About", contact: "Contact" },
+      homeLink: "Florencia Micieli — Home",
       openMenu: "Open menu",
       closeMenu: "Close menu",
       languageSwitcher: { en: "EN", es: "ES", label: "Language" },
@@ -91,7 +92,6 @@ export const ui: Record<Language, Ui> = {
       behanceTodo: "(TODO: content pending — missing the Behance profile URL)",
     },
     projectPage: {
-      backToProjects: "← Back to projects",
       contentPending:
         "TODO: content pending — this case study doesn't have its final content and images yet.",
       viewOnBehance: "View on Behance in the meantime",
@@ -112,6 +112,7 @@ export const ui: Record<Language, Ui> = {
   es: {
     header: {
       nav: { projects: "Proyectos", about: "Sobre mí", contact: "Contacto" },
+      homeLink: "Florencia Micieli — Inicio",
       openMenu: "Abrir menú",
       closeMenu: "Cerrar menú",
       languageSwitcher: { en: "EN", es: "ES", label: "Idioma" },
@@ -154,7 +155,6 @@ export const ui: Record<Language, Ui> = {
       behanceTodo: "(TODO: contenido pendiente — falta la URL del perfil de Behance)",
     },
     projectPage: {
-      backToProjects: "← Volver a proyectos",
       contentPending:
         "TODO: contenido pendiente — este caso de estudio todavía no tiene su contenido e imágenes finales.",
       viewOnBehance: "Ver en Behance mientras tanto",

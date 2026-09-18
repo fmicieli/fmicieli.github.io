@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useLanguage, type Language } from "@/contexts/LanguageContext";
 import { useTranslation } from "@/lib/i18n/ui";
 
@@ -8,7 +9,9 @@ import { useTranslation } from "@/lib/i18n/ui";
 // match the site's restrained aesthetic — active language reads in the
 // accent color, inactive stays muted like the rest of the nav. Each button
 // keeps an explicit 44px tap target (matching the hamburger's own h-11
-// convention) even though the visible label is small.
+// convention) even though the visible label is small. Text is 14px * 1.25
+// on mobile (17.5px, where this is the only header text a visitor sees —
+// desktop's row keeps the original 14px via sm:text-sm).
 function LanguageSwitcher({
   language,
   setLanguage,
@@ -26,7 +29,7 @@ function LanguageSwitcher({
         type="button"
         onClick={() => setLanguage("en")}
         aria-pressed={language === "en"}
-        className={`flex h-11 min-w-11 items-center justify-center rounded-[2px] px-1.5 text-sm transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2 ${
+        className={`flex h-11 min-w-11 items-center justify-center rounded-[2px] text-[17.5px] px-1.5 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2 sm:text-sm ${
           language === "en" ? "font-medium text-accent" : "text-text-secondary hover:text-text-primary"
         }`}
       >
@@ -39,7 +42,7 @@ function LanguageSwitcher({
         type="button"
         onClick={() => setLanguage("es")}
         aria-pressed={language === "es"}
-        className={`flex h-11 min-w-11 items-center justify-center rounded-[2px] px-1.5 text-sm transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2 ${
+        className={`flex h-11 min-w-11 items-center justify-center rounded-[2px] text-[17.5px] px-1.5 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2 sm:text-sm ${
           language === "es" ? "font-medium text-accent" : "text-text-secondary hover:text-text-primary"
         }`}
       >
@@ -69,14 +72,30 @@ export function Header() {
           background-attachment: fixed, which ties a background to the
           viewport rather than the element's own (much shorter) box, so
           this lines up with body's underneath it instead of just being a
-          second, independently-positioned copy of the same gradient. */}
+          second, independently-positioned copy of the same gradient.
+          opacity: 0.8 (not fully opaque) so page content is still very
+          faintly readable through it while scrolling underneath. */}
       <div
         aria-hidden="true"
         className="absolute inset-0"
-        style={{ background: "var(--gradient-ambient)", backgroundAttachment: "fixed" }}
+        style={{ background: "var(--gradient-ambient)", backgroundAttachment: "fixed", opacity: 0.8 }}
       />
-      <div className="relative px-page-x pt-2">
-        <div className="relative flex min-h-11 items-center justify-center py-1.5">
+      {/* Shorter on mobile (min-h-9/py-1/pt-1, was 11/1.5/2 at every size) —
+          sm: restores the original desktop measurements exactly. */}
+      <div className="relative px-page-x pt-1 sm:pt-2">
+        <div className="relative flex min-h-9 items-center justify-center py-1 sm:min-h-11 sm:py-1.5">
+          {/* Site mark, left — links home from anywhere, including a
+              project page, making a separate "back to projects" control
+              unnecessary (removed; see git history for the fixed strip
+              this replaced). */}
+          <Link
+            href="/"
+            aria-label={t.header.homeLink}
+            className="absolute left-0 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center overflow-hidden rounded-[6px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2"
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/favicon.svg" alt="" className="h-full w-full" />
+          </Link>
           <nav className="hidden items-center gap-4 sm:flex" aria-label="Main navigation">
             {NAV_LINKS.map((link) => (
               <a
@@ -99,36 +118,38 @@ export function Header() {
         </div>
       </div>
 
-      {/* Sits outside the 15vw content margin on purpose — a tap target
-          like this should hug the real screen edge at any viewport size,
-          not get pushed in by the same margin that centers the logo/nav
-          text (15vw of a narrow phone screen is already a lot of the
-          available width). */}
-      <button
-        type="button"
-        className="absolute right-2 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-lg text-text-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2 sm:hidden"
-        aria-label={open ? t.header.closeMenu : t.header.openMenu}
-        aria-expanded={open}
-        onClick={() => setOpen((v) => !v)}
-      >
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-          {open ? (
-            <path
-              d="M4 4L16 16M16 4L4 16"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-            />
-          ) : (
-            <path
-              d="M3 6H17M3 10H17M3 14H17"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-            />
-          )}
-        </svg>
-      </button>
+      {/* Hamburger, mobile only — sits outside the 15vw content margin on
+          purpose (a tap target like this should hug the real screen edge,
+          not get pushed in by the same margin that centers the desktop
+          nav). 36px tap target (was 44px), matching the shorter mobile
+          header. */}
+      <div className="absolute right-2 top-1/2 -translate-y-1/2 sm:hidden">
+        <button
+          type="button"
+          className="flex h-9 w-9 items-center justify-center rounded-lg text-text-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2"
+          aria-label={open ? t.header.closeMenu : t.header.openMenu}
+          aria-expanded={open}
+          onClick={() => setOpen((v) => !v)}
+        >
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            {open ? (
+              <path
+                d="M4 4L16 16M16 4L4 16"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+              />
+            ) : (
+              <path
+                d="M3 6H17M3 10H17M3 14H17"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+              />
+            )}
+          </svg>
+        </button>
+      </div>
 
       {open && (
         <>
@@ -147,7 +168,7 @@ export function Header() {
               <a
                 key={link.href}
                 href={link.href}
-                className="rounded-lg px-3 py-3 text-sm text-text-secondary transition-colors hover:bg-white/5 hover:text-text-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2"
+                className="rounded-lg px-3 py-3 text-[17.5px] text-text-secondary transition-colors hover:bg-white/5 hover:text-text-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2"
                 onClick={() => setOpen(false)}
               >
                 {link.label}

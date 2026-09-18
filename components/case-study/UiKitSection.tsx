@@ -119,7 +119,21 @@ function ImageThumb({
 // internal image gap below so the two stay equal as either is adjusted.
 const ROW1_GAP = "gap-[28.8px]";
 
-function GroupBlock({ group, index }: { group: UiKitGroup; index: number }) {
+function GroupBlock({
+  group,
+  index,
+  mobileColumn = false,
+}: {
+  group: UiKitGroup;
+  index: number;
+  /** Rendered inside the mobile 2-column masonry (see UiKitSection) instead
+   * of a desktop row: drops `shrink-0` so it can narrow to fit its column
+   * (each ImageThumb's own `maxWidth: 100%` then shrinks it to match), and
+   * Buttons wraps its states instead of requiring horizontal scroll to see
+   * them all — a scrollable strip inside an already-narrow mobile column
+   * read as "can't see this at 100% without panning it." */
+  mobileColumn?: boolean;
+}) {
   const key = groupKeyOf(group);
   const isButtons = key === "buttons";
   // Every group's images are top-aligned — per request (Cards was the
@@ -134,19 +148,21 @@ function GroupBlock({ group, index }: { group: UiKitGroup; index: number }) {
   const gapClass = key === "cards" ? ROW1_GAP : "gap-3";
   const scale = GROUP_SCALE[key] ?? 1;
   const widthOverride = UNIFORM_WIDTH_GROUPS.includes(key) ? UNIFORM_WIDTH : undefined;
+  const wrapClass = isButtons && !mobileColumn ? `flex-nowrap ${gapClass} overflow-x-auto pb-1` : `flex-wrap ${gapClass}`;
   return (
     <motion.div
-      className="flex shrink-0 flex-col gap-2"
+      className={mobileColumn ? "flex min-w-0 flex-col gap-2" : "flex shrink-0 flex-col gap-2"}
       initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: false, margin: "-40px" }}
       transition={{ duration: 0.5, delay: index * 0.05, ease: [0.22, 1, 0.36, 1] }}
     >
       <p className="font-display text-[17px] font-bold text-text-primary">{group.title}</p>
-      {/* Buttons specifically: all states side by side in one row, not
-          wrapping — per explicit request. Horizontal scroll is the
-          fallback if the row is ever wider than its own space. */}
-      <div className={isButtons ? `flex flex-nowrap ${alignClass} ${gapClass} overflow-x-auto pb-1` : `flex flex-wrap ${alignClass} ${gapClass}`}>
+      {/* Buttons specifically (desktop only, see wrapClass): all states
+          side by side in one row, not wrapping — per explicit request.
+          Horizontal scroll is the fallback if the row is ever wider than
+          its own space. */}
+      <div className={`flex ${alignClass} ${wrapClass}`}>
         {group.images.map((image) => (
           <ImageThumb key={image.src} image={image} groupTitle={group.title} scale={scale} widthOverride={widthOverride} />
         ))}
@@ -178,26 +194,54 @@ export function UiKitSection({
   const row1 = row1Keys.map((k) => byKey.get(k)).filter((g): g is UiKitGroup => Boolean(g));
   const row2 = row2Keys.map((k) => byKey.get(k)).filter((g): g is UiKitGroup => Boolean(g));
 
+  // Mobile: every group (both former rows combined) split into two
+  // independent columns that each flow top to bottom on their own — not
+  // aligned row by row with each other, so a tall group in one column
+  // doesn't force a gap next to a short one in the other (masonry, not a
+  // grid). Dealt alternately for a reasonably even split; there's no
+  // "correct" pairing to preserve here the way there was for the two
+  // desktop rows.
+  const allGroups = [...row1, ...row2];
+  const mobileCol1 = allGroups.filter((_, i) => i % 2 === 0);
+  const mobileCol2 = allGroups.filter((_, i) => i % 2 === 1);
+
   return (
     <div className="flex h-full flex-1 flex-col">
       <SectionHeading heading={heading} subheading={subheading} />
       <div className="mt-title-to-content flex flex-1 flex-col justify-center gap-8">
-        <div className={`flex flex-wrap items-start ${ROW1_GAP}`}>
-          {row1.map((group, i) => (
-            <GroupBlock key={group.title} group={group} index={i} />
-          ))}
+        {/* Mobile-only 2-column masonry — see mobileCol1/2 above. Desktop
+            keeps the original two hand-tuned rows below (hidden here). */}
+        <div className="flex items-start gap-3 sm:hidden">
+          <div className="flex min-w-0 flex-1 flex-col gap-6">
+            {mobileCol1.map((group, i) => (
+              <GroupBlock key={group.title} group={group} index={i} mobileColumn />
+            ))}
+          </div>
+          <div className="flex min-w-0 flex-1 flex-col gap-6">
+            {mobileCol2.map((group, i) => (
+              <GroupBlock key={group.title} group={group} index={i} mobileColumn />
+            ))}
+          </div>
         </div>
-        {/* flex-nowrap + overflow-x-auto rather than flex-wrap: Buttons'
-            states take up close to the full row width on their own, which
-            would otherwise push Tab Bar/List Item down onto their own
-            separate lines instead of sharing this row. This guarantees all
-            three stay aligned on one row, with horizontal scroll as the
-            fallback — same pattern already used for Buttons' own internal
-            row of states. */}
-        <div className="flex flex-nowrap items-start gap-6 overflow-x-auto pb-1">
-          {row2.map((group, i) => (
-            <GroupBlock key={group.title} group={group} index={row1.length + i} />
-          ))}
+
+        <div className="hidden flex-col gap-8 sm:flex">
+          <div className={`flex flex-wrap items-start ${ROW1_GAP}`}>
+            {row1.map((group, i) => (
+              <GroupBlock key={group.title} group={group} index={i} />
+            ))}
+          </div>
+          {/* flex-nowrap + overflow-x-auto rather than flex-wrap: Buttons'
+              states take up close to the full row width on their own, which
+              would otherwise push Tab Bar/List Item down onto their own
+              separate lines instead of sharing this row. This guarantees all
+              three stay aligned on one row, with horizontal scroll as the
+              fallback — same pattern already used for Buttons' own internal
+              row of states. */}
+          <div className="flex flex-nowrap items-start gap-6 overflow-x-auto pb-1">
+            {row2.map((group, i) => (
+              <GroupBlock key={group.title} group={group} index={row1.length + i} />
+            ))}
+          </div>
         </div>
       </div>
     </div>

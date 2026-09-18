@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import type { SitemapNavItem } from "@/data/projects";
 import { SectionHeading } from "@/components/case-study/SectionHeading";
 
-type Line = { x1: number; y1: number; x2: number; y2: number };
+type Line = { x1: number; y1: number; x2: number; y2: number; turnY?: number };
 
 /** Reveal order for the diagram: Start, then the arrow into Onboarding, then
  * the arrows fanning out into the nav sections, then finally the arrow down
@@ -56,9 +56,14 @@ function edgePoint(el: HTMLElement, container: HTMLElement, edge: "top" | "botto
  * then straight down into the target — instead of a diagonal line, so a fan
  * of connectors out of one shared source reads as a trunk that splits into
  * branches rather than a starburst of diagonals. Degenerates to a single
- * straight vertical segment when x1 === x2 (e.g. Start -> Onboarding). */
+ * straight vertical segment when x1 === x2 (e.g. Start -> Onboarding).
+ *
+ * The horizontal turn defaults to the geometric midpoint, but `line.turnY`
+ * overrides it when set — see the `isWrapped` branch in measure() below,
+ * which pushes the turn past every earlier box's bottom edge instead of
+ * through the middle of one of them. */
 function elbowPath(line: Line) {
-  const midY = line.y1 + (line.y2 - line.y1) / 2;
+  const midY = line.turnY ?? line.y1 + (line.y2 - line.y1) / 2;
   return `M ${line.x1} ${line.y1} L ${line.x1} ${midY} L ${line.x2} ${midY} L ${line.x2} ${line.y2}`;
 }
 
@@ -117,12 +122,34 @@ export function ArchitectureSitemapSection({
       const next: Line[] = [{ x1: startBottom.x, y1: startBottom.y, x2: onboardingTop.x, y2: onboardingTop.y }];
 
       const from = edgePoint(onboarding, container, "bottom");
-      navRefs.current
-        .filter((el): el is HTMLDivElement => el !== null)
-        .forEach((el) => {
-          const to = edgePoint(el, container, "top");
-          next.push({ x1: from.x, y1: from.y, x2: to.x, y2: to.y });
-        });
+      const navEls = navRefs.current.filter((el): el is HTMLDivElement => el !== null);
+      // At narrow widths, fewer nav boxes fit per row (flex-wrap), so a
+      // later item can land in the exact same column as an earlier one —
+      // e.g. only 2 columns wide means item 3 always shares item 1's
+      // column. The plain geometric-midpoint turn below assumes the direct
+      // path down that column is clear, which it no longer is: it would
+      // cut straight through that earlier box (and anything hanging below
+      // it, like the sub-flow). For a wrapped item (its own top is well
+      // below the first nav item's row), push the turn past the bottom of
+      // every box already placed instead — still a plain geometric
+      // midpoint for every item actually in the first row, so this can't
+      // regress the common case.
+      const firstRowTop = navEls[0] ? edgePoint(navEls[0], container, "top").y : null;
+      const CLEAR_GAP = 12;
+      let maxBottomSoFar = from.y;
+      if (subflowRef.current) {
+        maxBottomSoFar = Math.max(maxBottomSoFar, edgePoint(subflowRef.current, container, "bottom").y);
+      }
+      navEls.forEach((el) => {
+        const to = edgePoint(el, container, "top");
+        const bottom = edgePoint(el, container, "bottom");
+        const isWrapped = firstRowTop !== null && to.y - firstRowTop > 8;
+        const turnY = isWrapped
+          ? Math.min(Math.max(from.y + (to.y - from.y) / 2, maxBottomSoFar + CLEAR_GAP), to.y - 1)
+          : undefined;
+        next.push({ x1: from.x, y1: from.y, x2: to.x, y2: to.y, turnY });
+        maxBottomSoFar = Math.max(maxBottomSoFar, bottom.y);
+      });
 
       const firstNav = navRefs.current[0];
       if (subflowRef.current && firstNav) {
@@ -207,30 +234,34 @@ export function ArchitectureSitemapSection({
           <div className="relative flex justify-center">
             <motion.div
               ref={startRef}
-              className="rounded-card border border-[var(--color-border-interactive)] bg-surface px-[27.6px] py-[11.5px] text-center shadow-card backdrop-blur-card"
+              className="rounded-card border border-[var(--color-border-interactive)] bg-surface px-3 py-2 text-center shadow-card backdrop-blur-card sm:px-[27.6px] sm:py-[11.5px]"
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: false, margin: "-40px" }}
               transition={{ duration: 0.5, delay: STAGE_START, ease: STAGE_EASE }}
             >
-              {/* 14px * 1.15 */}
-              <p className="font-display text-[16.1px] font-semibold text-text-primary">{startLabel}</p>
+              {/* 14px * 1.15 on sm+; smaller/plain text-sm on mobile, where
+                  the whole diagram shows smaller with no box subtitles. */}
+              <p className="font-display text-sm font-semibold text-text-primary sm:text-[16.1px]">{startLabel}</p>
             </motion.div>
           </div>
 
-          {/* gap: 40px * 1.15 */}
-          <div className="relative mt-[46px] flex justify-center">
+          {/* gap: 40px * 1.15 on sm+, smaller on mobile */}
+          <div className="relative mt-6 flex justify-center sm:mt-[46px]">
             <motion.div
               ref={onboardingRef}
-              className="rounded-card border border-[var(--color-border-interactive)] border-t-[var(--color-border-top-highlight)] bg-surface px-[36.8px] py-[18.4px] text-center shadow-card backdrop-blur-card"
+              className="rounded-card border border-[var(--color-border-interactive)] border-t-[var(--color-border-top-highlight)] bg-surface px-4 py-2.5 text-center shadow-card backdrop-blur-card sm:px-[36.8px] sm:py-[18.4px]"
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: false, margin: "-40px" }}
               transition={{ duration: 0.5, delay: STAGE_ONBOARDING, ease: STAGE_EASE }}
             >
-              {/* 18px * 1.15, 14px * 1.15 */}
-              <p className="font-display text-[20.7px] font-semibold text-text-primary">{onboardingLabel}</p>
-              <p className="mt-[6.9px] font-mono text-[16.1px] text-text-secondary">{onboardingSub}</p>
+              {/* 18px * 1.15, 14px * 1.15 on sm+ */}
+              <p className="font-display text-base font-semibold text-text-primary sm:text-[20.7px]">{onboardingLabel}</p>
+              {/* Subtitle dropped on mobile entirely (not just hidden text
+                  — the diagram reads smaller/simpler there), restored from
+                  sm: up. */}
+              <p className="mt-[6.9px] hidden font-mono text-[16.1px] text-text-secondary sm:block">{onboardingSub}</p>
             </motion.div>
           </div>
 
@@ -239,24 +270,27 @@ export function ArchitectureSitemapSection({
               the whole row — a plain document-flow stack, so it always
               lands under that specific box regardless of how many items
               wrap next to it. */}
-          {/* gap: 64px * 1.15 * 1.2, 26px * 1.15 * 1.2 */}
-          <div className="relative mt-[88.3px] flex flex-wrap items-start justify-center gap-[35.9px]">
+          {/* gap: 64px * 1.15 * 1.2, 26px * 1.15 * 1.2 on sm+, smaller on
+              mobile — still flex-wrap, so smaller boxes naturally fit more
+              per row before wrapping down, adapting to whatever width is
+              available instead of forcing a rigid single column. */}
+          <div className="relative mt-8 flex flex-wrap items-start justify-center gap-3 sm:mt-[88.3px] sm:gap-[35.9px]">
             {navItems.map((item, i) => {
               const box = (
                 <motion.div
                   ref={(el) => {
                     navRefs.current[i] = el;
                   }}
-                  // 210px * 1.15
-                  className="w-[241.5px] rounded-card border border-[var(--color-border-interactive)] border-t-[var(--color-border-top-highlight)] bg-surface p-[18.4px] text-center shadow-card backdrop-blur-card"
+                  // 210px * 1.15 on sm+, ~60% of that on mobile
+                  className="w-[140px] rounded-card border border-[var(--color-border-interactive)] border-t-[var(--color-border-top-highlight)] bg-surface p-2.5 text-center shadow-card backdrop-blur-card sm:w-[241.5px] sm:p-[18.4px]"
                   initial={{ opacity: 0, y: 16 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: false, margin: "-40px" }}
                   transition={{ duration: 0.5, delay: STAGE_NAV, ease: STAGE_EASE }}
                 >
-                  {/* 18px * 1.15, 14px * 1.15 */}
-                  <p className="font-display text-[20.7px] font-semibold text-text-primary">{item.label}</p>
-                  <p className="mt-[6.9px] whitespace-nowrap font-mono text-[16.1px] font-normal text-text-secondary">
+                  {/* 18px * 1.15, 14px * 1.15 on sm+ */}
+                  <p className="font-display text-sm font-semibold text-text-primary sm:text-[20.7px]">{item.label}</p>
+                  <p className="mt-[6.9px] hidden whitespace-nowrap font-mono text-[16.1px] font-normal text-text-secondary sm:block">
                     {item.sub}
                   </p>
                 </motion.div>
@@ -267,19 +301,19 @@ export function ArchitectureSitemapSection({
               }
 
               return (
-                // gap: 64px * 1.15
-                <div key={item.label} className="flex flex-col items-center gap-[73.6px]">
+                // gap: 64px * 1.15 on sm+, smaller on mobile
+                <div key={item.label} className="flex flex-col items-center gap-6 sm:gap-[73.6px]">
                   {box}
                   <motion.div
                     ref={subflowRef}
-                    className="rounded-card border border-dashed border-[var(--color-border-interactive)] bg-surface px-[27.6px] py-[18.4px] text-center shadow-card backdrop-blur-card"
+                    className="rounded-card border border-dashed border-[var(--color-border-interactive)] bg-surface px-3 py-2.5 text-center shadow-card backdrop-blur-card sm:px-[27.6px] sm:py-[18.4px]"
                     initial={{ opacity: 0, y: 16 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: false, margin: "-40px" }}
                     transition={{ duration: 0.5, delay: STAGE_SUBFLOW, ease: STAGE_EASE }}
                   >
-                    <p className="font-display text-[20.7px] font-semibold text-text-primary">{subflowLabel}</p>
-                    <p className="mt-[6.9px] whitespace-nowrap font-mono text-[16.1px] font-normal text-text-secondary">
+                    <p className="font-display text-sm font-semibold text-text-primary sm:text-[20.7px]">{subflowLabel}</p>
+                    <p className="mt-[6.9px] hidden whitespace-nowrap font-mono text-[16.1px] font-normal text-text-secondary sm:block">
                       {subflowSub}
                     </p>
                   </motion.div>

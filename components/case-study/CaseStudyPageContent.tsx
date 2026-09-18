@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect } from "react";
-import Link from "next/link";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTranslation } from "@/lib/i18n/ui";
 import { getLocalizedProjectBySlug } from "@/data/getProjects";
@@ -45,24 +44,6 @@ export function CaseStudyPageContent({ slug }: { slug: string }) {
 
   return (
     <div className="px-page-x">
-      {/* Fixed (not scrolling away with the rest of the page, and not
-          inside `Reveal` — a fade-in on scroll-into-view doesn't apply to
-          something that's meant to just always be there): sits just below
-          the site header's own 52px, in the same px-page-x gutter as
-          everything else. Its own bg-bg backdrop (same technique as
-          Header's) keeps section content that pans past underneath it
-          during a jump transition from visibly showing through/colliding
-          with this text. */}
-      <div className="fixed inset-x-0 top-[52px] z-40">
-        <div aria-hidden="true" className="absolute inset-0 bg-bg" />
-        <Link
-          href="/#projects"
-          className="relative inline-block rounded-[2px] pb-3 pl-page-x pt-3 text-sm text-text-secondary hover:text-text-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2"
-        >
-          {t.projectPage.backToProjects}
-        </Link>
-      </div>
-
       {/* once={false}, matching every other Reveal in the case-study tree
           (see CaseStudySection/CaseStudyBlocks): this is the same
           component instance/DOM position across a slug change if ever

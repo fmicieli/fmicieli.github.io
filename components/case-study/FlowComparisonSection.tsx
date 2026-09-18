@@ -197,7 +197,11 @@ export function FlowComparisonSection({
     <div className="flex h-full flex-1 flex-col">
       <SectionHeading heading={heading} subheading={subheading} />
       <div className="mt-title-to-content flex flex-1 flex-col justify-center">
-      <div className="grid items-stretch justify-center gap-[38px] sm:grid-cols-[auto_auto_auto]">
+      {/* justify-items-center: the reduction-count block (a fixed 154px,
+          not w-full like the two boxes beside it) otherwise defaulted to
+          grid's own start-alignment within its full-width mobile track,
+          reading as left-aligned instead of centered. */}
+      <div className="grid items-stretch justify-center justify-items-center gap-[38px] sm:grid-cols-[auto_auto_auto]">
         <div className="w-full max-w-sm rounded-[14px] border border-border border-t-[var(--color-border-top-highlight)] bg-surface p-6 shadow-card backdrop-blur-card sm:w-[307px]">
           <p className="text-[17px] font-medium uppercase tracking-[0.15em] text-text-secondary">
             {t.caseStudy.before}
@@ -240,11 +244,15 @@ export function FlowComparisonSection({
       {/* Grouped tighter with the cards above (rule 7), then +16px per a
           later request — still reads as one block, just with a bit more
           breathing room than the initial tightened value. */}
-      <ul className="mt-12 flex flex-col items-center justify-center gap-[38px] sm:flex-row sm:gap-[58px]">
+      {/* grid-cols-3 (not flex-col) on mobile too — was one per line, now
+          all three fit one row at a shrunk size (was 43px icon / 22px
+          text); sm: restores the original size and switches to the wider
+          flex-row gap. */}
+      <ul className="mt-12 grid grid-cols-3 items-start justify-center gap-3 sm:flex sm:flex-row sm:gap-[58px]">
         {highlights.map((highlight, i) => (
           <motion.li
             key={highlight.title}
-            className="flex flex-col items-center gap-[14px] text-center"
+            className="flex flex-col items-center gap-2 text-center sm:gap-[14px]"
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false, margin: "-40px" }}
@@ -254,10 +262,10 @@ export function FlowComparisonSection({
               ease: [0.22, 1, 0.36, 1],
             }}
           >
-            <svg viewBox="0 0 24 24" aria-hidden="true" className="h-[43px] w-[43px] text-accent">
+            <svg viewBox="0 0 24 24" aria-hidden="true" className="h-6 w-6 text-accent sm:h-[43px] sm:w-[43px]">
               {HIGHLIGHT_ICON_PATHS[i]}
             </svg>
-            <p className="text-[22px] font-medium text-text-primary">{highlight.title}</p>
+            <p className="text-[12px] font-medium text-text-primary sm:text-[22px]">{highlight.title}</p>
           </motion.li>
         ))}
       </ul>
