@@ -372,6 +372,10 @@ export type Project = {
   coverAlt: string;
   behanceUrl: string;
   contentReady: boolean;
+  /** Omits this project from the homepage grid without deleting its data or
+   * breaking its own /projects/[slug] page for anyone with the direct link —
+   * for pulling a case study out of rotation temporarily. */
+  hidden?: boolean;
   sections: {
     context: CaseStudySection;
     process: CaseStudySection;
@@ -1471,6 +1475,7 @@ export const projects: Project[] = [
     coverAlt: "OUT app booking screen for a curated wine-tasting experience, shown on a phone mockup",
     behanceUrl: "https://www.behance.net/gallery/230515938/Diseno-de-seccion-para-OUT",
     contentReady: false,
+    hidden: true,
     heroImage: {
       src: "/projects/out/hero-experience-profile.jpg",
       alt: "OUT app experience profile screen for \"Entre Cosechas\", showing photos, details, and a booking panel",

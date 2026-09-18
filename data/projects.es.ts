@@ -1090,6 +1090,7 @@ export const projects: Project[] = [
     coverAlt: "Pantalla de reserva de la app OUT para una experiencia de cata de vinos, sobre un mockup de teléfono",
     behanceUrl: "https://www.behance.net/gallery/230515938/Diseno-de-seccion-para-OUT",
     contentReady: false,
+    hidden: true,
     heroImage: {
       src: "/projects/out/hero-experience-profile.jpg",
       alt: "Pantalla de perfil de experiencia de la app OUT para \"Entre Cosechas\", con fotos, detalles y panel de reserva",

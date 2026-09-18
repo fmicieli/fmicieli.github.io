@@ -9,7 +9,7 @@ import { Reveal } from "@/components/Reveal";
 export function ProjectsGrid() {
   const { language } = useLanguage();
   const t = useTranslation();
-  const projects = getProjects(language);
+  const projects = getProjects(language).filter((project) => !project.hidden);
 
   return (
     <section id="projects" className="relative flex min-h-screen flex-col px-page-x pt-section-top pb-12">
