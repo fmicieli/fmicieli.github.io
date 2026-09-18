@@ -10,8 +10,8 @@ export const projects: Project[] = [
     title: "Stride",
     tagline: "Una app de entrenamiento que acompaña a corredores principiantes desde su primer trote.",
     tags: ["UX/UI", "Research + IA", "React Native"],
-    coverImage: null,
-    coverAlt: "Pantallas de la app de running Stride",
+    coverImage: "/projects/stride/cover.png",
+    coverAlt: "Portada de Stride: mockup de la pantalla de bienvenida de la app junto al isotipo STRIDE, con la leyenda \"Proyecto personal 360\"",
     behanceUrl: "https://fmicieli.github.io/stride/",
     contentReady: true,
     sections: {
