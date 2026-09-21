@@ -20,6 +20,7 @@ type Ui = {
   };
   projectsGrid: {
     heading: string;
+    comingSoon: string;
   };
   contact: {
     heading: string;
@@ -84,6 +85,7 @@ export const ui: Record<Language, Ui> = {
     },
     projectsGrid: {
       heading: "Featured projects",
+      comingSoon: "Coming soon",
     },
     contact: {
       heading: "Contact",
@@ -147,6 +149,7 @@ export const ui: Record<Language, Ui> = {
     },
     projectsGrid: {
       heading: "Proyectos destacados",
+      comingSoon: "Próximamente",
     },
     contact: {
       heading: "Contacto",

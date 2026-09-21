@@ -298,6 +298,16 @@ export function Hero() {
       className="relative"
       style={{ height: `${TRANSITION_HEIGHT_VH}vh` }}
     >
+      {/* Nav's "About" link target — NOT the empty spacer section that used
+          to sit right after Hero in the document (that landed exactly on
+          Hero's tail end, past the sticky box entirely, i.e. on top of
+          Projects instead of on the cards). `scrollRange` is precisely the
+          scrollY where Hero's own pinned interaction finishes (cards fully
+          settled, see revealProgress/goToStop above) — positioning the
+          anchor there natively lands the browser's anchor-scroll on that
+          same resting point. Zero-size and non-interactive: it only exists
+          to give `#about` a document position. */}
+      <div id="about" className="pointer-events-none absolute inset-x-0" style={{ top: scrollRange }} aria-hidden="true" />
       <div
         className="sticky overflow-hidden px-page-x"
         style={{ top: headerClearance, height: stickyHeight ?? `calc(100vh - ${headerClearance}px)` }}

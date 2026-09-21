@@ -5,11 +5,13 @@ import { useTranslation } from "@/lib/i18n/ui";
 
 export function ProjectCard({ project }: { project: Project }) {
   const t = useTranslation();
-  return (
-    <Link
-      href={`/projects/${project.slug}`}
-      className="group relative flex w-full flex-col overflow-hidden rounded-card border border-border border-t-[var(--color-border-top-highlight)] bg-surface shadow-card backdrop-blur-card transition-transform hover:-translate-y-1 hover:scale-[1.01] focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2 sm:h-[190px] sm:flex-row"
-    >
+  const disabled = project.disabled ?? false;
+
+  const sharedClassName =
+    "group relative flex w-full flex-col overflow-hidden rounded-card border border-border border-t-[var(--color-border-top-highlight)] bg-surface shadow-card backdrop-blur-card sm:h-[190px] sm:flex-row";
+
+  const content = (
+    <>
       {/* Row layout (sm+) sizes the image off the card's own h-[190px] row
           height, which leaves plenty of room next to it for the text
           column. Stacked on mobile instead (image on top, full card
@@ -50,6 +52,32 @@ export function ProjectCard({ project }: { project: Project }) {
           ))}
         </ul>
       </div>
+    </>
+  );
+
+  if (disabled) {
+    // No case study written up on-site yet (see Project.disabled) — shown
+    // in the grid as "coming soon" rather than a dead/broken link: greyed
+    // out, no hover lift, and not a real Link (nothing to navigate to).
+    return (
+      <div
+        className={`${sharedClassName} cursor-default opacity-45 grayscale`}
+        aria-disabled="true"
+      >
+        {content}
+        <span className="pointer-events-none absolute right-4 top-4 rounded-full border border-white/30 bg-black/40 px-2.5 py-1 text-label font-medium text-white">
+          {t.projectsGrid.comingSoon}
+        </span>
+      </div>
+    );
+  }
+
+  return (
+    <Link
+      href={`/projects/${project.slug}`}
+      className={`${sharedClassName} transition-transform hover:-translate-y-1 hover:scale-[1.01] focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2`}
+    >
+      {content}
       {/* Rendered last (not first) so it paints on top of the image and
           text columns — as the first child it used to sit underneath the
           image's own box in paint order, making the traced line invisible
