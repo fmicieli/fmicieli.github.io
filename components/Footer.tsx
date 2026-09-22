@@ -1,4 +1,4 @@
-const SOCIAL_LINKS = [
+export const SOCIAL_LINKS = [
   {
     label: "LinkedIn",
     href: "https://www.linkedin.com/in/florencia-micieli-270350150/",

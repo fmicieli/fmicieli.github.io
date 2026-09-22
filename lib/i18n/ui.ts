@@ -25,8 +25,6 @@ type Ui = {
   contact: {
     heading: string;
     prompt: string;
-    behanceLine: string;
-    behanceTodo: string;
   };
   projectPage: {
     contentPending: string;
@@ -90,8 +88,6 @@ export const ui: Record<Language, Ui> = {
     contact: {
       heading: "Contact",
       prompt: "Let's talk about a project?",
-      behanceLine: "Full project history, while I migrate this portfolio: Behance",
-      behanceTodo: "(TODO: content pending — missing the Behance profile URL)",
     },
     projectPage: {
       contentPending:
@@ -154,8 +150,6 @@ export const ui: Record<Language, Ui> = {
     contact: {
       heading: "Contacto",
       prompt: "¿Hablamos de un proyecto?",
-      behanceLine: "Historial completo de proyectos, mientras migro este portfolio: Behance",
-      behanceTodo: "(TODO: contenido pendiente — falta la URL del perfil de Behance)",
     },
     projectPage: {
       contentPending:
