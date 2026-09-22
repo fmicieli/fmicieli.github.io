@@ -493,6 +493,10 @@ export type Project = {
    * breaking its own /projects/[slug] page for anyone with the direct link —
    * for pulling a case study out of rotation temporarily. */
   hidden?: boolean;
+  /** Shows the card in the homepage grid (unlike `hidden`) but greyed out
+   * and non-interactive — for a project whose case study isn't written up
+   * on-site yet, so it's visible as "coming soon" instead of a dead end. */
+  disabled?: boolean;
   /** Renders as a plain, continuously scrolling page instead of ScrollMain's
    * one-section-per-viewport snap — for a case study whose sections are
    * dense, variable-length research material (tables, review grids, a
@@ -1623,10 +1627,11 @@ export const projects: Project[] = [
     title: "Medifé Research",
     tagline: "Research case study for Medifé.",
     tags: ["UX Research", "Healthcare"],
-    coverImage: null,
-    coverAlt: "Research material from the Medifé project",
+    coverImage: "/projects/medife-research/cover.png",
+    coverAlt: "Medifé wordmark on an orange background, labeled \"Coderhouse - UX Research, Florencia Micieli\"",
     behanceUrl: "https://www.behance.net/gallery/225357747/Medif-Research-Caso-de-estudio",
     contentReady: false,
+    disabled: true,
     plainScroll: true,
     sections: {
       context: { heading: "Context & problem", body: "TODO: content pending" },

@@ -1,6 +1,5 @@
 import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
-import { About } from "@/components/About";
 import { ProjectsGrid } from "@/components/ProjectsGrid";
 import { Contact } from "@/components/Contact";
 import { HomeScrollSnap } from "@/components/HomeScrollSnap";
@@ -17,7 +16,6 @@ export default function Home() {
       <HomeScrollSnap />
       <main>
         <Hero />
-        <About />
         <ProjectsGrid />
         <Contact />
       </main>

@@ -1114,10 +1114,11 @@ export const projects: Project[] = [
     title: "Investigación Medifé",
     tagline: "Caso de estudio de investigación para Medifé.",
     tags: ["Investigación UX", "Salud"],
-    coverImage: null,
-    coverAlt: "Material de investigación del proyecto Medifé",
+    coverImage: "/projects/medife-research/cover.png",
+    coverAlt: "Isologo de Medifé sobre fondo naranja, con el texto \"Coderhouse - UX Research, Florencia Micieli\"",
     behanceUrl: "https://www.behance.net/gallery/225357747/Medif-Research-Caso-de-estudio",
     contentReady: false,
+    disabled: true,
     plainScroll: true,
     sections: {
       context: { heading: "Contexto y problema", body: "TODO: contenido pendiente" },
