@@ -23,14 +23,41 @@ import { WireframeFilmstripSection } from "@/components/case-study/WireframeFilm
 import { DesignSystemSection } from "@/components/case-study/DesignSystemSection";
 import { DevelopmentSection } from "@/components/case-study/DevelopmentSection";
 import { AiAgentsSection } from "@/components/case-study/AiAgentsSection";
+import { TextCardsSection } from "@/components/case-study/TextCardsSection";
+import { ResearchPlanSection } from "@/components/case-study/ResearchPlanSection";
+import { TextIntroSection } from "@/components/case-study/TextIntroSection";
+import { BulletCardsSection } from "@/components/case-study/BulletCardsSection";
+import { ReviewsSection } from "@/components/case-study/ReviewsSection";
+import { UserPersonaSection } from "@/components/case-study/UserPersonaSection";
+import { EmpathyMapSection } from "@/components/case-study/EmpathyMapSection";
+import { JourneyMapSection } from "@/components/case-study/JourneyMapSection";
+import { QuoteCardsSection } from "@/components/case-study/QuoteCardsSection";
+import { HmwSection } from "@/components/case-study/HmwSection";
+import { SolutionCompareSection } from "@/components/case-study/SolutionCompareSection";
 
-export function CaseStudyBlocks({ blocks }: { blocks: CaseStudyBlock[] }) {
+export function CaseStudyBlocks({
+  blocks,
+  plainScroll = false,
+}: {
+  blocks: CaseStudyBlock[];
+  /** Renders every block as a plain flowing section (its own natural
+   * height) instead of ScrollMain's one-section-per-viewport snap — see
+   * Project.plainScroll for why a project would opt into this. */
+  plainScroll?: boolean;
+}) {
   // "Accessibility" no longer renders as its own top-level section — Brand
   // Identity's "View all" popup absorbed it (see BrandIdentitySection.tsx),
   // so it's looked up here by type and handed to it instead of being
   // rendered from the map below. "UI Kit & Components" renders standalone
   // again as its own section.
   const accessibilityBlock = blocks.find((b) => b.type === "accessibility");
+
+  const heroClass = plainScroll
+    ? "flex flex-col justify-center pb-10"
+    : "flex min-h-screen flex-col justify-center pb-10 snap-start desktop-locked:h-screen desktop-locked:max-h-screen";
+  const sectionClass = plainScroll
+    ? "flex flex-col pt-section-top pb-16"
+    : "flex min-h-screen flex-col pt-section-top pb-12 snap-start desktop-locked:h-screen desktop-locked:max-h-screen";
 
   return (
     <div className="flex flex-col divide-y divide-white/10">
@@ -51,10 +78,7 @@ export function CaseStudyBlocks({ blocks }: { blocks: CaseStudyBlock[] }) {
           // whatever precedes it on the page ("Back to projects") —
           // min-height sidesteps that entirely.
           return (
-            <div
-              key={i}
-              className="flex min-h-screen flex-col justify-center pb-10 snap-start desktop-locked:h-screen desktop-locked:max-h-screen"
-            >
+            <div key={i} className={heroClass}>
               <CaseStudyHero
                 title={block.title}
                 subtitle={block.subtitle}
@@ -75,7 +99,7 @@ export function CaseStudyBlocks({ blocks }: { blocks: CaseStudyBlock[] }) {
         // sticky inner panel, so it renders outside the generic wrapper.
         if (block.type === "step-guide") {
           return (
-            <div key={i} className="snap-start">
+            <div key={i} className={plainScroll ? undefined : "snap-start"}>
               <StepGuideSection heading={block.heading} subheading={block.subheading} steps={block.steps} />
             </div>
           );
@@ -88,11 +112,7 @@ export function CaseStudyBlocks({ blocks }: { blocks: CaseStudyBlock[] }) {
         // that viewport via its own mt-auto (see NextStepsSection).
         if (block.type === "next-steps") {
           return (
-            <Reveal
-              key={i}
-              once={false}
-              className="flex min-h-screen flex-col pt-section-top pb-12 snap-start desktop-locked:h-screen desktop-locked:max-h-screen"
-            >
+            <Reveal key={i} once={false} className={sectionClass}>
               <NextStepsSection
                 heading={block.heading}
                 subheading={block.subheading}
@@ -107,22 +127,14 @@ export function CaseStudyBlocks({ blocks }: { blocks: CaseStudyBlock[] }) {
         // pattern as "next-steps" above (see ClosingSection's own comment).
         if (block.type === "closing") {
           return (
-            <Reveal
-              key={i}
-              once={false}
-              className="flex min-h-screen flex-col pt-section-top pb-12 snap-start desktop-locked:h-screen desktop-locked:max-h-screen"
-            >
+            <Reveal key={i} once={false} className={sectionClass}>
               <ClosingSection heading={block.heading} subheading={block.subheading} images={block.images} />
             </Reveal>
           );
         }
 
         return (
-          <Reveal
-            key={i}
-            once={false}
-            className="flex min-h-screen flex-col pt-section-top pb-12 snap-start desktop-locked:h-screen desktop-locked:max-h-screen"
-          >
+          <Reveal key={i} once={false} className={sectionClass}>
             {block.type === "problem" && (
               <ProblemSection
                 heading={block.heading}
@@ -360,6 +372,108 @@ export function CaseStudyBlocks({ blocks }: { blocks: CaseStudyBlock[] }) {
                 humanLabel={block.humanLabel}
                 humanItems={block.humanItems}
                 note={block.note}
+              />
+            )}
+            {block.type === "text-cards" && (
+              <TextCardsSection heading={block.heading} subheading={block.subheading} cards={block.cards} />
+            )}
+            {block.type === "research-plan" && (
+              <ResearchPlanSection
+                heading={block.heading}
+                subheading={block.subheading}
+                questionsLabel={block.questionsLabel}
+                questions={block.questions}
+                hypothesisLabel={block.hypothesisLabel}
+                hypothesis={block.hypothesis}
+                objectivesLabel={block.objectivesLabel}
+                generalLabel={block.generalLabel}
+                general={block.general}
+                specificLabel={block.specificLabel}
+                specific={block.specific}
+                methodsLabel={block.methodsLabel}
+                methodsIntro={block.methodsIntro}
+                methodsTable={block.methodsTable}
+              />
+            )}
+            {block.type === "text-intro" && (
+              <TextIntroSection heading={block.heading} subheading={block.subheading} paragraphs={block.paragraphs} />
+            )}
+            {block.type === "bullet-cards" && (
+              <BulletCardsSection
+                heading={block.heading}
+                subheading={block.subheading}
+                intro={block.intro}
+                cards={block.cards}
+              />
+            )}
+            {block.type === "reviews" && (
+              <ReviewsSection heading={block.heading} subheading={block.subheading} reviews={block.reviews} />
+            )}
+            {block.type === "user-persona" && (
+              <UserPersonaSection
+                heading={block.heading}
+                subheading={block.subheading}
+                persona={block.persona}
+                personalityLabel={block.personalityLabel}
+                traits={block.traits}
+              />
+            )}
+            {block.type === "empathy-map" && (
+              <EmpathyMapSection
+                heading={block.heading}
+                subheading={block.subheading}
+                photo={block.photo}
+                saysLabel={block.saysLabel}
+                says={block.says}
+                thinksLabel={block.thinksLabel}
+                thinks={block.thinks}
+                doesLabel={block.doesLabel}
+                does={block.does}
+                feelsLabel={block.feelsLabel}
+                feels={block.feels}
+                painLabel={block.painLabel}
+                pain={block.pain}
+                gainLabel={block.gainLabel}
+                gain={block.gain}
+              />
+            )}
+            {block.type === "journey-map" && (
+              <JourneyMapSection
+                heading={block.heading}
+                subheading={block.subheading}
+                steps={block.steps}
+                painPointsLabel={block.painPointsLabel}
+                painPoints={block.painPoints}
+                opportunitiesLabel={block.opportunitiesLabel}
+                opportunities={block.opportunities}
+              />
+            )}
+            {block.type === "quote-cards" && (
+              <QuoteCardsSection
+                heading={block.heading}
+                subheading={block.subheading}
+                intro={block.intro}
+                cards={block.cards}
+              />
+            )}
+            {block.type === "hmw" && (
+              <HmwSection
+                heading={block.heading}
+                subheading={block.subheading}
+                intro={block.intro}
+                questions={block.questions}
+                primaryIndex={block.primaryIndex}
+              />
+            )}
+            {block.type === "solution-compare" && (
+              <SolutionCompareSection
+                heading={block.heading}
+                subheading={block.subheading}
+                intro={block.intro}
+                currentLabel={block.currentLabel}
+                currentScreens={block.currentScreens}
+                solutionLabel={block.solutionLabel}
+                solutionScreens={block.solutionScreens}
               />
             )}
           </Reveal>

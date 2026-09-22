@@ -36,6 +36,22 @@ export default async function ProjectPage({
   const project = getProjectBySlug(slug);
   if (!project) notFound();
 
+  // plainScroll projects (dense research material, not evenly-paced visual
+  // beats — see Project.plainScroll) skip ScrollMain entirely: a plain
+  // document-flow <main> scrolls exactly like the rest of the web, letting
+  // each section take whatever height its own content needs instead of
+  // being locked to one viewport.
+  if (project.plainScroll) {
+    return (
+      <>
+        <Header />
+        <main className="pb-20">
+          <CaseStudyPageContent slug={slug} />
+        </main>
+      </>
+    );
+  }
+
   return (
     <>
       <Header />

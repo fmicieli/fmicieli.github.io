@@ -106,7 +106,7 @@ export function CaseStudyPageContent({ slug }: { slug: string }) {
         // section (NextStepsSection, after the disclaimer) instead of
         // rendering it here — see NextStepsSection.tsx.
         <div className="mt-8">
-          <CaseStudyBlocks blocks={project.caseStudyBlocks} />
+          <CaseStudyBlocks blocks={project.caseStudyBlocks} plainScroll={project.plainScroll} />
         </div>
       ) : (
         <>

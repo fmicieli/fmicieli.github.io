@@ -35,12 +35,22 @@ import { heroScrollState, HERO_EXIT_MARGIN } from "@/components/heroScrollState"
 // between the two snap systems on the site.
 const SECTION_DURATION = 0.55;
 const SECTION_EASE = [0.65, 0, 0.35, 1] as const;
-const SECTION_LOCK_MS = (SECTION_DURATION + 0.3) * 1000;
+// Same +0.5s buffer (not +0.3s) as ScrollMain, and for the same reason: a
+// still-decelerating trackpad gesture's momentum tail needs room to fully
+// die down before the lock lifts, or it immediately re-triggers a second,
+// unintended jump right as the first one finishes.
+const SECTION_LOCK_MS = (SECTION_DURATION + 0.5) * 1000;
 
 // How close to a tall section's own top/bottom edge (in px) counts as
 // "already there" for handing off to the next/previous stop, vs. still
 // having native scroll room left inside it. Mirrors ScrollMain's constant.
 const EDGE_TOLERANCE = 4;
+// Mirrors ScrollMain's own threshold: a trackpad gesture *starts* with
+// several small-but-not-tiny deltas before it ramps up, and those shouldn't
+// each be capable of firing a full section jump on their own — only the
+// deliberate part of the gesture should. Without this, the homepage felt
+// noticeably twitchier than the case study pages for the same light flick.
+const JUMP_THRESHOLD = 12;
 
 function getSectionTops() {
   const ids = ["projects", "contact"];
@@ -132,8 +142,19 @@ export function HomeScrollSnap() {
         const sectionBottom = current.top + current.height;
         const remainingDown = sectionBottom - viewportHeight - y;
         const remainingUp = y - current.top;
-        if (event.deltaY > 0 && remainingDown > EDGE_TOLERANCE) return;
-        if (event.deltaY < 0 && remainingUp > EDGE_TOLERANCE) return;
+        if (event.deltaY > 0 && remainingDown > Math.max(EDGE_TOLERANCE, event.deltaY)) return;
+        if (event.deltaY < 0 && remainingUp > Math.max(EDGE_TOLERANCE, -event.deltaY)) return;
+      }
+
+      // Past the interior-scroll cutout above, every remaining case is a
+      // candidate section jump — gate it on real intent rather than firing
+      // on the first non-trivial-but-still-small delta a trackpad gesture
+      // happens to open with. Still prevents default so a sub-threshold
+      // tick doesn't leak into native scroll and drift the page between
+      // sections on its own.
+      if (Math.abs(event.deltaY) < JUMP_THRESHOLD) {
+        event.preventDefault();
+        return;
       }
 
       if (event.deltaY > 0) {

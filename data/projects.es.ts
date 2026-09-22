@@ -1118,11 +1118,381 @@ export const projects: Project[] = [
     coverAlt: "Material de investigación del proyecto Medifé",
     behanceUrl: "https://www.behance.net/gallery/225357747/Medif-Research-Caso-de-estudio",
     contentReady: false,
+    plainScroll: true,
     sections: {
       context: { heading: "Contexto y problema", body: "TODO: contenido pendiente" },
       process: { heading: "Proceso", body: "TODO: contenido pendiente" },
       decisions: { heading: "Decisiones clave", body: "TODO: contenido pendiente" },
       result: { heading: "Resultado", body: "TODO: contenido pendiente" },
     },
+    caseStudyBlocks: [
+      {
+        type: "hero",
+        title: "Investigación Medifé",
+        subtitle:
+          "Investigación UX para Medifé Móvil, la app de la prepaga médica argentina — identificando los puntos de fricción al reservar un turno médico.",
+        meta: [],
+        tags: ["Investigación UX", "Salud"],
+      },
+      {
+        type: "text-cards",
+        heading: "01 · Contexto y problema",
+        subheading: "Qué es Medifé, el contexto de esta investigación, su propósito y el problema que buscó abordar.",
+        cards: [
+          {
+            label: "¿Qué es?",
+            paragraphs: [
+              "Medifé es una de las principales empresas de medicina prepaga en Argentina, con más de 300.000 asociados y presencia nacional a través de más de 60 sucursales. Forma parte de la organización ASE Nacional y cuenta con su propio centro de salud, el Sanatorio Finochietto, ubicado en la Ciudad de Buenos Aires.",
+              "La app Medifé Móvil permite a los asociados gestionar diversos servicios desde su celular, como videoconsultas médicas a través de Cam Doctor, descarga de credenciales digitales, generación de códigos de seguridad (Token), consulta de cartilla médica y acceso directo a atención al asociado.",
+            ],
+          },
+          {
+            label: "Contexto",
+            paragraphs: [
+              "En un mundo cada vez más interconectado, la adopción de herramientas tecnológicas se ha vuelto esencial para mejorar el acceso y la calidad de la atención médica. La digitalización del sistema de salud permite optimizar procesos, reducir tiempos de espera y facilitar la gestión de trámites, lo que se traduce en una experiencia más ágil y eficiente para los pacientes.",
+            ],
+          },
+          {
+            label: "Propósito",
+            paragraphs: [
+              "Con esta investigación buscamos cuáles son los puntos de dolor en la utilización de esta herramienta para mejorar la experiencia de uso.",
+            ],
+          },
+          {
+            label: "Problema",
+            paragraphs: [
+              "En la actualidad, el proceso de reserva de citas médicas en la plataforma presenta una barrera significativa para los usuarios. Deben buscar el contacto del profesional y comunicarse por fuera de la plataforma. Este mecanismo no solo hace que la experiencia sea tediosa y poco intuitiva, sino que también incrementa las posibilidades de fallas en la gestión de turnos.",
+              "Abordar esta dificultad ayudaría significativamente a la experiencia del usuario ya que simplificaría el proceso de gestión.",
+            ],
+          },
+        ],
+      },
+      {
+        type: "research-plan",
+        heading: "02 · Plan de investigación",
+        subheading: "Las preguntas que guían esta investigación, las hipótesis a validar, los objetivos y los métodos usados para verificarlas.",
+        questionsLabel: "Preguntas de investigación",
+        questions: [
+          "¿Cuáles son las dificultades que enfrentan los usuarios al pedir un turno médico?",
+          "¿Cómo podemos resolver los inconvenientes que tienen los usuarios al gestionar los turnos con profesionales de la salud?",
+        ],
+        hypothesisLabel: "Hipótesis",
+        hypothesis: [
+          "El proceso de gestión de turnos médicos es tedioso, provocando frustración y posibles fallas a la hora de culminar el proceso.",
+          "La desactualización de la Cartilla Médica apoya fuertemente a la falla en la gestión de turnos.",
+        ],
+        objectivesLabel: "Objetivos",
+        generalLabel: "Generales",
+        general: [
+          "Mejorar la experiencia del usuario en la aplicación de Medifé",
+          "Reduciendo barreras que enfrentan los usuarios para pedir turnos médicos.",
+        ],
+        specificLabel: "Específicos",
+        specific: [
+          "Corroborar realmente si la gestión de turnos es un punto de dolor en la app.",
+          "Identificar qué sentimientos tiene el usuario a la hora de usar la app.",
+          "Identificar qué tipos de mejora podemos llevar a cabo para simplificar el uso de la app.",
+        ],
+        methodsLabel: "Métodos de investigación",
+        methodsIntro:
+          "Para realizar este estudio de investigación vamos a utilizar distintos métodos que nos ayudan a entender el problema y validar las hipótesis planteadas. Estos son:",
+        methodsTable: {
+          columns: ["Actividad — Métodos y Técnicas", "Muestra", "Participantes", "Ayuda"],
+          rows: [
+            [
+              "Entrevistas con usuarios",
+              "5 usuarios",
+              "UX Researcher",
+              "Método de Investigación Exploratoria Primaria – Actitudinal / Cualitativo",
+            ],
+            [
+              "Encuesta por mail",
+              "30 usuarios",
+              "UX Researcher",
+              "Método de Investigación Exploratoria / Generativa Primaria – Actitud, Cuantitativo",
+            ],
+          ],
+        },
+      },
+      {
+        type: "text-intro",
+        heading: "03 · Usuario/Target objetivo",
+        paragraphs: [
+          "Personas que tengan entre 20 y 60 años que tengan Medifé como principal cobertura médica. Residentes en CABA, Argentina.",
+        ],
+      },
+      {
+        type: "bullet-cards",
+        heading: "04 · Herramienta de recolección",
+        cards: [
+          {
+            label: "Metodología",
+            body: "Entrevista semi-estructurada a 5 usuarios, de manera online y grabada.",
+          },
+          {
+            label: "Objetivos",
+            bullets: [
+              "Descubrir cuáles son las motivaciones, necesidades y frustraciones de los usuarios",
+              "Entender cuáles son las principales dificultades que enfrentan los usuarios en su día a día",
+            ],
+          },
+        ],
+      },
+      {
+        type: "bullet-cards",
+        heading: "05 · Conclusiones",
+        cards: [
+          {
+            label: "Percepción general y uso",
+            bullets: [
+              "100% considera que la cobertura es buena o bastante buena.",
+              "100% utiliza la app principalmente para consultar la cartilla y credenciales.",
+              "80% menciona dificultades para realizar gestiones más complejas como autorizaciones o turnos desde la app.",
+              "60% considera que la app es intuitiva o entendible en general, aunque con margen de mejora.",
+            ],
+            attribution: "Florencia Micieli",
+          },
+          {
+            label: "Gestión de turnos médicos",
+            bullets: [
+              "100% gestiona los turnos fuera de la app, ya sea por teléfono, Google o directamente en el centro médico.",
+              "100% menciona que el proceso es engorroso, estresante o poco claro.",
+              "80% desea poder agendar turnos directamente desde la app.",
+              "60% menciona que la cartilla está desactualizada o incompleta, especialmente en relación a los profesionales disponibles.",
+            ],
+            attribution: "Florencia Micieli",
+          },
+          {
+            label: "Mejoras y expectativas",
+            bullets: [
+              "80% quiere una mejor gestión de turnos dentro de la app, con calendario y disponibilidad visible.",
+              "60% espera una actualización más precisa de la cartilla de profesionales.",
+              "40% desea funciones extra como historial médico, chat de soporte, alertas o calificaciones de médicos.",
+              "20% solicita mejorar el cambio entre perfiles (por ejemplo, de hijos/as).",
+            ],
+            attribution: "Florencia Micieli",
+          },
+        ],
+      },
+      {
+        type: "reviews",
+        heading: "06 · Feedback y voz del usuario",
+        reviews: [
+          {
+            title: "Una bazofia total",
+            rating: 1,
+            date: "Mar",
+            author: "HiUlisesOk",
+            body: "La app funciona muy mal, es poco intuitiva para el usuario y sus registros en la cartilla médica están totalmente desactualizados. Los números de teléfono son viejos y no atiende nadie cuando llamas. Los planes que aparecen en algunos centros de atención tampoco están actualizados, es decir que no sabes si...",
+          },
+          {
+            title: "Mala",
+            rating: 1,
+            date: "17 mar",
+            author: "Lulyta2",
+            body: "La app no permite ver ni pagar las facturas, tampoco permite sacar turnos directo con los médicos desde la app, que sería mucho más fácil y ágil como en otras prepagas. Tampoco se puede ver el token ni la credencial digital. Solo lo que funciona hasta ahora es ver los médicos s...",
+          },
+          {
+            title: "Autorización vitaminas en laboratorio",
+            rating: 1,
+            date: "24 mar",
+            author: "ceci260169",
+            body: "Imposible comunicarme con una persona! Nunca autorizaron el reintegro de un estudio que me hago anualmente. Nadie se comunicó conmigo para decirme el motivo. En el sistema no explican el motivo del rechazo y me piden algo ridículo! La pantalla del laboratorio donde figura el rechazo.... Como un pacie...",
+          },
+          {
+            title: "Terrible",
+            rating: 2,
+            date: "14 mar",
+            author: "FabianaLPM",
+            body: "La app es súper terrible, se tilda, cuando quieres agendar un turno no carga nunca, cuando llega el momento del turno no se escucha o no se ve! De verdad que espantosa",
+          },
+          {
+            title: "Gracias",
+            rating: 5,
+            date: "Jue",
+            author: "Polileila",
+            body: "Es práctica y funciona siempre",
+          },
+          {
+            title: "Malísimo",
+            rating: 1,
+            date: "14 mar",
+            author: "Medifé .",
+            body: "La verdad la palabra que los define los más cagadores",
+          },
+          {
+            title: "Muy práctica",
+            rating: 5,
+            date: "25 mar",
+            author: "iPhone 13 y Galaxy fit 2",
+            body: "Suele ser lento CAM DOCTOR",
+          },
+          {
+            title: "Medio pelo",
+            rating: 3,
+            date: "13 mar",
+            author: "Lucia712",
+            body: "Tiene algunas cosas que no están tan claras",
+          },
+          {
+            title: "Bueno",
+            rating: 5,
+            date: "21 mar",
+            author: "mandy_tf1808",
+            body: "Funciona bien",
+          },
+          {
+            title: "Muy útil",
+            rating: 5,
+            date: "10 mar",
+            author: "JoseAriel78",
+            body: "Recomendable 100% Y práctico",
+          },
+          {
+            title: "No funciona",
+            rating: 1,
+            date: "31 mar",
+            author: "Cristian171296",
+            body: "No me deja entrar no puedo usar las credenciales y no puedo pagar, horrible",
+          },
+          {
+            title: "Muy mala",
+            rating: 1,
+            date: "Dom",
+            author: "mventura_1",
+            body: "Es lenta. No puedo ver la credencial e intenté hacer videollamada con un médico más de 3 veces y nunca me atendieron, terminé yendo a la guardia",
+          },
+        ],
+      },
+      {
+        type: "user-persona",
+        heading: "07 · User Persona",
+        persona: {
+          name: "Sofía Rodríguez",
+          fields: ["26 años", "Soltera", "Caballito, CABA", "Diseñadora y estudiante"],
+          quote: "Me gusta llevar una vida organizada para poder trabajar y estar al día con mis estudios",
+          bio: "Sofía es Diseñadora, trabaja en una oficina y además estudia. Es una persona que valora la comodidad y la organización para poder optimizar el tiempo.",
+          keywordsLabel: "Palabras claves",
+          keywords: "organizada, tecnológica y exigente.",
+          motivationsLabel: "Motivaciones",
+          motivations: "Equilibrar trabajo, salud y ocio",
+          goalsLabel: "Objetivos",
+          goals: "Dedicar tiempo al cuidado de su salud de forma simple y eficaz.",
+          frustrationsLabel: "Frustraciones",
+          frustrations: "Pedir turnos médicos le lleva demasiado tiempo",
+        },
+        personalityLabel: "Personalidad",
+        traits: [
+          { left: "Introvertida", right: "Extrovertida", value: 8 },
+          { left: "Analítico", right: "Creativo", value: 9 },
+          { left: "Ocupada", right: "Tiempo Libre", value: 4 },
+          { left: "Desordenada", right: "Ordenada", value: 7 },
+          { left: "Independiente", right: "Dependiente", value: 2 },
+          { left: "Pasivo", right: "Activo", value: 8 },
+          { left: "Segura", right: "Arriesgada", value: 5 },
+        ],
+      },
+      {
+        type: "empathy-map",
+        heading: "08 · Mapa de empatía",
+        saysLabel: "Dice",
+        says: [
+          "El proceso de gestión de turnos es engorroso",
+          "El funcionamiento técnico de la app es malo (errores de información, carga lenta, etc)",
+          "Cartilla desactualizada",
+        ],
+        thinksLabel: "Piensa",
+        thinks: [
+          "Debería poder gestionarse todo desde la app",
+          "Debería mejorar el funcionamiento de la app en general",
+        ],
+        doesLabel: "Hace",
+        does: ["Piden turnos por otros medios (llamada telefónica, consultando el sitio web, WhatsApp)"],
+        feelsLabel: "Siente",
+        feels: ["Estresado", "Frustrado"],
+        painLabel: "Dolor",
+        pain: [
+          "El proceso de gestión de turnos es engorroso",
+          "El funcionamiento técnico de la app es malo (errores de información, carga lenta, etc)",
+        ],
+        gainLabel: "Ganancia",
+        gain: [],
+      },
+      {
+        type: "journey-map",
+        heading: "09 · Mapa de trayectoria",
+        steps: [
+          { label: "Ingresar a la app", sentiment: "positive" },
+          { label: "Consultar Cartilla", sentiment: "positive" },
+          { label: "Buscar por nombre o ubicación", sentiment: "neutral" },
+          { label: "Resultado de profesionales", sentiment: "positive" },
+          { label: "Muestra dirección y teléfono", sentiment: "negative" },
+        ],
+        painPointsLabel: "Puntos de dolor",
+        painPoints: [
+          "Para buscar profesionales le pide seleccionar el plan",
+          "Los resultados muestran sólo un número de teléfono, lo que obliga al usuario a contactarse por fuera de la app para pedir el turno",
+        ],
+        opportunitiesLabel: "Oportunidades",
+        opportunities: [
+          "Dejar preseleccionado el plan para ahorrar tiempo",
+          "Ofrecer la posibilidad de mostrar los turnos disponibles de cada profesional",
+          "Posibilidad de pedir y cancelar turnos de la app",
+        ],
+      },
+      {
+        type: "quote-cards",
+        heading: "10 · Hallazgos de la investigación",
+        intro: "Con toda la información recolectada, se organizó en un proceso de síntesis a través de un mapa de afinidad. Esto ha permitido destacar una serie de hallazgos que sintetizan los comportamientos de la muestra de investigación:",
+        cards: [
+          {
+            name: "Sofía",
+            text: "Sofía **necesita** poder gestionar sus turnos médicos desde la misma aplicación **porque** no puede conseguir profesionales que atiendan en un período corto de tiempo.",
+          },
+          {
+            name: "José",
+            text: "José **necesita** que actualicen los datos de la cartilla para poder contactarse con los profesionales de una manera más rápida y eficaz",
+          },
+          {
+            name: "Lucía",
+            text: "Lucía **necesita** que mejore el funcionamiento de la aplicación en general para poder utilizar de una manera más rápida la aplicación",
+          },
+          {
+            name: "Sofía",
+            text: "Sofía **considera** que la gestión de turnos online y la simplicidad al momento de pedir recetas médicas podría mejorar mucho la aplicación",
+          },
+        ],
+      },
+      {
+        type: "hmw",
+        heading: "11 · HMW - ¿Cómo podríamos...?",
+        intro: "Luego de una sesión de brainstorming, generamos diferentes HMW para generar la solución más adecuada para las necesidades de los usuarios:",
+        questions: [
+          "¿Cómo podríamos facilitar la gestión de turnos médicos para que Sofía no necesite usar múltiples plataformas?",
+          "¿Cómo podríamos ayudar a Sofía a encontrar turnos médicos disponibles en períodos más cortos?",
+          "¿Cómo podríamos conectar a Sofía con profesionales médicos que tengan disponibilidad inmediata o flexible?",
+          "¿Cómo podríamos optimizar la experiencia de búsqueda para que Sofía sólo vea opciones con disponibilidad cercana?",
+          "¿Cómo podríamos permitirle a Sofía gestionar cancelaciones o reprogramaciones de manera eficiente para acceder a turnos antes?",
+        ],
+        primaryIndex: 0,
+      },
+      {
+        type: "solution-compare",
+        heading: "12 · Solución propuesta",
+        intro: "Para poder mejorar la experiencia dentro de la aplicación de Medifé proponemos agregar una funcionalidad que permita al usuario poder gestionar turnos médicos sin necesidad de tener que hacerlo por afuera. Dicha mejora obliga al proveedor a tener que mantener la cartilla actualizada por lo que otro de los problemas que planteaban los usuarios se soluciona también.",
+        currentLabel: "Aplicación actual",
+        currentScreens: [
+          { placeholder: "Formulario de búsqueda de especialidades médicas (plan, especialidad, provincia, localidad)" },
+          { placeholder: "Lista de resultados con teléfonos y direcciones de profesionales" },
+          { placeholder: "Detalle del profesional con mapa y planes incluidos" },
+        ],
+        solutionLabel: "Solución",
+        solutionScreens: [
+          { placeholder: "Resultados de búsqueda con línea de \"próximo turno disponible\" y enlace \"ver agenda\" por profesional" },
+          { placeholder: "Turnos disponibles por fecha, filtrables por virtual/presencial" },
+          { placeholder: "Botón de confirmación para pedir turno" },
+        ],
+      },
+    ],
   },
 ];

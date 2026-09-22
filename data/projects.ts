@@ -361,6 +361,123 @@ export type CaseStudyBlock =
       humanLabel: string;
       humanItems: string[];
       note: string;
+    }
+  | {
+      type: "text-cards";
+      heading: string;
+      subheading?: string;
+      cards: { label: string; paragraphs: string[] }[];
+    }
+  | {
+      type: "research-plan";
+      heading: string;
+      subheading?: string;
+      questionsLabel: string;
+      questions: string[];
+      hypothesisLabel: string;
+      hypothesis: string[];
+      objectivesLabel: string;
+      generalLabel: string;
+      general: string[];
+      specificLabel: string;
+      specific: string[];
+      methodsLabel: string;
+      methodsIntro: string;
+      methodsTable: SimpleTable;
+    }
+  | {
+      type: "text-intro";
+      heading: string;
+      subheading?: string;
+      paragraphs: string[];
+    }
+  | {
+      type: "bullet-cards";
+      heading: string;
+      subheading?: string;
+      intro?: string;
+      cards: { label: string; body?: string; bullets?: string[]; attribution?: string }[];
+    }
+  | {
+      type: "reviews";
+      heading: string;
+      subheading?: string;
+      reviews: { title: string; rating: number; date: string; author: string; body: string }[];
+    }
+  | {
+      type: "user-persona";
+      heading: string;
+      subheading?: string;
+      persona: {
+        name: string;
+        photo?: { src: string; alt: string };
+        fields: string[];
+        quote: string;
+        bio: string;
+        keywordsLabel: string;
+        keywords: string;
+        motivationsLabel: string;
+        motivations: string;
+        goalsLabel: string;
+        goals: string;
+        frustrationsLabel: string;
+        frustrations: string;
+      };
+      personalityLabel: string;
+      traits: { left: string; right: string; value: number }[];
+    }
+  | {
+      type: "empathy-map";
+      heading: string;
+      subheading?: string;
+      photo?: { src: string; alt: string };
+      saysLabel: string;
+      says: string[];
+      thinksLabel: string;
+      thinks: string[];
+      doesLabel: string;
+      does: string[];
+      feelsLabel: string;
+      feels: string[];
+      painLabel: string;
+      pain: string[];
+      gainLabel: string;
+      gain: string[];
+    }
+  | {
+      type: "journey-map";
+      heading: string;
+      subheading?: string;
+      steps: { label: string; sentiment: "positive" | "neutral" | "negative" }[];
+      painPointsLabel: string;
+      painPoints: string[];
+      opportunitiesLabel: string;
+      opportunities: string[];
+    }
+  | {
+      type: "quote-cards";
+      heading: string;
+      subheading?: string;
+      intro?: string;
+      cards: { name: string; photo?: { src: string; alt: string }; text: string }[];
+    }
+  | {
+      type: "hmw";
+      heading: string;
+      subheading?: string;
+      intro?: string;
+      questions: string[];
+      primaryIndex?: number;
+    }
+  | {
+      type: "solution-compare";
+      heading: string;
+      subheading?: string;
+      intro?: string;
+      currentLabel: string;
+      currentScreens: { placeholder: string }[];
+      solutionLabel: string;
+      solutionScreens: { placeholder: string }[];
     };
 
 export type Project = {
@@ -376,6 +493,13 @@ export type Project = {
    * breaking its own /projects/[slug] page for anyone with the direct link —
    * for pulling a case study out of rotation temporarily. */
   hidden?: boolean;
+  /** Renders as a plain, continuously scrolling page instead of ScrollMain's
+   * one-section-per-viewport snap — for a case study whose sections are
+   * dense, variable-length research material (tables, review grids, a
+   * persona card) rather than visual, evenly-paced narrative beats, where
+   * forcing every section to fill exactly one screen would either clip
+   * long sections or leave short ones mostly empty. */
+  plainScroll?: boolean;
   sections: {
     context: CaseStudySection;
     process: CaseStudySection;
@@ -1503,12 +1627,382 @@ export const projects: Project[] = [
     coverAlt: "Research material from the Medifé project",
     behanceUrl: "https://www.behance.net/gallery/225357747/Medif-Research-Caso-de-estudio",
     contentReady: false,
+    plainScroll: true,
     sections: {
       context: { heading: "Context & problem", body: "TODO: content pending" },
       process: { heading: "Process", body: "TODO: content pending" },
       decisions: { heading: "Key decisions", body: "TODO: content pending" },
       result: { heading: "Result", body: "TODO: content pending" },
     },
+    caseStudyBlocks: [
+      {
+        type: "hero",
+        title: "Medifé Research",
+        subtitle:
+          "UX research for Medifé Móvil, Argentina's prepaid healthcare app — identifying the friction points in booking a medical appointment.",
+        meta: [],
+        tags: ["UX Research", "Healthcare"],
+      },
+      {
+        type: "text-cards",
+        heading: "01 · Context & problem",
+        subheading: "What Medifé is, the context behind this research, its purpose, and the problem it set out to address.",
+        cards: [
+          {
+            label: "What is it?",
+            paragraphs: [
+              "Medifé is one of Argentina's leading prepaid healthcare companies, with more than 300,000 members and a nationwide presence through 60+ branches. It's part of the ASE Nacional organization and operates its own health center, Sanatorio Finochietto, located in the City of Buenos Aires.",
+              "The Medifé Móvil app lets members manage a range of services from their phone — video consultations via Cam Doctor, digital credential downloads, security code (token) generation, provider directory lookup, and direct access to member support.",
+            ],
+          },
+          {
+            label: "Context",
+            paragraphs: [
+              "In an increasingly connected world, adopting technology has become essential to improving access to and quality of healthcare. Digitizing the healthcare system streamlines processes, reduces wait times, and simplifies paperwork — resulting in a faster, more efficient experience for patients.",
+            ],
+          },
+          {
+            label: "Purpose",
+            paragraphs: [
+              "This research set out to identify the pain points in using this tool, in order to improve the user experience.",
+            ],
+          },
+          {
+            label: "Problem",
+            paragraphs: [
+              "Today, booking a medical appointment through the platform presents a significant barrier for users. They have to look up the provider's contact info and reach out outside the platform entirely. This not only makes the experience tedious and unintuitive, it also increases the chances of scheduling errors.",
+              "Addressing this would meaningfully improve the user experience by simplifying the booking process.",
+            ],
+          },
+        ],
+      },
+      {
+        type: "research-plan",
+        heading: "02 · Research plan",
+        subheading: "The questions guiding this research, the hypotheses being tested, the objectives, and the methods used to validate them.",
+        questionsLabel: "Research questions",
+        questions: [
+          "What difficulties do users face when booking a medical appointment?",
+          "How can we resolve the issues users have managing appointments with healthcare professionals?",
+        ],
+        hypothesisLabel: "Hypothesis",
+        hypothesis: [
+          "The process of managing medical appointments is tedious, causing frustration and potential failures when trying to complete it.",
+          "Outdated information in the provider directory (Cartilla Médica) strongly contributes to failures in the appointment-booking process.",
+        ],
+        objectivesLabel: "Objectives",
+        generalLabel: "General",
+        general: [
+          "Improve the user experience in the Medifé app",
+          "Reduce the barriers users face when booking medical appointments.",
+        ],
+        specificLabel: "Specific",
+        specific: [
+          "Confirm whether appointment management is actually a pain point in the app.",
+          "Identify what the user feels while using the app.",
+          "Identify what kinds of improvements we can make to simplify the app's use.",
+        ],
+        methodsLabel: "Research methods",
+        methodsIntro:
+          "To carry out this research study, we'll use different methods that help us understand the problem and validate the hypotheses raised. These are:",
+        methodsTable: {
+          columns: ["Activity — Methods & Techniques", "Sample", "Participants", "Helps with"],
+          rows: [
+            [
+              "User interviews",
+              "5 users",
+              "UX Researcher",
+              "Exploratory primary research method – Attitudinal / Qualitative",
+            ],
+            [
+              "Email survey",
+              "30 users",
+              "UX Researcher",
+              "Exploratory/generative primary research method – Attitudinal, Quantitative",
+            ],
+          ],
+        },
+      },
+      {
+        type: "text-intro",
+        heading: "03 · Target user",
+        paragraphs: [
+          "People between 20 and 60 years old who have Medifé as their main health coverage. Residents of CABA, Argentina.",
+        ],
+      },
+      {
+        type: "bullet-cards",
+        heading: "04 · Data-collection tool",
+        cards: [
+          {
+            label: "Methodology",
+            body: "Semi-structured interview with 5 users, conducted online and recorded.",
+          },
+          {
+            label: "Objectives",
+            bullets: [
+              "Discover users' motivations, needs, and frustrations",
+              "Understand the main difficulties users face day to day",
+            ],
+          },
+        ],
+      },
+      {
+        type: "bullet-cards",
+        heading: "05 · Conclusions",
+        cards: [
+          {
+            label: "General perception & use",
+            bullets: [
+              "100% consider coverage to be good or fairly good.",
+              "100% use the app mainly to check the provider directory and credentials.",
+              "80% mention difficulties with more complex actions like authorizations or booking appointments from the app.",
+              "60% consider the app intuitive or understandable overall, though with room for improvement.",
+            ],
+            attribution: "Florencia Micieli",
+          },
+          {
+            label: "Managing medical appointments",
+            bullets: [
+              "100% manage appointments outside the app, whether by phone, Google, or directly at the medical center.",
+              "100% mention the process is cumbersome, stressful, or unclear.",
+              "80% wish they could book appointments directly from the app.",
+              "60% mention the provider directory is outdated or incomplete, especially regarding available professionals.",
+            ],
+            attribution: "Florencia Micieli",
+          },
+          {
+            label: "Improvements & expectations",
+            bullets: [
+              "80% want better appointment management within the app, with a visible calendar and availability.",
+              "60% expect a more accurate update to the provider directory.",
+              "40% want extra features like medical history, a support chat, alerts, or doctor ratings.",
+              "20% ask for an easier way to switch between profiles (e.g. their children's).",
+            ],
+            attribution: "Florencia Micieli",
+          },
+        ],
+      },
+      {
+        type: "reviews",
+        heading: "06 · Feedback & user voice",
+        reviews: [
+          {
+            title: "Total garbage",
+            rating: 1,
+            date: "Tue",
+            author: "HiUlisesOk",
+            body: "The app works really badly, it's unintuitive, and the entries in the provider directory are completely outdated. The phone numbers are old and nobody answers when you call. The plans shown at some care centers aren't up to date either, so you don't know if...",
+          },
+          {
+            title: "Bad",
+            rating: 1,
+            date: "Mar 17",
+            author: "Lulyta2",
+            body: "The app doesn't let you view or pay bills, and it doesn't let you book appointments directly with doctors from the app either, which would be much easier and faster like in other prepaid plans. You also can't see the token or the digital ID card. The only thing that works so far is viewing the doctor...",
+          },
+          {
+            title: "Vitamin authorization at the lab",
+            rating: 1,
+            date: "Mar 24",
+            author: "ceci260169",
+            body: "Impossible to reach a person! They never authorized the reimbursement for a study I get every year. Nobody contacted me to explain why. The system doesn't explain the reason for the rejection and asks for something ridiculous! The lab screen where the rejection shows up... like a patie...",
+          },
+          {
+            title: "Terrible",
+            rating: 2,
+            date: "Mar 14",
+            author: "FabianaLPM",
+            body: "The app is super terrible, it freezes, when you want to book an appointment it never loads, and when the appointment time comes you can't hear or see anything! Truly awful.",
+          },
+          {
+            title: "Thanks",
+            rating: 5,
+            date: "Thu",
+            author: "Polileila",
+            body: "It's handy and always works.",
+          },
+          {
+            title: "Terrible",
+            rating: 1,
+            date: "Mar 14",
+            author: "Medifé .",
+            body: "Honestly, the word that best describes them is unreliable.",
+          },
+          {
+            title: "Very handy",
+            rating: 5,
+            date: "Mar 25",
+            author: "iPhone 13 & Galaxy Fit 2",
+            body: "CAM DOCTOR tends to be slow.",
+          },
+          {
+            title: "So-so",
+            rating: 3,
+            date: "Mar 13",
+            author: "Lucia712",
+            body: "There are some things that aren't very clear.",
+          },
+          {
+            title: "Good",
+            rating: 5,
+            date: "Mar 21",
+            author: "mandy_tf1808",
+            body: "Works well.",
+          },
+          {
+            title: "Very useful",
+            rating: 5,
+            date: "Mar 10",
+            author: "JoseAriel78",
+            body: "100% recommended, and handy.",
+          },
+          {
+            title: "Doesn't work",
+            rating: 1,
+            date: "Mar 31",
+            author: "Cristian171296",
+            body: "It won't let me in, I can't use my credentials and I can't pay — terrible.",
+          },
+          {
+            title: "Very bad",
+            rating: 1,
+            date: "Sun",
+            author: "mventura_1",
+            body: "It's slow. I can't see my ID card and I tried to video-call a doctor more than 3 times and was never seen — I ended up going to urgent care.",
+          },
+        ],
+      },
+      {
+        type: "user-persona",
+        heading: "07 · User persona",
+        persona: {
+          name: "Sofía Rodríguez",
+          fields: ["26 years old", "Single", "Caballito, CABA", "Designer and student"],
+          quote: "I like to keep an organized life so I can work and stay on top of my studies",
+          bio: "Sofía is a designer, works at an office, and also studies. She's someone who values comfort and organization to make the most of her time.",
+          keywordsLabel: "Keywords",
+          keywords: "organized, tech-savvy, and demanding.",
+          motivationsLabel: "Motivations",
+          motivations: "Balancing work, health, and leisure",
+          goalsLabel: "Goals",
+          goals: "Spending time on her health simply and effectively.",
+          frustrationsLabel: "Frustrations",
+          frustrations: "Booking medical appointments takes too much time",
+        },
+        personalityLabel: "Personality",
+        traits: [
+          { left: "Introverted", right: "Extroverted", value: 8 },
+          { left: "Analytical", right: "Creative", value: 9 },
+          { left: "Busy", right: "Free time", value: 4 },
+          { left: "Messy", right: "Organized", value: 7 },
+          { left: "Independent", right: "Dependent", value: 2 },
+          { left: "Passive", right: "Active", value: 8 },
+          { left: "Cautious", right: "Risk-taking", value: 5 },
+        ],
+      },
+      {
+        type: "empathy-map",
+        heading: "08 · Empathy map",
+        saysLabel: "Says",
+        says: [
+          "The appointment management process is cumbersome",
+          "The app's technical performance is bad (data errors, slow loading, etc.)",
+          "Outdated provider directory",
+        ],
+        thinksLabel: "Thinks",
+        thinks: [
+          "Everything should be manageable from the app",
+          "The app's overall performance should improve",
+        ],
+        doesLabel: "Does",
+        does: ["Books appointments through other channels (phone call, checking the website, WhatsApp)"],
+        feelsLabel: "Feels",
+        feels: ["Stressed", "Frustrated"],
+        painLabel: "Pain",
+        pain: [
+          "The appointment management process is cumbersome",
+          "The app's technical performance is bad (data errors, slow loading, etc.)",
+        ],
+        gainLabel: "Gain",
+        gain: [],
+      },
+      {
+        type: "journey-map",
+        heading: "09 · Journey map",
+        steps: [
+          { label: "Enter the app", sentiment: "positive" },
+          { label: "Check provider directory", sentiment: "positive" },
+          { label: "Search by name or location", sentiment: "neutral" },
+          { label: "Provider results", sentiment: "positive" },
+          { label: "Shows address and phone number", sentiment: "negative" },
+        ],
+        painPointsLabel: "Pain points",
+        painPoints: [
+          "To search for providers, it asks the user to select their plan",
+          "Results only show a phone number, forcing the user to reach out outside the app to book the appointment",
+        ],
+        opportunitiesLabel: "Opportunities",
+        opportunities: [
+          "Pre-select the plan by default to save time",
+          "Offer the ability to show each provider's available appointment slots",
+          "Allow booking and canceling appointments from the app",
+        ],
+      },
+      {
+        type: "quote-cards",
+        heading: "10 · Research findings",
+        intro: "With all the information gathered, we organized it through a synthesis process using an affinity map. This helped surface a set of findings that summarize the research sample's behaviors:",
+        cards: [
+          {
+            name: "Sofía",
+            text: "Sofía **needs** to be able to manage her medical appointments from the same app **because** she can't find professionals available within a short timeframe.",
+          },
+          {
+            name: "José",
+            text: "José **needs** the provider directory data updated so he can reach professionals faster and more effectively.",
+          },
+          {
+            name: "Lucía",
+            text: "Lucía **needs** the app's overall performance to improve so she can use it more quickly.",
+          },
+          {
+            name: "Sofía",
+            text: "Sofía **believes** that online appointment management and simpler prescription requests could greatly improve the app.",
+          },
+        ],
+      },
+      {
+        type: "hmw",
+        heading: "11 · HMW — How might we...?",
+        intro: "After a brainstorming session, we generated different HMWs to arrive at the solution best suited to users' needs:",
+        questions: [
+          "How might we make managing medical appointments easier so Sofía doesn't need to use multiple platforms?",
+          "How might we help Sofía find available medical appointments in shorter timeframes?",
+          "How might we connect Sofía with medical professionals who have immediate or flexible availability?",
+          "How might we optimize the search experience so Sofía only sees options with nearby availability?",
+          "How might we let Sofía manage cancellations or rescheduling efficiently so she can get earlier appointments?",
+        ],
+        primaryIndex: 0,
+      },
+      {
+        type: "solution-compare",
+        heading: "12 · Proposed solution",
+        intro: "To improve the experience within the Medifé app, we propose adding a feature that lets users manage medical appointments without having to do it outside the app. This improvement also requires providers to keep the directory up to date, which solves another problem users raised.",
+        currentLabel: "Current app",
+        currentScreens: [
+          { placeholder: "Medical specialties search form (plan, specialty, province, locality)" },
+          { placeholder: "Search results list with provider phone numbers and addresses" },
+          { placeholder: "Provider detail with map and included plans" },
+        ],
+        solutionLabel: "Solution",
+        solutionScreens: [
+          { placeholder: "Search results with a \"next available appointment\" line and a \"view schedule\" link per provider" },
+          { placeholder: "Available appointment slots by date, filterable by virtual/in-person" },
+          { placeholder: "Book-appointment confirmation button" },
+        ],
+      },
+    ],
   },
 ];
 
