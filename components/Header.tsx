@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type MouseEvent } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useLanguage, type Language } from "@/contexts/LanguageContext";
 import { useTranslation } from "@/lib/i18n/ui";
 
@@ -56,12 +57,42 @@ export function Header() {
   const [open, setOpen] = useState(false);
   const { language, setLanguage } = useLanguage();
   const t = useTranslation();
+  const pathname = usePathname();
+  const isHome = pathname === "/";
 
   const NAV_LINKS = [
-    { href: "/#projects", label: t.header.nav.projects },
     { href: "/#about", label: t.header.nav.about },
+    { href: "/#projects", label: t.header.nav.projects },
     { href: "/#contact", label: t.header.nav.contact },
   ];
+
+  // On the homepage, a same-page hash link jumps instantly by default (the
+  // browser's native anchor behavior) — intercept it and scroll smoothly
+  // instead, matching the eased motion the rest of the site's navigation
+  // already uses. Left alone when linking here *from* a project page: that's
+  // a real page load to "/", where the browser landing already at the
+  // target's position on paint is the expected, instant behavior (nothing
+  // to animate yet).
+  function handleNavClick(e: MouseEvent<HTMLAnchorElement>, href: string) {
+    if (!isHome) return;
+    const id = href.replace("/#", "");
+    const target = document.getElementById(id);
+    if (!target) return;
+    e.preventDefault();
+    target.scrollIntoView({ behavior: "smooth", block: "start" });
+    setOpen(false);
+  }
+
+  // The site mark always means "top of the landing page" — from a project
+  // page that's just Link's normal navigation to "/", but from the
+  // homepage itself (possibly scrolled well past Hero) Link to the same
+  // route is a no-op in Next.js, so the scroll position needs its own,
+  // explicit reset here instead.
+  function handleLogoClick(e: MouseEvent<HTMLAnchorElement>) {
+    if (!isHome) return;
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
 
   return (
     <header className="fixed inset-x-0 top-0 z-50">
@@ -95,6 +126,7 @@ export function Header() {
               this replaced). */}
           <Link
             href="/"
+            onClick={handleLogoClick}
             aria-label={t.header.homeLink}
             className="absolute left-0 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center overflow-hidden rounded-[6px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2"
           >
@@ -106,6 +138,7 @@ export function Header() {
               <a
                 key={link.href}
                 href={link.href}
+                onClick={(e) => handleNavClick(e, link.href)}
                 className="rounded-[2px] text-sm text-text-secondary transition-colors hover:text-text-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2"
               >
                 {link.label}
@@ -173,7 +206,13 @@ export function Header() {
                 key={link.href}
                 href={link.href}
                 className="rounded-lg px-3 py-3 text-[17.5px] text-text-secondary transition-colors hover:bg-white/5 hover:text-text-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2"
-                onClick={() => setOpen(false)}
+                onClick={(e) => {
+                  // Closes the menu even for a cross-page link (home ->
+                  // project), where handleNavClick's own setOpen(false)
+                  // never runs since it bails out early for !isHome.
+                  setOpen(false);
+                  handleNavClick(e, link.href);
+                }}
               >
                 {link.label}
               </a>
