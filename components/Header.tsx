@@ -58,8 +58,8 @@ export function Header() {
   const t = useTranslation();
 
   const NAV_LINKS = [
-    { href: "/#about", label: t.header.nav.about },
     { href: "/#projects", label: t.header.nav.projects },
+    { href: "/#about", label: t.header.nav.about },
     { href: "/#contact", label: t.header.nav.contact },
   ];
 
